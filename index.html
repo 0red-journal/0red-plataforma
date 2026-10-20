@@ -225,6 +225,15 @@
     .btn-admin-add-item:hover { background: var(--red-accent); }
     body.admin-edit-active .btn-admin-add-item { display: inline-flex; }
 
+    /* BOTÓN DE SINCRONIZAR GITHUB */
+    .btn-sync-github {
+      background: #10b981; color: #fff; border: none; padding: 7px 14px;
+      border-radius: 6px; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-sync-github:hover { background: #059669; }
+
     /* GRILLA CLASES */
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 22px; }
     .class-card {
@@ -636,11 +645,12 @@
             <div>
               <strong style="color:#fff; font-size:0.95rem;">PANEL TOTAL DE ADMINISTRACIÓN (<span id="banner-admin-name">balanzarivan885</span>)</strong>
               <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">
-                Controla clases, salas de Google Meet, bitácora journal, indicadores y apartados para toda tu comunidad:
+                Controla clases, Google Meet, herramientas y sincroniza cambios para todos los alumnos:
               </p>
             </div>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-sync-github" onclick="syncAllToGitHub()"><i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS</button>
             <button class="btn-view" onclick="openClassModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR CLASE</button>
             <button class="btn-view" onclick="openToolModal('new')"><i class="fa-solid fa-screwdriver-wrench"></i> AGREGAR HERRAMIENTA</button>
             <button class="btn-view" onclick="openLiveConfigModal()"><i class="fa-solid fa-video"></i> CONFIGURAR LIVE / MEET</button>
@@ -1192,9 +1202,10 @@
   </div>
 
   <script>
-    // ==========================================
-    // 1. CONFIGURACIÓN Y BASES DE DATOS
-    // ==========================================
+    // =======================================================
+    // DATOS PREDETERMINADOS (SE ACTUALIZAN VÍA GITHUB API)
+    // =======================================================
+    /* %%EMBEDDED_CONFIG_START%% */
     const DEFAULT_SITE_CONFIG = {
       brandTitle: "0REDSTRUCTURE",
       brandSub: "INSTITUTIONAL MENTORSHIP",
@@ -1205,24 +1216,6 @@
       adminUser: "balanzarivan885",
       adminPass: "Espartan117"
     };
-    let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
-
-    const DEFAULT_USERS_DB = [
-      { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" }
-    ];
-    let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
-
-    const DEFAULT_SECTIONS_VISIBILITY = {
-      chat: true,
-      rules: true,
-      materials: true,
-      scripts: true,
-      tools: true
-    };
-    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
-
-    // Control de apartados nativos eliminados
-    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
 
     const DEFAULT_CLASSES = [
       {
@@ -1265,9 +1258,7 @@
         visibleToStudents: true
       }
     ];
-    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
 
-    // HERRAMIENTAS
     const DEFAULT_TOOLS = [
       {
         id: "tool-1",
@@ -1286,7 +1277,16 @@
         visibleToStudents: true
       }
     ];
-    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
+
+    const DEFAULT_LIVE = {
+      platformType: "meet",
+      status: "scheduled",
+      meetUrl: "https://meet.google.com/new",
+      url: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
+      title: "Sesión Institucional en Vivo: Análisis SMC / ICT",
+      date: "Viernes, 12:00 PM UTC-6",
+      desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
+    };
 
     const DEFAULT_RULES = [
       { id: "rule-1", num: "01", title: "Gestión de Riesgo No Negociable", desc: "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia. El sobreapalancamiento destruye la consistencia matemática.", visibleToStudents: true },
@@ -1294,14 +1294,12 @@
       { id: "rule-3", num: "03", title: "Confidencialidad del Material Institucional", desc: "Los scripts de 0REDSTRUCTURE, plantillas y grabaciones son estrictamente para uso personal de los miembros matriculados.", visibleToStudents: true },
       { id: "rule-4", num: "04", title: "Prohibido Fomentar Operativa Impulsiva", desc: "No se admiten comentarios de euforia, FOMO o señales sin un contexto estructural previo documentado en TradingView.", visibleToStudents: true }
     ];
-    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
 
     const DEFAULT_MATERIALS = [
       { id: "mat-1", title: "Guía Maestra: Mapeo de Estructura Institucional (0RED)", subtitle: "PDF • 14.8 MB • Actualizado 2026", icon: "fa-file-pdf", url: "#", visibleToStudents: true },
       { id: "mat-2", title: "Trading Journal & Calculadora de Riesgo Institucional", subtitle: "XLSX • 4.2 MB • Registro de R:R y Drawdown", icon: "fa-table", url: "#", visibleToStudents: true },
       { id: "mat-3", title: "Cheat Sheet: Modelos de Entrada FVG + Killzones", subtitle: "PDF • 8.1 MB • Resumen Gráfico de Alta Probabilidad", icon: "fa-file-pdf", url: "#", visibleToStudents: true }
     ];
-    let materialsData = JSON.parse(localStorage.getItem('0red_materials')) || DEFAULT_MATERIALS;
 
     const DEFAULT_SCRIPTS = [
       {
@@ -1319,21 +1317,32 @@
         visibleToStudents: true
       }
     ];
-    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
 
-    let customSections = JSON.parse(localStorage.getItem('0red_custom_sections')) || [];
-
-    // CONFIGURACIÓN EN VIVO (CON GOOGLE MEET)
-    const DEFAULT_LIVE = {
-      platformType: "meet",
-      status: "scheduled",
-      meetUrl: "https://meet.google.com/new",
-      url: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
-      title: "Sesión Institucional en Vivo: Análisis SMC / ICT",
-      date: "Viernes, 12:00 PM UTC-6",
-      desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
+    const DEFAULT_SECTIONS_VISIBILITY = {
+      chat: true,
+      rules: true,
+      materials: true,
+      scripts: true,
+      tools: true
     };
+    /* %%EMBEDDED_CONFIG_END%% */
+
+    // Carga de variables prioritarias (Memoria local de trabajo)
+    let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
+    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
+    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
     let liveConfig = JSON.parse(localStorage.getItem('0red_live')) || DEFAULT_LIVE;
+    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
+    let materialsData = JSON.parse(localStorage.getItem('0red_materials')) || DEFAULT_MATERIALS;
+    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
+    let customSections = JSON.parse(localStorage.getItem('0red_custom_sections')) || [];
+    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
+    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
+
+    const DEFAULT_USERS_DB = [
+      { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" }
+    ];
+    let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
 
     let globalChatMessages = JSON.parse(localStorage.getItem('0red_global_chat')) || [
       { author: "Ivan Balanzar (0RED)", role: "admin", text: "Bienvenidos al hub institucional de 0REDSTRUCTURE. Tienes acceso completo al material e indicadores en el menú lateral.", time: "10:00 AM" }
@@ -1344,9 +1353,6 @@
     let adminVisualMode = localStorage.getItem('0red_admin_visual_mode') || 'admin';
     let currentActiveTab = 'classes';
 
-    // ==========================================
-    // INICIALIZACIÓN
-    // ==========================================
     document.addEventListener("DOMContentLoaded", () => {
       applySiteConfig();
       checkAuthSession();
@@ -1362,8 +1368,102 @@
       renderGlobalChat();
     });
 
+    // =======================================================
+    // FUNCIÓN MAESTRA: PUBLICAR CAMBIOS DIRECTAMENTE A GITHUB
+    // =======================================================
+    async function syncAllToGitHub() {
+      if (!isUserAdmin) return alert("Solo el administrador puede publicar cambios a todos los alumnos.");
+
+      let token = localStorage.getItem('0red_gh_token');
+      if (!token) {
+        token = prompt("Ingresa tu GitHub Personal Access Token (classic) con permiso 'repo':\n(Se guardará de forma segura en este navegador para futuras publicaciones)");
+        if (!token) return;
+        localStorage.setItem('0red_gh_token', token.trim());
+      }
+
+      const repoOwner = "0red-journal";
+      const repoName = "0red-plataforma";
+      const filePath = "index.html";
+
+      try {
+        const btn = document.querySelector('.btn-sync-github');
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando a la web...`;
+
+        // 1. Obtener el archivo actual y su SHA
+        const getUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+        const res = await fetch(getUrl, {
+          headers: {
+            'Authorization': `token ${token.trim()}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            localStorage.removeItem('0red_gh_token');
+            throw new Error("Token de GitHub inválido o expirado. Vuelve a intentarlo.");
+          }
+          throw new Error("Error al conectar con GitHub: " + res.statusText);
+        }
+
+        const data = await res.json();
+        const currentSha = data.sha;
+        const currentContent = decodeURIComponent(escape(atob(data.content)));
+
+        // 2. Preparar el nuevo bloque de configuración
+        const newBlock = `/* %%EMBEDDED_CONFIG_START%% */
+    const DEFAULT_SITE_CONFIG = ${JSON.stringify(siteConfig, null, 2)};
+
+    const DEFAULT_CLASSES = ${JSON.stringify(classesData, null, 2)};
+
+    const DEFAULT_TOOLS = ${JSON.stringify(toolsData, null, 2)};
+
+    const DEFAULT_LIVE = ${JSON.stringify(liveConfig, null, 2)};
+
+    const DEFAULT_RULES = ${JSON.stringify(rulesData, null, 2)};
+
+    const DEFAULT_MATERIALS = ${JSON.stringify(materialsData, null, 2)};
+
+    const DEFAULT_SCRIPTS = ${JSON.stringify(scriptsData, null, 2)};
+
+    const DEFAULT_SECTIONS_VISIBILITY = ${JSON.stringify(sectionsVisibility, null, 2)};
+    /* %%EMBEDDED_CONFIG_END%% */`;
+
+        const regex = /\/\* %%EMBEDDED_CONFIG_START%% \*\/[\s\S]*?\/\* %%EMBEDDED_CONFIG_END%% \*\//;
+        if (!regex.test(currentContent)) {
+          throw new Error("No se encontró la marca de datos en el archivo del repositorio.");
+        }
+
+        const updatedFileContent = currentContent.replace(regex, newBlock);
+
+        // 3. Subir el archivo actualizado a GitHub
+        const putRes = await fetch(getUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token.trim()}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: "Update plataforma: Cambios institucionales sincronizados por Admin",
+            content: btoa(unescape(encodeURIComponent(updatedFileContent))),
+            sha: currentSha
+          })
+        });
+
+        if (!putRes.ok) throw new Error("Error al guardar en el repositorio: " + putRes.statusText);
+
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS`;
+        alert("✓ ¡ÉXITO TOTAL!\n\nLos cambios se han subido directamente a GitHub.\nEn menos de 60 segundos estarán activos para todos los usuarios y alumnos del mundo.");
+      } catch (err) {
+        alert("Error al sincronizar: " + err.message);
+        const btn = document.querySelector('.btn-sync-github');
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS`;
+      }
+    }
+
     // ==========================================
-    // SISTEMA DE AUTENTICACIÓN MAESTRO (ADMIN INDESTRUCTIBLE)
+    // AUTH Y ROLES
     // ==========================================
     function checkAuthSession() {
       const loginGate = document.getElementById('login-view-wrapper');
@@ -1472,7 +1572,7 @@
     }
 
     // ==========================================
-    // AJUSTES GLOBALES (GUARDADO CORREGIDO)
+    // AJUSTES GLOBALES
     // ==========================================
     function openGlobalSiteModal() {
       document.getElementById('cfg-site-title').value = siteConfig.brandTitle;
@@ -1486,9 +1586,7 @@
       document.getElementById('global-site-modal').classList.add('open');
     }
 
-    function closeGlobalSiteModal() {
-      document.getElementById('global-site-modal').classList.remove('open');
-    }
+    function closeGlobalSiteModal() { document.getElementById('global-site-modal').classList.remove('open'); }
 
     function saveGlobalSiteConfig() {
       const newAdminUser = document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser;
@@ -1509,29 +1607,21 @@
       if (adminIndex !== -1) {
         usersDB[adminIndex].username = newAdminUser;
         usersDB[adminIndex].password = newAdminPass;
-        usersDB[adminIndex].name = newAdminUser;
-      } else {
-        usersDB.push({ username: newAdminUser, password: newAdminPass, role: 'admin', name: newAdminUser });
       }
       localStorage.setItem('0red_users_db', JSON.stringify(usersDB));
 
       if (currentUserSession) {
         currentUserSession.username = newAdminUser;
         currentUserSession.password = newAdminPass;
-        currentUserSession.role = 'admin';
         localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
       }
 
       applySiteConfig();
-      if (document.getElementById('active-session-username')) {
-        document.getElementById('active-session-username').innerText = newAdminUser;
-      }
-      if (document.getElementById('banner-admin-name')) {
-        document.getElementById('banner-admin-name').innerText = newAdminUser;
-      }
+      if (document.getElementById('active-session-username')) document.getElementById('active-session-username').innerText = newAdminUser;
+      if (document.getElementById('banner-admin-name')) document.getElementById('banner-admin-name').innerText = newAdminUser;
 
       closeGlobalSiteModal();
-      alert("✓ ¡Configuración y credenciales de administrador guardadas exitosamente!");
+      alert("✓ Ajustes guardados localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS' para enviarlo a la web.");
     }
 
     function applySiteConfig() {
@@ -1559,36 +1649,33 @@
     }
 
     // ==========================================
-    // ELIMINACIÓN Y GESTIÓN DE APARTADOS NATIVOS
+    // NAVEGACIÓN Y SECCIONES
     // ==========================================
-    function deleteNativeSection(sectionKey, sectionName) {
-      if (!isUserAdmin) return;
-      if (confirm(`¿Estás seguro de eliminar el apartado "${sectionName}" de la plataforma?\n\nPodrás restaurarlo en cualquier momento desde Ajustes Globales.`)) {
-        if (!deletedSections.includes(sectionKey)) {
-          deletedSections.push(sectionKey);
-          localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
-        }
-        applySectionsVisibilityUI();
-        if (currentActiveTab === sectionKey) {
-          switchSidebarTab('classes');
-        }
+    function switchSidebarTab(tab) {
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      if ((isStudentView && sectionsVisibility[tab] === false) || deletedSections.includes(tab)) {
+        tab = 'classes';
       }
+
+      currentActiveTab = tab;
+      document.querySelectorAll('.workspace-view').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.custom-created-view').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+
+      const standardView = document.getElementById('view-' + tab);
+      const standardLink = document.getElementById('slink-' + tab);
+
+      if (standardView) standardView.style.display = 'block';
+      const customView = document.getElementById('custom-view-' + tab);
+      if (customView) customView.style.display = 'block';
+
+      if (standardLink) standardLink.classList.add('active');
+      const customLink = document.getElementById('custom-slink-' + tab);
+      if (customLink) customLink.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function restoreDeletedNativeSections() {
-      if (confirm("¿Restaurar todos los apartados iniciales (Chat, Reglas, Materiales, Scripts, Herramientas)?")) {
-        deletedSections = [];
-        localStorage.removeItem('0red_deleted_sections');
-        sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
-        localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
-        applySectionsVisibilityUI();
-        alert("✓ Apartados nativos restaurados correctamente.");
-      }
-    }
-
-    // ==========================================
-    // VISIBILIDAD DE APARTADOS LATERALES
-    // ==========================================
     function toggleSectionVisibility(sectionKey) {
       if (!isUserAdmin) return;
       sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
@@ -1596,14 +1683,26 @@
       applySectionsVisibilityUI();
     }
 
-    function toggleCustomSectionVisibility(secId) {
+    function deleteNativeSection(sectionKey, sectionName) {
       if (!isUserAdmin) return;
-      const sec = customSections.find(s => s.id === secId);
-      if (sec) {
-        sec.visibleToStudents = (sec.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
-        renderCustomSections();
+      if (confirm(`¿Eliminar el apartado "${sectionName}"?`)) {
+        if (!deletedSections.includes(sectionKey)) {
+          deletedSections.push(sectionKey);
+          localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
+        }
         applySectionsVisibilityUI();
+        if (currentActiveTab === sectionKey) switchSidebarTab('classes');
+      }
+    }
+
+    function restoreDeletedNativeSections() {
+      if (confirm("¿Restaurar todos los apartados nativos?")) {
+        deletedSections = [];
+        localStorage.removeItem('0red_deleted_sections');
+        sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
+        localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
+        applySectionsVisibilityUI();
+        alert("✓ Apartados restaurados.");
       }
     }
 
@@ -1635,42 +1734,13 @@
           if (eyeBtn) {
             eyeBtn.className = `btn-toggle-eye ${isVisible ? '' : 'is-hidden'}`;
             eyeBtn.innerHTML = isVisible ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
-            eyeBtn.title = isVisible ? "Visible para alumnos (Clic para ocultar)" : "Oculto para alumnos (Clic para desocultar)";
           }
         }
       });
     }
 
     // ==========================================
-    // NAVEGACIÓN
-    // ==========================================
-    function switchSidebarTab(tab) {
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
-      if ((isStudentView && sectionsVisibility[tab] === false) || deletedSections.includes(tab)) {
-        tab = 'classes';
-      }
-
-      currentActiveTab = tab;
-      document.querySelectorAll('.workspace-view').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.custom-created-view').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
-
-      const standardView = document.getElementById('view-' + tab);
-      const standardLink = document.getElementById('slink-' + tab);
-
-      if (standardView) standardView.style.display = 'block';
-      const customView = document.getElementById('custom-view-' + tab);
-      if (customView) customView.style.display = 'block';
-
-      if (standardLink) standardLink.classList.add('active');
-      const customLink = document.getElementById('custom-slink-' + tab);
-      if (customLink) customLink.classList.add('active');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ==========================================
-    // GESTIÓN DE HERRAMIENTAS (CRUD)
+    // HERRAMIENTAS
     // ==========================================
     function renderTools() {
       const container = document.getElementById('tools-container');
@@ -1684,14 +1754,11 @@
 
         const card = document.createElement('div');
         card.className = `tool-card ${!isVisible ? 'item-hidden-admin' : ''}`;
-        
         const featuresHtml = (tool.features || []).map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('');
 
         card.innerHTML = `
           <div>
-            <div class="tool-icon-wrap">
-              <i class="fa-solid ${tool.icon || 'fa-screwdriver-wrench'}"></i>
-            </div>
+            <div class="tool-icon-wrap"><i class="fa-solid ${tool.icon || 'fa-screwdriver-wrench'}"></i></div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
               <h3 style="font-size:1.25rem; font-weight:800; color:#fff;">${tool.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h3>
               <span style="font-family:var(--font-mono); font-size:0.72rem; padding:2px 8px; border-radius:4px; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);">${tool.badge || 'HERRAMIENTA'}</span>
@@ -1699,25 +1766,17 @@
             <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">${tool.desc}</p>
             <ul class="tool-features-list">${featuresHtml}</ul>
           </div>
-
           <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid var(--card-border); padding-top:16px; align-items:center; justify-content:space-between;">
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn-meet-join" style="padding:10px 18px; font-size:0.85rem; text-decoration:none;">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> ${tool.btnText || 'ABRIR ENLACE'}
               </a>
-              ${tool.allowEmbed ? `
-                <button class="btn-view" onclick="openEmbeddedViewer('${tool.url}', '${tool.title}')">
-                  <i class="fa-solid fa-window-maximize"></i> Ver en Plataforma
-                </button>
-              ` : ''}
+              ${tool.allowEmbed ? `<button class="btn-view" onclick="openEmbeddedViewer('${tool.url}', '${tool.title}')"><i class="fa-solid fa-window-maximize"></i> Ver en Plataforma</button>` : ''}
             </div>
-
             <div class="admin-card-controls">
-              <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleToolVisibility('${tool.id}')">
-                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-              </button>
-              <button class="btn-admin-icon" title="Editar Herramienta" onclick="openToolModal('${tool.id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-admin-icon" title="Eliminar Herramienta" onclick="deleteTool('${tool.id}')"><i class="fa-solid fa-trash"></i></button>
+              <button class="btn-admin-icon" onclick="toggleToolVisibility('${tool.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
+              <button class="btn-admin-icon" onclick="openToolModal('${tool.id}')"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-admin-icon" onclick="deleteTool('${tool.id}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         `;
@@ -1738,7 +1797,6 @@
       const isNew = id === 'new';
       document.getElementById('tool-editor-title').innerText = isNew ? "Agregar Nueva Herramienta" : "Editar Herramienta";
       document.getElementById('edit-tool-id').value = isNew ? "" : id;
-
       if (isNew) {
         document.getElementById('edit-tool-title').value = "";
         document.getElementById('edit-tool-badge').value = "OFICIAL";
@@ -1763,9 +1821,7 @@
       document.getElementById('tool-editor-modal').classList.add('open');
     }
 
-    function closeToolModal() {
-      document.getElementById('tool-editor-modal').classList.remove('open');
-    }
+    function closeToolModal() { document.getElementById('tool-editor-modal').classList.remove('open'); }
 
     function saveToolData() {
       const id = document.getElementById('edit-tool-id').value;
@@ -1778,29 +1834,23 @@
       const features = document.getElementById('edit-tool-features').value.split('\n').map(f => f.trim()).filter(Boolean);
       const allowEmbed = document.getElementById('edit-tool-embed').checked;
 
-      if (!title || !url) return alert("Por favor ingresa un título y la URL del enlace.");
+      if (!title || !url) return alert("Ingresa un título y URL.");
 
       if (id) {
         const idx = toolsData.findIndex(t => t.id === id);
-        if (idx !== -1) {
-          toolsData[idx] = { ...toolsData[idx], title, badge, btnText, url, icon, desc, features, allowEmbed };
-        }
+        if (idx !== -1) toolsData[idx] = { ...toolsData[idx], title, badge, btnText, url, icon, desc, features, allowEmbed };
       } else {
-        toolsData.push({
-          id: 'tool-' + Date.now(),
-          title, badge, btnText, url, icon, desc, features, allowEmbed,
-          visibleToStudents: true
-        });
+        toolsData.push({ id: 'tool-' + Date.now(), title, badge, btnText, url, icon, desc, features, allowEmbed, visibleToStudents: true });
       }
 
       localStorage.setItem('0red_tools', JSON.stringify(toolsData));
       renderTools();
       closeToolModal();
-      alert("✓ ¡Herramienta guardada con éxito!");
+      alert("✓ Guardado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
     }
 
     function deleteTool(id) {
-      if (confirm("¿Estás seguro de eliminar esta herramienta?")) {
+      if (confirm("¿Eliminar esta herramienta?")) {
         toolsData = toolsData.filter(t => t.id !== id);
         localStorage.setItem('0red_tools', JSON.stringify(toolsData));
         renderTools();
@@ -1812,7 +1862,6 @@
       const iframe = document.getElementById('journal-iframe');
       const titleEl = document.getElementById('embedded-viewer-title');
       if (!wrap || !iframe) return;
-
       iframe.src = url;
       if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-window-maximize" style="color:var(--red-accent);"></i> ${title} (Visor Activo)`;
       wrap.style.display = 'block';
@@ -1827,7 +1876,7 @@
     }
 
     // ==========================================
-    // SECCIÓN EN VIVO / GOOGLE MEET
+    // EN VIVO / MEET
     // ==========================================
     function togglePlatformLiveFields() {
       const type = document.getElementById('cfg-live-platform').value;
@@ -1847,9 +1896,7 @@
       document.getElementById('live-config-modal').classList.add('open');
     }
 
-    function closeLiveModal() {
-      document.getElementById('live-config-modal').classList.remove('open');
-    }
+    function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
 
     function saveLiveConfig() {
       liveConfig.platformType = document.getElementById('cfg-live-platform').value;
@@ -1863,7 +1910,7 @@
       localStorage.setItem('0red_live', JSON.stringify(liveConfig));
       applyLiveConfig();
       closeLiveModal();
-      alert("✓ ¡Configuración del En Vivo / Google Meet guardada correctamente!");
+      alert("✓ Actualizado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
     }
 
     function applyLiveConfig() {
@@ -1872,9 +1919,7 @@
       document.getElementById('live-stream-desc').innerText = liveConfig.desc;
 
       const livePill = document.getElementById('sidebar-live-pill');
-      if (livePill) {
-        livePill.style.display = liveConfig.status === 'active' ? 'inline-block' : 'none';
-      }
+      if (livePill) livePill.style.display = liveConfig.status === 'active' ? 'inline-block' : 'none';
 
       const displayContainer = document.getElementById('live-display-container');
       if (!displayContainer) return;
@@ -1884,10 +1929,7 @@
       if (liveConfig.platformType === 'meet') {
         displayContainer.innerHTML = `
           <div class="meet-hero-card">
-            <div class="meet-icon-badge">
-              <i class="fa-solid fa-users-viewfinder"></i>
-            </div>
-            
+            <div class="meet-icon-badge"><i class="fa-solid fa-users-viewfinder"></i></div>
             <div>
               <div class="meet-live-pill ${isLiveActive ? 'active' : 'scheduled'}" style="margin-bottom:12px;">
                 ${isLiveActive ? '<span class="live-indicator-dot"></span> SALA ACTIVA Y EN DIRECTO' : '<i class="fa-regular fa-calendar-check"></i> SALA PROGRAMADA'}
@@ -1898,7 +1940,6 @@
                 <i class="fa-solid fa-clock"></i> Horario: <strong>${liveConfig.date}</strong>
               </div>
             </div>
-
             <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center; z-index:2;">
               <a href="${liveConfig.meetUrl}" target="_blank" rel="noopener noreferrer" class="btn-meet-join">
                 <i class="fa-solid fa-video"></i> UNIRSE A GOOGLE MEET
@@ -1906,10 +1947,6 @@
               <button class="btn-view" style="padding:13px 18px; border-radius:10px;" onclick="copyMeetLink('${liveConfig.meetUrl}')">
                 <i class="fa-solid fa-copy"></i> Copiar Enlace
               </button>
-            </div>
-
-            <div style="margin-top:10px; font-size:0.75rem; color:#6b7280; font-family:var(--font-mono);">
-              <i class="fa-solid fa-shield-halved"></i> Ingresa con tu cuenta de Google. Mantén tu micrófono silenciado al entrar.
             </div>
           </div>
         `;
@@ -1924,13 +1961,11 @@
 
     function copyMeetLink(url) {
       if (!url) return alert("No hay enlace de Google Meet configurado.");
-      navigator.clipboard.writeText(url).then(() => {
-        alert("✓ Enlace de Google Meet copiado al portapapeles:\n" + url);
-      });
+      navigator.clipboard.writeText(url).then(() => alert("✓ Enlace copiado: " + url));
     }
 
     // ==========================================
-    // GESTIÓN DE CLASES
+    // CLASES
     // ==========================================
     function renderClasses() {
       const container = document.getElementById('classes-container');
@@ -1948,9 +1983,7 @@
           <div class="card-thumb-container" onclick="${item.unlocked ? `playClass('${item.id}')` : ''}">
             <img src="${item.thumbUrl || 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'}" class="card-thumb-img" alt="${item.title}">
             ${item.unlocked ? `
-              <div class="card-play-overlay">
-                <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
-              </div>
+              <div class="card-play-overlay"><div class="play-btn-circle"><i class="fa-solid fa-play"></i></div></div>
               <span class="duration-tag"><i class="fa-regular fa-clock"></i> ${item.duration}</span>
             ` : `
               <div class="card-locked-overlay">
@@ -1962,27 +1995,17 @@
           <div class="card-body">
             <div class="card-meta-top">
               <span class="meta-week">${item.week} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
-              <span class="meta-status ${item.unlocked ? 'status-unlocked' : 'status-locked'}">
-                ${item.unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}
-              </span>
+              <span class="meta-status ${item.unlocked ? 'status-unlocked' : 'status-locked'}">${item.unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}</span>
             </div>
             <h3 class="card-title">${item.title}</h3>
             <p class="card-desc">${item.desc}</p>
-            <div class="card-tags">
-              ${(item.tags || []).map(t => `<span class="concept-tag">${t}</span>`).join('')}
-            </div>
+            <div class="card-tags">${(item.tags || []).map(t => `<span class="concept-tag">${t}</span>`).join('')}</div>
             <div class="card-actions">
-              ${item.unlocked ? `
-                <button class="btn-view" onclick="playClass('${item.id}')"><i class="fa-solid fa-play"></i> Ver Grabación</button>
-              ` : `
-                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> ${item.date}</span>
-              `}
+              ${item.unlocked ? `<button class="btn-view" onclick="playClass('${item.id}')"><i class="fa-solid fa-play"></i> Ver Grabación</button>` : `<span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> ${item.date}</span>`}
               <div class="admin-card-controls">
-                <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="togglePlayClassVisibility('${item.id}')">
-                  <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-                </button>
-                <button class="btn-admin-icon" title="Editar Clase" onclick="openClassModal('${item.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-admin-icon" title="Eliminar Clase" onclick="deleteClass('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn-admin-icon" onclick="togglePlayClassVisibility('${item.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
+                <button class="btn-admin-icon" onclick="openClassModal('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-admin-icon" onclick="deleteClass('${item.id}')"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -2059,7 +2082,7 @@
       const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
       const unlocked = document.getElementById('edit-unlocked').checked;
 
-      if (!title) return alert("Por favor ingresa un título para la clase.");
+      if (!title) return alert("Ingresa un título.");
 
       if (id) {
         const idx = classesData.findIndex(c => c.id === id);
@@ -2071,10 +2094,11 @@
       localStorage.setItem('0red_classes', JSON.stringify(classesData));
       renderClasses();
       closeEditorModal();
+      alert("✓ Guardado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
     }
 
     function deleteClass(id) {
-      if (confirm("¿Eliminar esta clase del temario?")) {
+      if (confirm("¿Eliminar esta clase?")) {
         classesData = classesData.filter(c => c.id !== id);
         localStorage.setItem('0red_classes', JSON.stringify(classesData));
         renderClasses();
@@ -2105,11 +2129,9 @@
             </div>
           </div>
           <div class="admin-card-controls">
-            <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleRuleVisibility('${rule.id}')">
-              <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-            </button>
-            <button class="btn-admin-icon" title="Editar Regla" onclick="openRuleModal('${rule.id}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-admin-icon" title="Eliminar Regla" onclick="deleteRule('${rule.id}')"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-admin-icon" onclick="toggleRuleVisibility('${rule.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
+            <button class="btn-admin-icon" onclick="openRuleModal('${rule.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-admin-icon" onclick="deleteRule('${rule.id}')"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
         container.appendChild(item);
@@ -2151,7 +2173,7 @@
       const title = document.getElementById('edit-rule-title').value.trim();
       const desc = document.getElementById('edit-rule-desc').value.trim();
 
-      if (!title) return alert("Por favor ingresa un título para la regla.");
+      if (!title) return alert("Ingresa un título.");
 
       if (id) {
         const idx = rulesData.findIndex(r => r.id === id);
@@ -2166,7 +2188,7 @@
     }
 
     function deleteRule(id) {
-      if (confirm("¿Eliminar esta regla de conducta?")) {
+      if (confirm("¿Eliminar esta regla?")) {
         rulesData = rulesData.filter(r => r.id !== id);
         localStorage.setItem('0red_rules', JSON.stringify(rulesData));
         renderRules();
@@ -2199,11 +2221,9 @@
           <div style="display:flex; align-items:center; gap:8px;">
             <button class="btn-view" onclick="downloadMaterial('${mat.url}', '${mat.title}')"><i class="fa-solid fa-download"></i> Descargar</button>
             <div class="admin-card-controls">
-              <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleMaterialVisibility('${mat.id}')">
-                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-              </button>
-              <button class="btn-admin-icon" title="Editar Material" onclick="openMaterialModal('${mat.id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-admin-icon" title="Eliminar Material" onclick="deleteMaterial('${mat.id}')"><i class="fa-solid fa-trash"></i></button>
+              <button class="btn-admin-icon" onclick="toggleMaterialVisibility('${mat.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
+              <button class="btn-admin-icon" onclick="openMaterialModal('${mat.id}')"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-admin-icon" onclick="deleteMaterial('${mat.id}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         `;
@@ -2222,12 +2242,12 @@
 
     function downloadMaterial(url, title) {
       if (url && url !== "#") window.open(url, '_blank');
-      else alert("Descargando archivo institucional: " + title);
+      else alert("Descargando: " + title);
     }
 
     function openMaterialModal(id) {
       const isNew = id === 'new';
-      document.getElementById('material-modal-title').innerText = isNew ? "Agregar Material Descargable" : "Editar Material";
+      document.getElementById('material-modal-title').innerText = isNew ? "Agregar Material" : "Editar Material";
       document.getElementById('edit-material-id').value = isNew ? "" : id;
       if (isNew) {
         document.getElementById('edit-mat-title').value = "";
@@ -2254,7 +2274,7 @@
       const icon = document.getElementById('edit-mat-icon').value;
       const url = document.getElementById('edit-mat-url').value.trim();
 
-      if (!title) return alert("Por favor ingresa un título para el material.");
+      if (!title) return alert("Ingresa un título.");
 
       if (id) {
         const idx = materialsData.findIndex(m => m.id === id);
@@ -2269,7 +2289,7 @@
     }
 
     function deleteMaterial(id) {
-      if (confirm("¿Eliminar este material de la lista?")) {
+      if (confirm("¿Eliminar este material?")) {
         materialsData = materialsData.filter(m => m.id !== id);
         localStorage.setItem('0red_materials', JSON.stringify(materialsData));
         renderMaterials();
@@ -2277,7 +2297,7 @@
     }
 
     // ==========================================
-    // SCRIPTS PINE SCRIPT
+    // SCRIPTS
     // ==========================================
     function renderScripts() {
       const container = document.getElementById('scripts-container');
@@ -2300,11 +2320,9 @@
             <div style="display:flex; align-items:center; gap:8px;">
               <button class="btn-view" onclick="copyPineScript('code-${s.id}')"><i class="fa-solid fa-copy"></i> Copiar Código</button>
               <div class="admin-card-controls">
-                <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleScriptVisibility('${s.id}')">
-                  <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-                </button>
-                <button class="btn-admin-icon" title="Editar Script" onclick="openScriptModal('${s.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-admin-icon" title="Eliminar Script" onclick="deleteScript('${s.id}')"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn-admin-icon" onclick="toggleScriptVisibility('${s.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
+                <button class="btn-admin-icon" onclick="openScriptModal('${s.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-admin-icon" onclick="deleteScript('${s.id}')"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -2325,12 +2343,12 @@
 
     function openScriptModal(id) {
       const isNew = id === 'new';
-      document.getElementById('script-modal-title').innerText = isNew ? "Publicar Nuevo Script Pine" : "Editar Script Pine";
+      document.getElementById('script-modal-title').innerText = isNew ? "Publicar Script" : "Editar Script";
       document.getElementById('edit-script-id').value = isNew ? "" : id;
       if (isNew) {
         document.getElementById('edit-script-title').value = "";
         document.getElementById('edit-script-badge').value = "PINE SCRIPT V5";
-        document.getElementById('edit-script-code').value = "//@version=5\nindicator('0RED STRUCTURE - Nuevo Indicador', overlay=true)\n\n// Escribe o pega tu algoritmo aquí";
+        document.getElementById('edit-script-code').value = "//@version=5\nindicator('0RED STRUCTURE', overlay=true)\n\n// Código";
       } else {
         const sc = scriptsData.find(x => x.id === id);
         if (!sc) return;
@@ -2349,7 +2367,7 @@
       const badge = document.getElementById('edit-script-badge').value.trim() || "PINE SCRIPT V5";
       const code = document.getElementById('edit-script-code').value;
 
-      if (!title || !code) return alert("Por favor completa el título y el código.");
+      if (!title || !code) return alert("Completa título y código.");
 
       if (id) {
         const idx = scriptsData.findIndex(s => s.id === id);
@@ -2364,7 +2382,7 @@
     }
 
     function deleteScript(id) {
-      if (confirm("¿Eliminar este indicador de la plataforma?")) {
+      if (confirm("¿Eliminar este indicador?")) {
         scriptsData = scriptsData.filter(s => s.id !== id);
         localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
         renderScripts();
@@ -2374,9 +2392,7 @@
     function copyPineScript(elementId) {
       const el = document.getElementById(elementId);
       if (!el) return;
-      navigator.clipboard.writeText(el.innerText).then(() => {
-        alert("✓ ¡Código Pine Script copiado con éxito! Pégalo en tu Pine Editor de TradingView.");
-      });
+      navigator.clipboard.writeText(el.innerText).then(() => alert("✓ ¡Código copiado!"));
     }
 
     // ==========================================
@@ -2399,12 +2415,10 @@
       const desc = document.getElementById('new-sec-desc').value.trim();
       const content = document.getElementById('new-sec-content').value.trim();
 
-      if (!name || !title) return alert("Debes asignarle un nombre y un título al apartado.");
+      if (!name || !title) return alert("Asigna nombre y título.");
 
       const secId = 'custom-' + Date.now();
-      const newSec = { id: secId, name, icon, title, desc, content, visibleToStudents: true };
-      customSections.push(newSec);
-
+      customSections.push({ id: secId, name, icon, title, desc, content, visibleToStudents: true });
       localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
       renderCustomSections();
       closeNewSectionModal();
@@ -2429,10 +2443,10 @@
           <a class="sidebar-link" id="custom-slink-${sec.id}" onclick="switchSidebarTab('${sec.id}')">
             <span class="link-label-group"><i class="fa-solid ${sec.icon}"></i> ${sec.name} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
             <span class="sidebar-controls-wrap">
-              <button class="btn-toggle-eye ${isVisible ? '' : 'is-hidden'}" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="event.stopPropagation(); toggleCustomSectionVisibility('${sec.id}')">
+              <button class="btn-toggle-eye ${isVisible ? '' : 'is-hidden'}" onclick="event.stopPropagation(); toggleCustomSectionVisibility('${sec.id}')">
                 <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
               </button>
-              <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteCustomSection('${sec.id}')">
+              <button class="btn-delete-section" onclick="event.stopPropagation(); deleteCustomSection('${sec.id}')">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </span>
@@ -2447,7 +2461,7 @@
         viewDiv.innerHTML = `
           <div class="page-header">
             <div>
-              <div class="badge-pill"><i class="fa-solid ${sec.icon}"></i> Módulo Exclusivo ${!isVisible ? '<span class="hidden-badge-tag">OCULTO PARA ALUMNOS</span>' : ''}</div>
+              <div class="badge-pill"><i class="fa-solid ${sec.icon}"></i> Módulo Exclusivo</div>
               <h1 class="page-title">${sec.title}</h1>
               <p class="page-desc">${sec.desc}</p>
             </div>
@@ -2460,8 +2474,18 @@
       });
     }
 
+    function toggleCustomSectionVisibility(secId) {
+      if (!isUserAdmin) return;
+      const sec = customSections.find(s => s.id === secId);
+      if (sec) {
+        sec.visibleToStudents = (sec.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
+        renderCustomSections();
+      }
+    }
+
     function deleteCustomSection(id) {
-      if (confirm("¿Eliminar este apartado por completo de la barra lateral?")) {
+      if (confirm("¿Eliminar este apartado por completo?")) {
         customSections = customSections.filter(s => s.id !== id);
         localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
         renderCustomSections();
@@ -2470,7 +2494,7 @@
     }
 
     // ==========================================
-    // MENSAJERÍA Y CHAT
+    // CHATS
     // ==========================================
     function renderGlobalChat() {
       const container = document.getElementById('global-chat-container');
@@ -2495,14 +2519,12 @@
       const input = document.getElementById('global-chat-input');
       const text = input.value.trim();
       if (!text) return;
-
-      const newMsg = {
+      globalChatMessages.push({
         author: currentUserSession ? currentUserSession.username : 'Alumno',
         role: isUserAdmin ? 'admin' : 'student',
         text: text,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      globalChatMessages.push(newMsg);
+      });
       localStorage.setItem('0red_global_chat', JSON.stringify(globalChatMessages));
       renderGlobalChat();
       input.value = '';
@@ -2516,28 +2538,19 @@
       const msg = document.createElement('div');
       msg.className = 'chat-msg';
       const sender = currentUserSession ? currentUserSession.username : 'Alumno';
-      msg.innerHTML = `
-        <div class="chat-author" style="color:var(--cyan-accent);">${isUserAdmin ? sender + ' (ADMIN)' : sender}</div>
-        ${text}
-      `;
+      msg.innerHTML = `<div class="chat-author" style="color:var(--cyan-accent);">${isUserAdmin ? sender + ' (ADMIN)' : sender}</div>${text}`;
       chatBox.appendChild(msg);
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = '';
     }
 
-    // ==========================================
-    // CONTADOR DE CONEXIONES EN VIVO
-    // ==========================================
     function initRealUserCounter() {
       const counterEl = document.getElementById('user-count-num');
       const mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
       const presenceChannel = new BroadcastChannel('0red_real_presence');
       let activeSessions = new Set([mySessionId]);
 
-      function updateCounterUI() {
-        if (counterEl) counterEl.innerText = activeSessions.size;
-      }
-
+      function updateCounterUI() { if (counterEl) counterEl.innerText = activeSessions.size; }
       presenceChannel.postMessage({ type: 'join', id: mySessionId });
       presenceChannel.onmessage = (event) => {
         const { type, id } = event.data;
@@ -2550,7 +2563,6 @@
           updateCounterUI();
         }
       };
-
       setInterval(() => presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId }), 3000);
       window.addEventListener('beforeunload', () => presenceChannel.postMessage({ type: 'leave', id: mySessionId }));
       updateCounterUI();
