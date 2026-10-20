@@ -1,0 +1,2560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0REDSTRUCTURE | Institutional Trading Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg: #07090e;
+      --sidebar-bg: #0a0e16;
+      --card-bg: rgba(13, 17, 24, 0.88);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(239, 68, 68, 0.4);
+      --red-accent: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.25);
+      --cyan-accent: #06b6d4;
+      --green-accent: #10b981;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 60% 0%, rgba(239, 68, 68, 0.12) 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* LOGIN GATEWAY */
+    #login-view-wrapper {
+      position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+    }
+    .login-box {
+      width: 100%; max-width: 440px; background: rgba(13, 17, 24, 0.94);
+      border: 1px solid var(--card-border); border-radius: 18px; padding: 38px 32px 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); text-align: center;
+    }
+    .login-brand-icon {
+      width: 52px; height: 52px; background: linear-gradient(135deg, #ef4444, #7f1d1d);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-family: var(--font-mono); font-size: 1.4rem;
+      box-shadow: 0 0 25px var(--red-glow); margin: 0 auto 16px;
+    }
+    .login-title { font-size: 1.45rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .login-subtitle { font-size: 0.78rem; font-family: var(--font-mono); color: var(--red-accent); margin-bottom: 24px; text-transform: uppercase; }
+    .login-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
+    .input-field-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .input-field-wrap label { font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); }
+    .login-input {
+      width: 100%; background: #121721; border: 1px solid var(--card-border);
+      color: #fff; padding: 12px 14px; border-radius: 9px; font-size: 0.95rem; outline: none;
+    }
+    .login-input:focus { border-color: var(--red-accent); }
+    .login-btn-submit {
+      background: var(--red-accent); color: #fff; border: none; padding: 13px;
+      border-radius: 9px; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-top: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .login-btn-submit:hover { opacity: 0.9; }
+    .login-error-msg {
+      display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5; padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 12px;
+    }
+    .copyright-login-footer { margin-top: 26px; font-size: 0.78rem; font-family: var(--font-mono); color: #6b7280; }
+
+    /* PLATAFORMA INTERNA */
+    #platform-app-wrapper { display: none; min-height: 100vh; width: 100%; flex-direction: column; }
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between; padding: 14px 28px;
+      background: rgba(10, 14, 20, 0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100;
+    }
+    .brand-area { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer; }
+    .brand-icon {
+      width: 38px; height: 38px; background: linear-gradient(135deg, #ef4444, #7f1d1d);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-family: var(--font-mono); font-size: 1.1rem;
+      box-shadow: 0 0 15px var(--red-glow);
+    }
+    .brand-title { font-weight: 800; font-size: 1.15rem; color: #fff; }
+    .brand-sub { font-size: 0.72rem; font-family: var(--font-mono); color: var(--red-accent); }
+    .user-actions { display: flex; align-items: center; gap: 12px; }
+    .admin-toggle-mode-btn {
+      background: var(--red-accent); color: #fff; border: 1px solid rgba(239, 68, 68, 0.6);
+      padding: 7px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+      display: none; align-items: center; gap: 7px; box-shadow: 0 0 16px var(--red-glow);
+    }
+    .admin-toggle-mode-btn.view-as-student {
+      background: rgba(255, 255, 255, 0.08); color: #d1d5db; border-color: rgba(255, 255, 255, 0.18); box-shadow: none;
+    }
+    .user-session-badge {
+      display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 14px; border-radius: 8px;
+      font-size: 0.82rem; font-family: var(--font-mono); color: #d1d5db;
+    }
+    .btn-logout-header { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; }
+    .btn-logout-header:hover { color: var(--red-accent); }
+
+    /* LAYOUT: SIDEBAR + MAIN */
+    .app-body-layout { display: flex; flex: 1; width: 100%; }
+    .app-sidebar {
+      width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--card-border);
+      padding: 24px 14px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0;
+    }
+    .sidebar-section-title {
+      font-family: var(--font-mono); font-size: 0.7rem; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-left: 10px;
+    }
+    .sidebar-nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-link {
+      display: flex; align-items: center; justify-content: space-between; padding: 10px 14px;
+      border-radius: 9px; color: var(--text-muted); text-decoration: none; font-size: 0.88rem;
+      font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+    }
+    .sidebar-link .link-label-group { display: flex; align-items: center; gap: 12px; }
+    .sidebar-link:hover { color: #fff; background: rgba(255, 255, 255, 0.03); }
+    .sidebar-link.active {
+      color: #fff; background: rgba(239, 68, 68, 0.14); border-color: rgba(239, 68, 68, 0.35);
+    }
+    .sidebar-link i { width: 18px; font-size: 1rem; text-align: center; }
+
+    /* ESTILOS VISUALES ADMIN / OCULTOS */
+    .item-hidden-admin {
+      opacity: 0.55;
+      border-style: dashed !important;
+      position: relative;
+    }
+    .hidden-badge-tag {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      display: inline-block;
+    }
+    .live-indicator-dot {
+      width: 8px; height: 8px; background: var(--green-accent); border-radius: 50%;
+      box-shadow: 0 0 8px var(--green-accent); display: inline-block; animation: pulse-live 1.8s infinite;
+    }
+    @keyframes pulse-live {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.6); opacity: 0.4; }
+    }
+
+    .btn-toggle-eye {
+      background: none; border: none; color: #9ca3af; cursor: pointer;
+      font-size: 0.85rem; padding: 4px 6px; border-radius: 4px; transition: all 0.2s;
+    }
+    .btn-toggle-eye:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .btn-toggle-eye.is-hidden { color: #ef4444; }
+
+    .btn-delete-section {
+      background: none; border: none; color: #9ca3af; cursor: pointer;
+      font-size: 0.85rem; padding: 4px 6px; border-radius: 4px; transition: all 0.2s;
+    }
+    .btn-delete-section:hover { color: #ef4444; background: rgba(255,255,255,0.08); }
+
+    .sidebar-controls-wrap { display: none; align-items: center; gap: 4px; }
+    body.admin-edit-active .sidebar-controls-wrap { display: flex; }
+
+    .btn-sidebar-add-custom {
+      background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.4);
+      color: #fca5a5; width: 100%; padding: 9px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 700; cursor: pointer; display: none; align-items: center; justify-content: center;
+      gap: 6px; margin-top: 6px; transition: all 0.2s;
+    }
+    .btn-sidebar-add-custom:hover { background: rgba(239, 68, 68, 0.2); border-color: var(--red-accent); color: #fff; }
+    body.admin-edit-active .btn-sidebar-add-custom { display: flex; }
+
+    .main-workspace { flex: 1; padding: 30px 32px 80px; overflow-y: auto; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; flex-wrap: wrap; gap: 20px; }
+    .badge-pill {
+      display: inline-flex; align-items: center; gap: 6px; background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 4px 10px;
+      border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 12px;
+    }
+    .page-title { font-size: 2rem; font-weight: 800; letter-spacing: -1px; }
+    .page-desc { color: var(--text-muted); font-size: 0.95rem; max-width: 650px; margin-top: 6px; line-height: 1.5; }
+    .next-live-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-left: 3px solid var(--red-accent); padding: 14px 20px; border-radius: 12px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .live-time-val { font-family: var(--font-mono); font-weight: 700; color: #fff; font-size: 0.95rem; }
+
+    .admin-banner {
+      background: linear-gradient(90deg, rgba(239,68,68,0.22), rgba(13,17,24,0.85));
+      border: 1px solid rgba(239, 68, 68, 0.5); padding: 14px 20px; border-radius: 10px;
+      margin-bottom: 24px; display: none; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .admin-banner.visible { display: flex; }
+
+    .btn-view {
+      background: rgba(239, 68, 68, 0.12); color: #fff; border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; text-decoration: none;
+    }
+    .btn-view:hover { background: var(--red-accent); color: #fff; }
+    .btn-admin-add-item {
+      background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fff; padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; display: none; align-items: center; gap: 6px; transition: all 0.2s;
+    }
+    .btn-admin-add-item:hover { background: var(--red-accent); }
+    body.admin-edit-active .btn-admin-add-item { display: inline-flex; }
+
+    /* GRILLA CLASES */
+    .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 22px; }
+    .class-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;
+      transition: all 0.25s ease; position: relative;
+    }
+    .class-card:hover { border-color: var(--card-border-hover); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
+    .card-thumb-container { position: relative; width: 100%; height: 200px; background: #111622; overflow: hidden; cursor: pointer; }
+    .card-thumb-img { width: 100%; height: 100%; object-fit: cover; }
+    .card-play-overlay {
+      position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex;
+      align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;
+    }
+    .class-card:hover .card-play-overlay { opacity: 1; }
+    .play-btn-circle {
+      width: 50px; height: 50px; background: var(--red-accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem;
+      box-shadow: 0 0 20px var(--red-glow);
+    }
+    .card-locked-overlay {
+      position: absolute; inset: 0; background: rgba(7, 9, 14, 0.85); backdrop-filter: blur(4px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted);
+    }
+    .lock-circle {
+      width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff;
+    }
+    .duration-tag {
+      position: absolute; bottom: 10px; left: 10px; background: rgba(0, 0, 0, 0.8);
+      font-family: var(--font-mono); font-size: 0.75rem; padding: 3px 7px; border-radius: 5px; color: #e5e7eb;
+    }
+    .card-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+    .card-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.75rem; font-family: var(--font-mono); }
+    .meta-week { color: var(--text-muted); font-weight: 700; }
+    .meta-status { padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; }
+    .status-unlocked { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-locked { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid rgba(107, 114, 128, 0.3); }
+    .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .card-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.45; margin-bottom: 14px; flex: 1; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .concept-tag {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; color: #d1d5db; font-family: var(--font-mono);
+    }
+    .card-actions { border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .admin-card-controls { display: none; gap: 6px; }
+    body.admin-edit-active .admin-card-controls { display: flex; }
+    .btn-admin-icon {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-muted);
+      width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+    }
+    .btn-admin-icon:hover { color: #fff; border-color: var(--red-accent); }
+
+    /* CONTENEDORES DE APARTADOS */
+    .content-panel-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 24px; margin-bottom: 24px;
+    }
+    .rule-item {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+      padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border);
+      border-radius: 10px; margin-bottom: 14px;
+    }
+    .rule-left { display: flex; gap: 16px; flex: 1; }
+    .rule-num {
+      width: 34px; height: 34px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--red-accent); border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-weight: 700; flex-shrink: 0;
+    }
+    .rule-content h4 { font-size: 1rem; margin-bottom: 4px; color: #fff; }
+    .rule-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+    .material-item {
+      display: flex; align-items: center; justify-content: space-between; padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 12px;
+    }
+    .material-info { display: flex; align-items: center; gap: 14px; }
+    .material-icon { font-size: 1.6rem; color: #f87171; }
+
+    .script-box {
+      background: #090d14; border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 20px; overflow: hidden;
+    }
+    .script-header {
+      padding: 12px 18px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--card-border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .script-code-area {
+      padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8;
+      overflow-x: auto; white-space: pre-wrap; line-height: 1.6;
+    }
+
+    .general-chat-wrapper {
+      display: flex; flex-direction: column; height: 620px; background: var(--card-bg);
+      border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden;
+    }
+    .chat-global-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .chat-bubble {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
+      padding: 10px 14px; border-radius: 10px; max-width: 80%;
+    }
+    .chat-bubble.admin-msg { border-left: 3px solid var(--red-accent); background: rgba(239, 68, 68, 0.05); }
+    .chat-bubble-meta { display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 4px; font-family: var(--font-mono); }
+    .chat-input-area { padding: 14px; border-top: 1px solid var(--card-border); display: flex; gap: 8px; }
+
+    /* SECCIÓN EN VIVO / MEET DUAL */
+    .live-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; min-height: 600px; }
+    .live-chat-panel {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; height: 100%;
+    }
+    .chat-header {
+      padding: 14px 18px; background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between;
+      align-items: center; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700;
+    }
+    .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .chat-msg { background: rgba(255, 255, 255, 0.03); padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid var(--card-border); }
+    .chat-author { font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--red-accent); margin-bottom: 3px; }
+
+    .meet-hero-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(8, 12, 18, 0.95));
+      border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 40px 32px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 20px; height: 100%; min-height: 480px; position: relative; overflow: hidden;
+    }
+    .meet-hero-card::before {
+      content: ''; position: absolute; inset: -50%;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .meet-icon-badge {
+      width: 76px; height: 76px; background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 20px; display: flex;
+      align-items: center; justify-content: center; font-size: 2.2rem; color: var(--red-accent);
+      box-shadow: 0 0 30px var(--red-glow);
+    }
+    .meet-live-pill {
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; padding: 5px 14px;
+      border-radius: 30px; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .meet-live-pill.active { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
+    .meet-live-pill.scheduled { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; }
+
+    .btn-meet-join {
+      background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;
+      padding: 14px 28px; border-radius: 10px; font-weight: 800; font-size: 1rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 25px var(--red-glow); transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-meet-join:hover { transform: translateY(-2px); box-shadow: 0 15px 35px var(--red-glow); }
+
+    .player-wrapper { position: relative; padding-top: 56.25%; background: #000; height: 100%; }
+    .player-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    /* ESTILOS DE HERRAMIENTAS / JOURNAL */
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; margin-bottom: 24px; }
+    .tool-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px;
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.25s ease; position: relative; overflow: hidden;
+    }
+    .tool-card:hover { border-color: var(--card-border-hover); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+    .tool-card::before {
+      content: ''; position: absolute; top: 0; right: 0; width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .tool-icon-wrap {
+      width: 48px; height: 48px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--red-accent);
+      margin-bottom: 16px;
+    }
+    .tool-features-list { list-style: none; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 8px; }
+    .tool-features-list li { font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
+    .tool-features-list li i { color: var(--green-accent); font-size: 0.75rem; }
+
+    @media (max-width: 900px) {
+      .live-layout { grid-template-columns: 1fr; height: auto; }
+      .app-body-layout { flex-direction: column; }
+      .app-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--card-border); }
+    }
+
+    /* MODALES */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+      z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-content {
+      background: #0d1117; border: 1px solid var(--card-border); border-radius: 14px;
+      width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative;
+    }
+    .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+    .close-btn:hover { color: #fff; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px; }
+    .form-control {
+      width: 100%; background: #161b22; border: 1px solid var(--card-border); color: #fff;
+      padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; outline: none; font-family: inherit;
+    }
+    .form-control:focus { border-color: var(--red-accent); }
+    .btn-submit {
+      background: var(--red-accent); color: #fff; border: none; padding: 12px 20px;
+      border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { opacity: 0.92; }
+
+    .online-badge-corner {
+      position: fixed; bottom: 20px; left: 20px; z-index: 99;
+      background: rgba(10, 14, 20, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px; padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .online-dot {
+      width: 9px; height: 9px; background: var(--green-accent); border-radius: 50%;
+      box-shadow: 0 0 10px var(--green-accent); animation: pulse-online 2s infinite ease-in-out;
+    }
+    @keyframes pulse-online {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+    .online-count-text { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .platform-footer {
+      border-top: 1px solid var(--card-border); padding: 22px 20px; text-align: center;
+      font-size: 0.82rem; font-family: var(--font-mono); color: #6b7280; background: rgba(10, 14, 20, 0.95); margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. LOGIN GATEWAY -->
+  <div id="login-view-wrapper">
+    <div class="login-box">
+      <div class="login-brand-icon" id="login-brand-badge">0R</div>
+      <h2 class="login-title" id="login-box-title">0REDSTRUCTURE</h2>
+      <div class="login-subtitle">Área Exclusiva de Miembros</div>
+
+      <div class="login-error-msg" id="gateway-error-msg">
+        <i class="fa-solid fa-triangle-exclamation"></i> Usuario o contraseña incorrectos.
+      </div>
+
+      <form class="login-form" onsubmit="handleGatewayLogin(event)">
+        <div class="input-field-wrap">
+          <label>USUARIO:</label>
+          <input type="text" id="gw-user" class="login-input" placeholder="Ingresa tu usuario" required autocomplete="username">
+        </div>
+        <div class="input-field-wrap">
+          <label>CONTRASEÑA:</label>
+          <input type="password" id="gw-pass" class="login-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="login-btn-submit">
+          <i class="fa-solid fa-right-to-bracket"></i> INGRESAR AL CURSO
+        </button>
+      </form>
+
+      <div class="copyright-login-footer">
+        © 2026 <strong id="login-copy-brand">0REDSTRUCTURE</strong> por <strong id="login-copy-author">Ivan Balanzar</strong>.<br>Todos los derechos reservados.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PLATAFORMA INTERNA -->
+  <div id="platform-app-wrapper">
+
+    <!-- Navbar superior -->
+    <nav class="navbar">
+      <div class="brand-area" onclick="switchSidebarTab('classes')">
+        <div class="brand-icon" id="site-logo-icon">0R</div>
+        <div>
+          <div class="brand-title" id="site-brand-title">0REDSTRUCTURE</div>
+          <div class="brand-sub" id="site-brand-sub">INSTITUTIONAL MENTORSHIP</div>
+        </div>
+      </div>
+
+      <div class="user-actions">
+        <div class="user-session-badge">
+          <i class="fa-solid fa-crown" id="user-role-icon" style="color:#f59e0b;"></i>
+          <span id="active-session-username">balanzarivan885</span>
+          <button class="btn-logout-header" title="Cerrar Sesión" onclick="logoutSession()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+          </button>
+        </div>
+
+        <button class="admin-toggle-mode-btn" id="btn-admin-view-toggle" onclick="toggleAdminVisualMode()">
+          <i class="fa-solid fa-pen-to-square"></i> MODO: ADMIN
+        </button>
+      </div>
+    </nav>
+
+    <!-- CUERPO PRINCIPAL CON SIDEBAR -->
+    <div class="app-body-layout">
+      
+      <!-- SIDEBAR DINÁMICO -->
+      <aside class="app-sidebar">
+        <div>
+          <div class="sidebar-section-title">Contenido Principal</div>
+          <ul class="sidebar-nav-list" id="sidebar-main-list">
+            <li>
+              <a class="sidebar-link active" id="slink-classes" onclick="switchSidebarTab('classes')">
+                <span class="link-label-group"><i class="fa-solid fa-graduation-cap"></i> Módulos & Clases</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-link" id="slink-live" onclick="switchSidebarTab('live')">
+                <span class="link-label-group">
+                  <i class="fa-solid fa-satellite-dish" style="color:var(--red-accent);"></i> Transmisión En Vivo 
+                  <span id="sidebar-live-pill" style="display:none; margin-left:6px;"><span class="live-indicator-dot"></span></span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="sidebar-section-title">
+            <span>Comunidad & Recursos</span>
+          </div>
+          <ul class="sidebar-nav-list" id="sidebar-community-list">
+            <!-- 1. Chat General -->
+            <li id="slink-item-chat">
+              <a class="sidebar-link" id="slink-chat" onclick="switchSidebarTab('chat')">
+                <span class="link-label-group"><i class="fa-solid fa-comments"></i> Chat General <span id="tag-hidden-chat" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
+                <span class="sidebar-controls-wrap">
+                  <button class="btn-toggle-eye" id="eye-chat" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('chat')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('chat', 'Chat General')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </span>
+              </a>
+            </li>
+
+            <!-- 2. Reglas de Mentoría -->
+            <li id="slink-item-rules">
+              <a class="sidebar-link" id="slink-rules" onclick="switchSidebarTab('rules')">
+                <span class="link-label-group"><i class="fa-solid fa-book-bookmark"></i> Reglas de Mentoría <span id="tag-hidden-rules" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
+                <span class="sidebar-controls-wrap">
+                  <button class="btn-toggle-eye" id="eye-rules" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('rules')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('rules', 'Reglas de Mentoría')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </span>
+              </a>
+            </li>
+
+            <!-- 3. Material de Clases -->
+            <li id="slink-item-materials">
+              <a class="sidebar-link" id="slink-materials" onclick="switchSidebarTab('materials')">
+                <span class="link-label-group"><i class="fa-solid fa-folder-open"></i> Material de Clases <span id="tag-hidden-materials" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
+                <span class="sidebar-controls-wrap">
+                  <button class="btn-toggle-eye" id="eye-materials" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('materials')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('materials', 'Material de Clases')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </span>
+              </a>
+            </li>
+
+            <!-- 4. Indicadores & Scripts -->
+            <li id="slink-item-scripts">
+              <a class="sidebar-link" id="slink-scripts" onclick="switchSidebarTab('scripts')">
+                <span class="link-label-group"><i class="fa-solid fa-code"></i> Indicadores & Scripts <span id="tag-hidden-scripts" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
+                <span class="sidebar-controls-wrap">
+                  <button class="btn-toggle-eye" id="eye-scripts" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('scripts')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('scripts', 'Indicadores & Scripts')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </span>
+              </a>
+            </li>
+
+            <!-- 5. Herramientas & Journal -->
+            <li id="slink-item-tools">
+              <a class="sidebar-link" id="slink-tools" onclick="switchSidebarTab('tools')">
+                <span class="link-label-group"><i class="fa-solid fa-screwdriver-wrench"></i> Herramientas <span id="tag-hidden-tools" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
+                <span class="sidebar-controls-wrap">
+                  <button class="btn-toggle-eye" id="eye-tools" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('tools')">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('tools', 'Herramientas')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </span>
+              </a>
+            </li>
+          </ul>
+
+          <button class="btn-sidebar-add-custom" onclick="openNewSectionModal()">
+            <i class="fa-solid fa-plus-circle"></i> CREAR APARTADO
+          </button>
+        </div>
+      </aside>
+
+      <!-- ÁREA DE CONTENIDO -->
+      <main class="main-workspace">
+
+        <!-- Admin Banner -->
+        <div class="admin-banner" id="admin-banner">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fa-solid fa-user-shield" style="color:var(--red-accent); font-size:1.3rem;"></i>
+            <div>
+              <strong style="color:#fff; font-size:0.95rem;">PANEL TOTAL DE ADMINISTRACIÓN (<span id="banner-admin-name">balanzarivan885</span>)</strong>
+              <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">
+                Controla clases, salas de Google Meet, bitácora journal, indicadores y apartados para toda tu comunidad:
+              </p>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-view" onclick="openClassModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR CLASE</button>
+            <button class="btn-view" onclick="openToolModal('new')"><i class="fa-solid fa-screwdriver-wrench"></i> AGREGAR HERRAMIENTA</button>
+            <button class="btn-view" onclick="openLiveConfigModal()"><i class="fa-solid fa-video"></i> CONFIGURAR LIVE / MEET</button>
+            <button class="btn-view" style="background:rgba(255,255,255,0.1);" onclick="openGlobalSiteModal()"><i class="fa-solid fa-sliders"></i> AJUSTES GLOBALES</button>
+          </div>
+        </div>
+
+        <!-- 1. VISTA: CLASES -->
+        <div id="view-classes" class="workspace-view">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill" id="site-header-badge">
+                <i class="fa-solid fa-shield-halved"></i> Programa Institucional • SMC / ICT / 0RED
+              </div>
+              <h1 class="page-title" id="site-header-title">Módulos & Clases Magistrales</h1>
+              <p class="page-desc" id="site-header-desc">
+                Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.
+              </p>
+            </div>
+
+            <div class="next-live-card">
+              <i class="fa-solid fa-clock" style="font-size: 1.5rem; color: var(--red-accent);"></i>
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Próxima Sesión</div>
+                <div class="live-time-val" id="display-live-date">Viernes, 12:00 PM UTC-6</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="classes-grid" id="classes-container"></div>
+        </div>
+
+        <!-- 2. VISTA: EN VIVO (GOOGLE MEET O YOUTUBE) -->
+        <div id="view-live" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill" style="background: rgba(239, 68, 68, 0.2); color:#ef4444;" id="live-header-pill">
+                <i class="fa-solid fa-broadcast-tower"></i> Sesión Institucional
+              </div>
+              <h1 class="page-title" id="live-stream-title">Sesión en Vivo: 0REDSTRUCTURE</h1>
+              <p class="page-desc" id="live-stream-desc">Conexión directa en tiempo real con análisis de liquidez institucional y operativa en vivo.</p>
+            </div>
+            <div>
+              <button class="btn-admin-add-item" onclick="openLiveConfigModal()"><i class="fa-solid fa-gear"></i> CONFIGURAR SALA</button>
+            </div>
+          </div>
+
+          <div class="live-layout">
+            <div id="live-display-container" style="background:#000; border-radius:12px; overflow:hidden; border:1px solid var(--card-border); position:relative;"></div>
+
+            <div class="live-chat-panel">
+              <div class="chat-header">
+                <span><i class="fa-solid fa-comments"></i> CHAT EN VIVO</span>
+                <span style="font-family:var(--font-mono); color:var(--green-accent); font-size:0.75rem;">● ACTIVO</span>
+              </div>
+              <div class="chat-messages" id="chat-box">
+                <div class="chat-msg">
+                  <div class="chat-author">0REDSTRUCTURE MOD</div>
+                  Bienvenidos a la sesión en vivo. Deja tus dudas sobre análisis técnico y setups aquí.
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" id="chat-input" class="form-control" placeholder="Escribe un mensaje..." style="padding:6px 10px; font-size:0.85rem;" onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button class="btn-view" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. VISTA: HERRAMIENTAS & JOURNAL DINÁMICOS -->
+        <div id="view-tools" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid fa-screwdriver-wrench"></i> Ecosistema Operativo</div>
+              <h1 class="page-title">Herramientas Institucionales</h1>
+              <p class="page-desc">Utilidades, bitácoras y aplicaciones desarrolladas para profesionalizar tu proceso analítico y gestión matemática.</p>
+            </div>
+            <div>
+              <button class="btn-admin-add-item" onclick="openToolModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR HERRAMIENTA</button>
+            </div>
+          </div>
+
+          <div class="tools-grid" id="tools-container"></div>
+
+          <!-- VISOR INCORPORADO PARA HERRAMIENTAS -->
+          <div id="embedded-journal-wrap" style="display:none; margin-top:20px; border-radius:12px; overflow:hidden; border:1px solid var(--card-border); background:#0d1117;">
+            <div style="padding:12px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--card-border); display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:#fff;" id="embedded-viewer-title">
+                <i class="fa-solid fa-window-maximize" style="color:var(--red-accent);"></i> Visor Interactivo
+              </span>
+              <button class="close-btn" onclick="closeEmbeddedViewer()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <iframe id="journal-iframe" src="" style="width:100%; height:750px; border:none; background:#07090e;"></iframe>
+          </div>
+        </div>
+
+        <!-- 4. VISTA: CHAT GENERAL -->
+        <div id="view-chat" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid fa-users"></i> Comunidad Oficial</div>
+              <h1 class="page-title">Chat General de Alumnos</h1>
+              <p class="page-desc">Espacio abierto 24/7 para compartir análisis técnico, proyecciones semanales, entradas y resolver dudas del temario.</p>
+            </div>
+          </div>
+
+          <div class="general-chat-wrapper">
+            <div class="chat-global-msgs" id="global-chat-container"></div>
+            <div class="chat-input-area" style="background: rgba(0,0,0,0.25);">
+              <input type="text" id="global-chat-input" class="form-control" placeholder="Comparte tu setup o pregunta al grupo..." onkeydown="if(event.key==='Enter') sendGlobalChatMessage()">
+              <button class="btn-view" onclick="sendGlobalChatMessage()"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. VISTA: REGLAS DE MENTORÍA -->
+        <div id="view-rules" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid fa-scale-balanced"></i> Disciplina Institucional</div>
+              <h1 class="page-title">Reglas & Código de Conducta</h1>
+              <p class="page-desc">Normas esenciales para mantener el estándar profesional, la gestión estricta de riesgo y el respeto en la comunidad.</p>
+            </div>
+            <div>
+              <button class="btn-admin-add-item" onclick="openRuleModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR REGLA</button>
+            </div>
+          </div>
+
+          <div class="content-panel-card">
+            <div class="rules-list" id="rules-container"></div>
+          </div>
+        </div>
+
+        <!-- 6. VISTA: MATERIAL DE CLASES -->
+        <div id="view-materials" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid fa-folder-tree"></i> Recursos Descargables</div>
+              <h1 class="page-title">Materiales & Documentación</h1>
+              <p class="page-desc">Plantillas de gestión, bitácoras de trading en Excel/Sheets y guías institucionales en formato PDF.</p>
+            </div>
+            <div>
+              <button class="btn-admin-add-item" onclick="openMaterialModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR MATERIAL</button>
+            </div>
+          </div>
+
+          <div class="content-panel-card" id="materials-container"></div>
+        </div>
+
+        <!-- 7. VISTA: INDICADORES & SCRIPTS -->
+        <div id="view-scripts" class="workspace-view" style="display: none;">
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid fa-terminal"></i> TradingView Tools</div>
+              <h1 class="page-title">Indicadores Propietarios (Pine Script)</h1>
+              <p class="page-desc">Algoritmos oficiales desarrollados para TradingView. Copia el código fuente e instálalo en tu editor Pine.</p>
+            </div>
+            <div>
+              <button class="btn-admin-add-item" onclick="openScriptModal('new')"><i class="fa-solid fa-plus"></i> PUBLICAR SCRIPT</button>
+            </div>
+          </div>
+
+          <div class="content-panel-card" id="scripts-container"></div>
+        </div>
+
+        <!-- CONTENEDOR DE APARTADOS CREADOS -->
+        <div id="custom-views-container"></div>
+
+      </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="platform-footer">
+      © 2026 <strong id="footer-site-title">0REDSTRUCTURE</strong> por <strong id="footer-site-author">Ivan Balanzar</strong>. Todos los derechos reservados. Institutional Mentorship SMC & ICT.
+    </footer>
+
+    <!-- WIDGET EN LÍNEA -->
+    <div class="online-badge-corner" id="online-counter-badge" title="Usuarios reales activos ahora mismo">
+      <div class="online-dot"></div>
+      <div class="online-count-text">
+        <span id="user-count-num">1</span>
+        <span class="online-label-text">en línea</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODALES
+       ========================================= -->
+
+  <!-- MODAL: REPRODUCTOR CLASE -->
+  <div class="modal-backdrop" id="player-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--red-accent);" id="modal-class-week">SEMANA 01</span>
+          <h3 id="modal-class-title" style="font-size:1.1rem; font-weight:700;">Título de la clase</h3>
+        </div>
+        <button class="close-btn" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="player-wrapper">
+        <iframe id="modal-video-frame" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div style="padding: 20px;">
+        <h4 style="font-size:0.9rem; margin-bottom:8px; color:var(--text-muted); text-transform:uppercase; font-family:var(--font-mono);">Resumen de la Sesión</h4>
+        <p id="modal-class-desc" style="font-size:0.9rem; line-height:1.6; color:#d1d5db;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR / CREAR CLASE -->
+  <div class="modal-backdrop" id="class-editor-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="editor-title" style="font-size:1.1rem; font-weight:700;">Nueva Clase</h3>
+        <button class="close-btn" onclick="closeEditorModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <input type="hidden" id="edit-class-id">
+        <div class="form-group">
+          <label>NÚMERO DE SEMANA O CLASE:</label>
+          <input type="text" id="edit-week" class="form-control" placeholder="SEMANA 01">
+        </div>
+        <div class="form-group">
+          <label>TÍTULO DE LA CLASE:</label>
+          <input type="text" id="edit-title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>FECHA / HORA UTC-6:</label>
+          <input type="text" id="edit-date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>ENLACE DE VIDEO (YouTube Embed o Vimeo):</label>
+          <input type="text" id="edit-video" class="form-control" placeholder="https://www.youtube.com/embed/...">
+        </div>
+        <div class="form-group">
+          <label>IMAGEN DE PORTADA (URL):</label>
+          <input type="text" id="edit-thumb" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>DURACIÓN:</label>
+          <input type="text" id="edit-duration" class="form-control" placeholder="1h 45m">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN:</label>
+          <textarea id="edit-desc" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>TAGS (Separados por coma):</label>
+          <input type="text" id="edit-tags" class="form-control" placeholder="Estructura, FVG, SMC">
+        </div>
+        <div class="form-group" style="display:flex; gap:10px; align-items:center;">
+          <input type="checkbox" id="edit-unlocked" style="width:18px; height:18px; accent-color:var(--red-accent);">
+          <label for="edit-unlocked" style="margin:0; cursor:pointer;">¿Clase Desbloqueada?</label>
+        </div>
+        <button class="btn-submit" onclick="saveClassData()"><i class="fa-solid fa-check"></i> GUARDAR CLASE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GESTIÓN DE HERRAMIENTA -->
+  <div class="modal-backdrop" id="tool-editor-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tool-editor-title" style="font-size:1.1rem; font-weight:700;">Nueva Herramienta</h3>
+        <button class="close-btn" onclick="closeToolModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <input type="hidden" id="edit-tool-id">
+        <div class="form-group">
+          <label>TÍTULO DE LA HERRAMIENTA:</label>
+          <input type="text" id="edit-tool-title" class="form-control" placeholder="Ej: Calculadora de Lotes / Riesgo">
+        </div>
+        <div class="form-group">
+          <label>ETIQUETA / BADGE (Ej: OFICIAL, WEB APP, PRO):</label>
+          <input type="text" id="edit-tool-badge" class="form-control" placeholder="OFICIAL">
+        </div>
+        <div class="form-group">
+          <label>TEXTO DEL BOTÓN PRINCIPAL:</label>
+          <input type="text" id="edit-tool-btn-text" class="form-control" placeholder="Ej: ABRIR APLICACIÓN">
+        </div>
+        <div class="form-group">
+          <label>ENLACE EXTERNO (URL):</label>
+          <input type="text" id="edit-tool-url" class="form-control" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>ICONO:</label>
+          <select id="edit-tool-icon" class="form-control">
+            <option value="fa-book-open">fa-book-open (Libro / Journal)</option>
+            <option value="fa-calculator">fa-calculator (Calculadora)</option>
+            <option value="fa-chart-pie">fa-chart-pie (Métricas / Gráficos)</option>
+            <option value="fa-screwdriver-wrench">fa-screwdriver-wrench (Herramienta)</option>
+            <option value="fa-link">fa-link (Enlace / Web)</option>
+            <option value="fa-compass">fa-compass (Brújula / Guía)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN:</label>
+          <textarea id="edit-tool-desc" class="form-control" rows="3" placeholder="Explica brevemente para qué sirve la herramienta..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>CARACTERÍSTICAS / VIÑETAS (Una por línea):</label>
+          <textarea id="edit-tool-features" class="form-control" rows="3" placeholder="Winrate y Expectativa&#10;Gestión automática&#10;Modelos de Entrada"></textarea>
+        </div>
+        <div class="form-group" style="display:flex; gap:10px; align-items:center;">
+          <input type="checkbox" id="edit-tool-embed" style="width:18px; height:18px; accent-color:var(--red-accent);">
+          <label for="edit-tool-embed" style="margin:0; cursor:pointer;">¿Permitir visor interactivo en la plataforma (Iframe)?</label>
+        </div>
+        <button class="btn-submit" onclick="saveToolData()"><i class="fa-solid fa-check"></i> GUARDAR HERRAMIENTA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGLA -->
+  <div class="modal-backdrop" id="rule-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="rule-modal-title" style="font-size:1.1rem; font-weight:700;">Nueva Regla</h3>
+        <button class="close-btn" onclick="closeRuleModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <input type="hidden" id="edit-rule-id">
+        <div class="form-group">
+          <label>NÚMERO O CÓDIGO (Ej: 01, 02):</label>
+          <input type="text" id="edit-rule-num" class="form-control" placeholder="01" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label>TÍTULO DE LA NORMA:</label>
+          <input type="text" id="edit-rule-title" class="form-control" placeholder="Ej: Gestión de Riesgo No Negociable">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN / DETALLE:</label>
+          <textarea id="edit-rule-desc" class="form-control" rows="4"></textarea>
+        </div>
+        <button class="btn-submit" onclick="saveRuleData()"><i class="fa-solid fa-check"></i> GUARDAR REGLA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MATERIAL -->
+  <div class="modal-backdrop" id="material-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="material-modal-title" style="font-size:1.1rem; font-weight:700;">Nuevo Material Descargable</h3>
+        <button class="close-btn" onclick="closeMaterialModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <input type="hidden" id="edit-material-id">
+        <div class="form-group">
+          <label>TÍTULO DEL DOCUMENTO O PLANTILLA:</label>
+          <input type="text" id="edit-mat-title" class="form-control" placeholder="Ej: Guía de Modelos de Entrada FVG">
+        </div>
+        <div class="form-group">
+          <label>TIPO O SUBTÍTULO:</label>
+          <input type="text" id="edit-mat-subtitle" class="form-control" placeholder="Ej: PDF • 12 MB • Actualizado 2026">
+        </div>
+        <div class="form-group">
+          <label>TIPO DE ARCHIVO (Icono):</label>
+          <select id="edit-mat-icon" class="form-control">
+            <option value="fa-file-pdf">PDF Documento (Rojo)</option>
+            <option value="fa-table">Excel / Hoja de Cálculo (Verde)</option>
+            <option value="fa-file-zipper">Archivo Comprimido ZIP/RAR</option>
+            <option value="fa-file-lines">Documento de Texto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ENLACE DE DESCARGA:</label>
+          <input type="text" id="edit-mat-url" class="form-control" placeholder="https://drive.google.com/...">
+        </div>
+        <button class="btn-submit" onclick="saveMaterialData()"><i class="fa-solid fa-check"></i> GUARDAR MATERIAL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SCRIPT -->
+  <div class="modal-backdrop" id="script-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="script-modal-title" style="font-size:1.1rem; font-weight:700;">Publicar Script Pine</h3>
+        <button class="close-btn" onclick="closeScriptModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <input type="hidden" id="edit-script-id">
+        <div class="form-group">
+          <label>NOMBRE DEL INDICADOR:</label>
+          <input type="text" id="edit-script-title" class="form-control" placeholder="0RED STRUCTURE - Liquidity & Range">
+        </div>
+        <div class="form-group">
+          <label>ETIQUETA (Ej: PINE SCRIPT V5):</label>
+          <input type="text" id="edit-script-badge" class="form-control" placeholder="PINE SCRIPT V5">
+        </div>
+        <div class="form-group">
+          <label>CÓDIGO PINE SCRIPT COMPLETO:</label>
+          <textarea id="edit-script-code" class="form-control" rows="8" style="font-family:var(--font-mono); font-size:0.8rem; color:#38bdf8;"></textarea>
+        </div>
+        <button class="btn-submit" onclick="saveScriptData()"><i class="fa-solid fa-check"></i> GUARDAR SCRIPT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NUEVO APARTADO PERSONALIZADO -->
+  <div class="modal-backdrop" id="new-section-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.1rem; font-weight:700;"><i class="fa-solid fa-plus-circle" style="color:var(--red-accent);"></i> Crear Nuevo Apartado Lateral</h3>
+        <button class="close-btn" onclick="closeNewSectionModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <div class="form-group">
+          <label>NOMBRE DEL APARTADO (Ej: Bitácora, Psicotrading):</label>
+          <input type="text" id="new-sec-name" class="form-control" placeholder="Ej: Psicotrading Institucional">
+        </div>
+        <div class="form-group">
+          <label>ICONO:</label>
+          <select id="new-sec-icon" class="form-control">
+            <option value="fa-brain">fa-brain (Psicología / Mente)</option>
+            <option value="fa-chart-line">fa-chart-line (Gráficos / Análisis)</option>
+            <option value="fa-bullseye">fa-bullseye (Metas / Disciplina)</option>
+            <option value="fa-calendar-days">fa-calendar-days (Calendario)</option>
+            <option value="fa-trophy">fa-trophy (Resultados)</option>
+            <option value="fa-circle-question">fa-circle-question (FAQ / Preguntas)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>TÍTULO PRINCIPAL DE LA PÁGINA:</label>
+          <input type="text" id="new-sec-title" class="form-control" placeholder="Ej: Mentalidad y Gestión Emocional">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN DEL APARTADO:</label>
+          <textarea id="new-sec-desc" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>CONTENIDO INICIAL:</label>
+          <textarea id="new-sec-content" class="form-control" rows="5"></textarea>
+        </div>
+        <button class="btn-submit" onclick="saveNewSection()"><i class="fa-solid fa-plus"></i> CREAR APARTADO Y AGREGAR A LA BARRA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURAR EN VIVO (GOOGLE MEET / YOUTUBE) -->
+  <div class="modal-backdrop" id="live-config-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.1rem; font-weight:700;"><i class="fa-solid fa-video" style="color:var(--red-accent);"></i> Configurar Transmisión / Sala En Vivo</h3>
+        <button class="close-btn" onclick="closeLiveModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <div class="form-group">
+          <label>TIPO DE TRANSMISIÓN:</label>
+          <select id="cfg-live-platform" class="form-control" onchange="togglePlatformLiveFields()">
+            <option value="meet">Google Meet (Sala Interactiva / Micrófono & Cámara)</option>
+            <option value="youtube">YouTube Live / Embed (Transmisión Streaming)</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="wrap-meet-url">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label style="margin:0;">ENLACE DE GOOGLE MEET:</label>
+            <a href="https://meet.new" target="_blank" style="font-size:0.75rem; color:#38bdf8; text-decoration:none; font-family:var(--font-mono);">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Crear sala rápida (meet.new)
+            </a>
+          </div>
+          <input type="text" id="cfg-meet-url" class="form-control" placeholder="https://meet.google.com/xxx-xxxx-xxx">
+        </div>
+
+        <div class="form-group" id="wrap-youtube-url" style="display:none;">
+          <label>URL DEL STREAM (YouTube Embed):</label>
+          <input type="text" id="cfg-live-url" class="form-control" placeholder="https://www.youtube.com/embed/live_stream?channel=...">
+        </div>
+
+        <div class="form-group">
+          <label>ESTADO DE LA SALA:</label>
+          <select id="cfg-live-status" class="form-control">
+            <option value="active">● EN VIVO AHORA MISMO (Sala Abierta)</option>
+            <option value="scheduled">○ PROGRAMADA (Próximamente)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>TÍTULO DEL EN VIVO:</label>
+          <input type="text" id="cfg-live-title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>FECHA / HORARIO UTC-6:</label>
+          <input type="text" id="cfg-live-date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN DE LA SESIÓN:</label>
+          <textarea id="cfg-live-desc" class="form-control" rows="3"></textarea>
+        </div>
+        <button class="btn-submit" onclick="saveLiveConfig()"><i class="fa-solid fa-check"></i> ACTUALIZAR EN VIVO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AJUSTES GLOBALES -->
+  <div class="modal-backdrop" id="global-site-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.1rem; font-weight:700;"><i class="fa-solid fa-sliders" style="color:var(--red-accent);"></i> Ajustes Generales de Plataforma</h3>
+        <button class="close-btn" onclick="closeGlobalSiteModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <div class="form-group">
+          <label>NOMBRE DEL PROYECTO / MARCA:</label>
+          <input type="text" id="cfg-site-title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>SUBTÍTULO / SLOGAN:</label>
+          <input type="text" id="cfg-site-sub" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>ICONO (2 O 3 LETRAS):</label>
+          <input type="text" id="cfg-site-icon" class="form-control" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label>INSIGNIA SUPERIOR:</label>
+          <input type="text" id="cfg-site-badge" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>TÍTULO DE SECCIÓN:</label>
+          <input type="text" id="cfg-section-title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN DE LA SECCIÓN:</label>
+          <textarea id="cfg-section-desc" class="form-control" rows="3"></textarea>
+        </div>
+        
+        <hr style="border:0; border-top:1px solid var(--card-border); margin:20px 0;">
+        
+        <div class="form-group">
+          <label>USUARIO ADMIN:</label>
+          <input type="text" id="cfg-admin-user" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>CONTRASEÑA ADMIN:</label>
+          <input type="text" id="cfg-admin-pass" class="form-control">
+        </div>
+        
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+          <button class="btn-submit" onclick="saveGlobalSiteConfig()"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS</button>
+          <button class="btn-view" style="justify-content:center; padding:10px; background:rgba(255,255,255,0.05);" onclick="restoreDeletedNativeSections()">
+            <i class="fa-solid fa-rotate-left"></i> Restaurar Apartados Nativos Iniciales
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. CONFIGURACIÓN Y BASES DE DATOS
+    // ==========================================
+    const DEFAULT_SITE_CONFIG = {
+      brandTitle: "0REDSTRUCTURE",
+      brandSub: "INSTITUTIONAL MENTORSHIP",
+      brandIcon: "0R",
+      badgeText: '<i class="fa-solid fa-shield-halved"></i> Programa Institucional • SMC / ICT / 0RED',
+      headerTitle: "Módulos & Clases Magistrales",
+      headerDesc: "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
+      adminUser: "balanzarivan885",
+      adminPass: "Espartan117"
+    };
+    let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
+
+    const DEFAULT_USERS_DB = [
+      { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" }
+    ];
+    let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
+
+    const DEFAULT_SECTIONS_VISIBILITY = {
+      chat: true,
+      rules: true,
+      materials: true,
+      scripts: true,
+      tools: true
+    };
+    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
+
+    // Control de apartados nativos eliminados
+    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
+
+    const DEFAULT_CLASSES = [
+      {
+        id: "class-1",
+        week: "SEMANA 01",
+        date: "Oct 2, 2026 • 12:00 UTC-6",
+        title: "Fundamentos y Mapeo de Estructura Institucional",
+        desc: "Identificación precisa de Highs/Lows significativos, quiebres de estructura (BOS) y cambios de carácter (CHoCH).",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
+        thumbUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+        duration: "1h 45m",
+        tags: ["Estructura", "BOS", "CHoCH"],
+        unlocked: true,
+        visibleToStudents: true
+      },
+      {
+        id: "class-2",
+        week: "SEMANA 02",
+        date: "Oct 9, 2026 • 12:00 UTC-6",
+        title: "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
+        desc: "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
+        thumbUrl: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
+        duration: "2h 10m",
+        tags: ["FVG", "Ineficiencias", "Entry Drills"],
+        unlocked: true,
+        visibleToStudents: true
+      },
+      {
+        id: "class-3",
+        week: "SEMANA 03",
+        date: "Oct 16, 2026 • 12:00 UTC-6",
+        title: "Killzones y Manipulación de Sesión (Londres & NY)",
+        desc: "Comportamiento del precio durante las aperturas de mercado, Judas Swings y tomas de liquidez.",
+        videoUrl: "",
+        thumbUrl: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+        duration: "1h 50m",
+        tags: ["Killzones", "Judas Swing", "Horarios"],
+        unlocked: false,
+        visibleToStudents: true
+      }
+    ];
+    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
+
+    // HERRAMIENTAS
+    const DEFAULT_TOOLS = [
+      {
+        id: "tool-1",
+        title: "Crea tu Journal",
+        badge: "OFICIAL",
+        btnText: "CREAR TU JOURNAL",
+        url: "https://0red-journal.github.io/0red-journal/",
+        icon: "fa-book-open",
+        desc: "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
+        features: [
+          "Registro de Winrate y Expectativa",
+          "Cálculo automático de Ratio Riesgo:Beneficio",
+          "Seguimiento de sesiones Londres y Nueva York"
+        ],
+        allowEmbed: true,
+        visibleToStudents: true
+      }
+    ];
+    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
+
+    const DEFAULT_RULES = [
+      { id: "rule-1", num: "01", title: "Gestión de Riesgo No Negociable", desc: "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia. El sobreapalancamiento destruye la consistencia matemática.", visibleToStudents: true },
+      { id: "rule-2", num: "02", title: "Respeto y Feedback Constructivo", desc: "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez) y expresadas con respeto hacia los compañeros.", visibleToStudents: true },
+      { id: "rule-3", num: "03", title: "Confidencialidad del Material Institucional", desc: "Los scripts de 0REDSTRUCTURE, plantillas y grabaciones son estrictamente para uso personal de los miembros matriculados.", visibleToStudents: true },
+      { id: "rule-4", num: "04", title: "Prohibido Fomentar Operativa Impulsiva", desc: "No se admiten comentarios de euforia, FOMO o señales sin un contexto estructural previo documentado en TradingView.", visibleToStudents: true }
+    ];
+    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
+
+    const DEFAULT_MATERIALS = [
+      { id: "mat-1", title: "Guía Maestra: Mapeo de Estructura Institucional (0RED)", subtitle: "PDF • 14.8 MB • Actualizado 2026", icon: "fa-file-pdf", url: "#", visibleToStudents: true },
+      { id: "mat-2", title: "Trading Journal & Calculadora de Riesgo Institucional", subtitle: "XLSX • 4.2 MB • Registro de R:R y Drawdown", icon: "fa-table", url: "#", visibleToStudents: true },
+      { id: "mat-3", title: "Cheat Sheet: Modelos de Entrada FVG + Killzones", subtitle: "PDF • 8.1 MB • Resumen Gráfico de Alta Probabilidad", icon: "fa-file-pdf", url: "#", visibleToStudents: true }
+    ];
+    let materialsData = JSON.parse(localStorage.getItem('0red_materials')) || DEFAULT_MATERIALS;
+
+    const DEFAULT_SCRIPTS = [
+      {
+        id: "script-1",
+        title: "0RED STRUCTURE - Sessions & Liquidity Engine v5",
+        badge: "PINE SCRIPT V5",
+        code: `//@version=5\nindicator("0RED STRUCTURE - Liquidity & Killzones", overlay=true)\n\nshow_london = input.bool(true, "Killzone Londres (02:00 - 05:00 UTC-4)")\nshow_ny = input.bool(true, "Killzone Nueva York (07:00 - 10:00 UTC-4)")\n\nin_london = not na(time(timeframe.period, "0200-0500:23456"))\nin_ny = not na(time(timeframe.period, "0700-1000:23456"))\n\nbgcolor(show_london and in_london ? color.new(color.blue, 90) : na, title="Background Londres")\nbgcolor(show_ny and in_ny ? color.new(color.red, 90) : na, title="Background NY")\n\nbullish_fvg = low > high[2]\nbearish_fvg = high < low[2]\n\nplotshape(bullish_fvg, title="Bullish FVG", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)\nplotshape(bearish_fvg, title="Bearish FVG", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)`,
+        visibleToStudents: true
+      },
+      {
+        id: "script-2",
+        title: "0RED STRUCTURE - Daily / Weekly Range Open Filter",
+        badge: "PINE SCRIPT V5",
+        code: `//@version=5\nindicator("0RED STRUCTURE - True Open Filter", overlay=true)\n\nmidnight_open = request.security(syminfo.tickerid, "D", open)\nplot(midnight_open, "NY Midnight Open (00:00)", color=color.yellow, linewidth=2, style=plot.style_circles)`,
+        visibleToStudents: true
+      }
+    ];
+    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
+
+    let customSections = JSON.parse(localStorage.getItem('0red_custom_sections')) || [];
+
+    // CONFIGURACIÓN EN VIVO (CON GOOGLE MEET)
+    const DEFAULT_LIVE = {
+      platformType: "meet",
+      status: "scheduled",
+      meetUrl: "https://meet.google.com/new",
+      url: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
+      title: "Sesión Institucional en Vivo: Análisis SMC / ICT",
+      date: "Viernes, 12:00 PM UTC-6",
+      desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
+    };
+    let liveConfig = JSON.parse(localStorage.getItem('0red_live')) || DEFAULT_LIVE;
+
+    let globalChatMessages = JSON.parse(localStorage.getItem('0red_global_chat')) || [
+      { author: "Ivan Balanzar (0RED)", role: "admin", text: "Bienvenidos al hub institucional de 0REDSTRUCTURE. Tienes acceso completo al material e indicadores en el menú lateral.", time: "10:00 AM" }
+    ];
+
+    let currentUserSession = JSON.parse(localStorage.getItem('0red_current_session')) || null;
+    let isUserAdmin = currentUserSession && currentUserSession.role === 'admin';
+    let adminVisualMode = localStorage.getItem('0red_admin_visual_mode') || 'admin';
+    let currentActiveTab = 'classes';
+
+    // ==========================================
+    // INICIALIZACIÓN
+    // ==========================================
+    document.addEventListener("DOMContentLoaded", () => {
+      applySiteConfig();
+      checkAuthSession();
+      renderClasses();
+      renderTools();
+      renderRules();
+      renderMaterials();
+      renderScripts();
+      renderCustomSections();
+      applySectionsVisibilityUI();
+      applyLiveConfig();
+      initRealUserCounter();
+      renderGlobalChat();
+    });
+
+    // ==========================================
+    // SISTEMA DE AUTENTICACIÓN MAESTRO (ADMIN INDESTRUCTIBLE)
+    // ==========================================
+    function checkAuthSession() {
+      const loginGate = document.getElementById('login-view-wrapper');
+      const platformApp = document.getElementById('platform-app-wrapper');
+
+      if (currentUserSession) {
+        loginGate.style.display = 'none';
+        platformApp.style.display = 'flex';
+        document.getElementById('active-session-username').innerText = currentUserSession.username;
+        isUserAdmin = currentUserSession.role === 'admin';
+        syncAdminUI();
+      } else {
+        loginGate.style.display = 'flex';
+        platformApp.style.display = 'none';
+      }
+    }
+
+    function handleGatewayLogin(e) {
+      e.preventDefault();
+      const rawUser = document.getElementById('gw-user').value.trim();
+      const u = rawUser.toLowerCase();
+      const p = document.getElementById('gw-pass').value.trim();
+      const errorEl = document.getElementById('gateway-error-msg');
+
+      const isMasterAdmin = (
+        (u === "balanzarivan885" || u === "ivan balanzar" || u === (siteConfig.adminUser || '').toLowerCase()) &&
+        (p === "Espartan117" || p === siteConfig.adminPass)
+      );
+
+      if (isMasterAdmin) {
+        errorEl.style.display = 'none';
+        currentUserSession = {
+          username: siteConfig.adminUser || rawUser,
+          password: p,
+          role: 'admin',
+          name: "Ivan Balanzar"
+        };
+        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
+        checkAuthSession();
+        return;
+      }
+
+      const matchedUser = usersDB.find(usr => usr.username.toLowerCase() === u && usr.password === p);
+
+      if (matchedUser) {
+        errorEl.style.display = 'none';
+        currentUserSession = matchedUser;
+        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
+        checkAuthSession();
+      } else {
+        errorEl.style.display = 'block';
+      }
+    }
+
+    function logoutSession() {
+      currentUserSession = null;
+      localStorage.removeItem('0red_current_session');
+      isUserAdmin = false;
+      checkAuthSession();
+    }
+
+    function toggleAdminVisualMode() {
+      if (!isUserAdmin) return;
+      adminVisualMode = adminVisualMode === 'admin' ? 'student' : 'admin';
+      localStorage.setItem('0red_admin_visual_mode', adminVisualMode);
+      syncAdminUI();
+      renderClasses();
+      renderTools();
+      renderRules();
+      renderMaterials();
+      renderScripts();
+      renderCustomSections();
+      applySectionsVisibilityUI();
+      applyLiveConfig();
+    }
+
+    function syncAdminUI() {
+      const toggleBtn = document.getElementById('btn-admin-view-toggle');
+      const banner = document.getElementById('admin-banner');
+
+      if (isUserAdmin) {
+        toggleBtn.style.display = 'flex';
+        document.getElementById('banner-admin-name').innerText = currentUserSession.username;
+        document.getElementById('user-role-icon').className = "fa-solid fa-crown";
+        document.getElementById('user-role-icon').style.color = "#f59e0b";
+
+        if (adminVisualMode === 'admin') {
+          toggleBtn.className = "admin-toggle-mode-btn";
+          toggleBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> MODO: ADMIN`;
+          document.body.classList.add('admin-edit-active');
+          banner.classList.add('visible');
+        } else {
+          toggleBtn.className = "admin-toggle-mode-btn view-as-student";
+          toggleBtn.innerHTML = `<i class="fa-solid fa-eye"></i> MODO: ALUMNO`;
+          document.body.classList.remove('admin-edit-active');
+          banner.classList.remove('visible');
+        }
+      } else {
+        toggleBtn.style.display = 'none';
+        document.body.classList.remove('admin-edit-active');
+        banner.classList.remove('visible');
+        document.getElementById('user-role-icon').className = "fa-solid fa-user-check";
+        document.getElementById('user-role-icon').style.color = "var(--green-accent)";
+      }
+      applySectionsVisibilityUI();
+    }
+
+    // ==========================================
+    // AJUSTES GLOBALES (GUARDADO CORREGIDO)
+    // ==========================================
+    function openGlobalSiteModal() {
+      document.getElementById('cfg-site-title').value = siteConfig.brandTitle;
+      document.getElementById('cfg-site-sub').value = siteConfig.brandSub;
+      document.getElementById('cfg-site-icon').value = siteConfig.brandIcon;
+      document.getElementById('cfg-site-badge').value = siteConfig.badgeText;
+      document.getElementById('cfg-section-title').value = siteConfig.headerTitle;
+      document.getElementById('cfg-section-desc').value = siteConfig.headerDesc;
+      document.getElementById('cfg-admin-user').value = siteConfig.adminUser;
+      document.getElementById('cfg-admin-pass').value = siteConfig.adminPass;
+      document.getElementById('global-site-modal').classList.add('open');
+    }
+
+    function closeGlobalSiteModal() {
+      document.getElementById('global-site-modal').classList.remove('open');
+    }
+
+    function saveGlobalSiteConfig() {
+      const newAdminUser = document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser;
+      const newAdminPass = document.getElementById('cfg-admin-pass').value.trim() || siteConfig.adminPass;
+
+      siteConfig.brandTitle = document.getElementById('cfg-site-title').value.trim() || siteConfig.brandTitle;
+      siteConfig.brandSub = document.getElementById('cfg-site-sub').value.trim() || siteConfig.brandSub;
+      siteConfig.brandIcon = document.getElementById('cfg-site-icon').value.trim() || siteConfig.brandIcon;
+      siteConfig.badgeText = document.getElementById('cfg-site-badge').value.trim() || siteConfig.badgeText;
+      siteConfig.headerTitle = document.getElementById('cfg-section-title').value.trim() || siteConfig.headerTitle;
+      siteConfig.headerDesc = document.getElementById('cfg-section-desc').value.trim() || siteConfig.headerDesc;
+      siteConfig.adminUser = newAdminUser;
+      siteConfig.adminPass = newAdminPass;
+
+      localStorage.setItem('0red_site_config', JSON.stringify(siteConfig));
+
+      let adminIndex = usersDB.findIndex(u => u.role === 'admin');
+      if (adminIndex !== -1) {
+        usersDB[adminIndex].username = newAdminUser;
+        usersDB[adminIndex].password = newAdminPass;
+        usersDB[adminIndex].name = newAdminUser;
+      } else {
+        usersDB.push({ username: newAdminUser, password: newAdminPass, role: 'admin', name: newAdminUser });
+      }
+      localStorage.setItem('0red_users_db', JSON.stringify(usersDB));
+
+      if (currentUserSession) {
+        currentUserSession.username = newAdminUser;
+        currentUserSession.password = newAdminPass;
+        currentUserSession.role = 'admin';
+        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
+      }
+
+      applySiteConfig();
+      if (document.getElementById('active-session-username')) {
+        document.getElementById('active-session-username').innerText = newAdminUser;
+      }
+      if (document.getElementById('banner-admin-name')) {
+        document.getElementById('banner-admin-name').innerText = newAdminUser;
+      }
+
+      closeGlobalSiteModal();
+      alert("✓ ¡Configuración y credenciales de administrador guardadas exitosamente!");
+    }
+
+    function applySiteConfig() {
+      document.getElementById('site-logo-icon').innerText = siteConfig.brandIcon;
+      document.getElementById('site-brand-title').innerText = siteConfig.brandTitle;
+      document.getElementById('site-brand-sub').innerText = siteConfig.brandSub;
+      document.getElementById('site-header-badge').innerHTML = siteConfig.badgeText;
+      document.getElementById('site-header-title').innerText = siteConfig.headerTitle;
+      document.getElementById('site-header-desc').innerHTML = siteConfig.headerDesc;
+
+      const loginBrand = document.getElementById('login-brand-badge');
+      if (loginBrand) loginBrand.innerText = siteConfig.brandIcon;
+      const loginTitle = document.getElementById('login-box-title');
+      if (loginTitle) loginTitle.innerText = siteConfig.brandTitle;
+      const copyBrand = document.getElementById('login-copy-brand');
+      if (copyBrand) copyBrand.innerText = siteConfig.brandTitle;
+      const copyAuthor = document.getElementById('login-copy-author');
+      if (copyAuthor) copyAuthor.innerText = siteConfig.adminUser;
+      const footerTitle = document.getElementById('footer-site-title');
+      if (footerTitle) footerTitle.innerText = siteConfig.brandTitle;
+      const footerAuthor = document.getElementById('footer-site-author');
+      if (footerAuthor) footerAuthor.innerText = siteConfig.adminUser;
+
+      document.title = siteConfig.brandTitle + " | Institutional Trading Platform";
+    }
+
+    // ==========================================
+    // ELIMINACIÓN Y GESTIÓN DE APARTADOS NATIVOS
+    // ==========================================
+    function deleteNativeSection(sectionKey, sectionName) {
+      if (!isUserAdmin) return;
+      if (confirm(`¿Estás seguro de eliminar el apartado "${sectionName}" de la plataforma?\n\nPodrás restaurarlo en cualquier momento desde Ajustes Globales.`)) {
+        if (!deletedSections.includes(sectionKey)) {
+          deletedSections.push(sectionKey);
+          localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
+        }
+        applySectionsVisibilityUI();
+        if (currentActiveTab === sectionKey) {
+          switchSidebarTab('classes');
+        }
+      }
+    }
+
+    function restoreDeletedNativeSections() {
+      if (confirm("¿Restaurar todos los apartados iniciales (Chat, Reglas, Materiales, Scripts, Herramientas)?")) {
+        deletedSections = [];
+        localStorage.removeItem('0red_deleted_sections');
+        sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
+        localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
+        applySectionsVisibilityUI();
+        alert("✓ Apartados nativos restaurados correctamente.");
+      }
+    }
+
+    // ==========================================
+    // VISIBILIDAD DE APARTADOS LATERALES
+    // ==========================================
+    function toggleSectionVisibility(sectionKey) {
+      if (!isUserAdmin) return;
+      sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
+      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
+      applySectionsVisibilityUI();
+    }
+
+    function toggleCustomSectionVisibility(secId) {
+      if (!isUserAdmin) return;
+      const sec = customSections.find(s => s.id === secId);
+      if (sec) {
+        sec.visibleToStudents = (sec.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
+        renderCustomSections();
+        applySectionsVisibilityUI();
+      }
+    }
+
+    function applySectionsVisibilityUI() {
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      const keys = ['chat', 'rules', 'materials', 'scripts', 'tools'];
+
+      keys.forEach(k => {
+        const itemLi = document.getElementById('slink-item-' + k);
+        const eyeBtn = document.getElementById('eye-' + k);
+        const tag = document.getElementById('tag-hidden-' + k);
+        const isDeleted = deletedSections.includes(k);
+        const isVisible = sectionsVisibility[k] !== false;
+
+        if (isDeleted) {
+          if (itemLi) itemLi.style.display = 'none';
+          return;
+        }
+
+        if (isStudentView) {
+          if (itemLi) itemLi.style.display = isVisible ? 'block' : 'none';
+          if (tag) tag.style.display = 'none';
+        } else {
+          if (itemLi) {
+            itemLi.style.display = 'block';
+            itemLi.classList.toggle('item-hidden-admin', !isVisible);
+          }
+          if (tag) tag.style.display = isVisible ? 'none' : 'inline-block';
+          if (eyeBtn) {
+            eyeBtn.className = `btn-toggle-eye ${isVisible ? '' : 'is-hidden'}`;
+            eyeBtn.innerHTML = isVisible ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+            eyeBtn.title = isVisible ? "Visible para alumnos (Clic para ocultar)" : "Oculto para alumnos (Clic para desocultar)";
+          }
+        }
+      });
+    }
+
+    // ==========================================
+    // NAVEGACIÓN
+    // ==========================================
+    function switchSidebarTab(tab) {
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      if ((isStudentView && sectionsVisibility[tab] === false) || deletedSections.includes(tab)) {
+        tab = 'classes';
+      }
+
+      currentActiveTab = tab;
+      document.querySelectorAll('.workspace-view').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.custom-created-view').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+
+      const standardView = document.getElementById('view-' + tab);
+      const standardLink = document.getElementById('slink-' + tab);
+
+      if (standardView) standardView.style.display = 'block';
+      const customView = document.getElementById('custom-view-' + tab);
+      if (customView) customView.style.display = 'block';
+
+      if (standardLink) standardLink.classList.add('active');
+      const customLink = document.getElementById('custom-slink-' + tab);
+      if (customLink) customLink.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // GESTIÓN DE HERRAMIENTAS (CRUD)
+    // ==========================================
+    function renderTools() {
+      const container = document.getElementById('tools-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+
+      toolsData.forEach((tool) => {
+        const isVisible = tool.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const card = document.createElement('div');
+        card.className = `tool-card ${!isVisible ? 'item-hidden-admin' : ''}`;
+        
+        const featuresHtml = (tool.features || []).map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('');
+
+        card.innerHTML = `
+          <div>
+            <div class="tool-icon-wrap">
+              <i class="fa-solid ${tool.icon || 'fa-screwdriver-wrench'}"></i>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <h3 style="font-size:1.25rem; font-weight:800; color:#fff;">${tool.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h3>
+              <span style="font-family:var(--font-mono); font-size:0.72rem; padding:2px 8px; border-radius:4px; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);">${tool.badge || 'HERRAMIENTA'}</span>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">${tool.desc}</p>
+            <ul class="tool-features-list">${featuresHtml}</ul>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid var(--card-border); padding-top:16px; align-items:center; justify-content:space-between;">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn-meet-join" style="padding:10px 18px; font-size:0.85rem; text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${tool.btnText || 'ABRIR ENLACE'}
+              </a>
+              ${tool.allowEmbed ? `
+                <button class="btn-view" onclick="openEmbeddedViewer('${tool.url}', '${tool.title}')">
+                  <i class="fa-solid fa-window-maximize"></i> Ver en Plataforma
+                </button>
+              ` : ''}
+            </div>
+
+            <div class="admin-card-controls">
+              <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleToolVisibility('${tool.id}')">
+                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+              </button>
+              <button class="btn-admin-icon" title="Editar Herramienta" onclick="openToolModal('${tool.id}')"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-admin-icon" title="Eliminar Herramienta" onclick="deleteTool('${tool.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleToolVisibility(id) {
+      const t = toolsData.find(x => x.id === id);
+      if (t) {
+        t.visibleToStudents = (t.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+        renderTools();
+      }
+    }
+
+    function openToolModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('tool-editor-title').innerText = isNew ? "Agregar Nueva Herramienta" : "Editar Herramienta";
+      document.getElementById('edit-tool-id').value = isNew ? "" : id;
+
+      if (isNew) {
+        document.getElementById('edit-tool-title').value = "";
+        document.getElementById('edit-tool-badge').value = "OFICIAL";
+        document.getElementById('edit-tool-btn-text').value = "ABRIR HERRAMIENTA";
+        document.getElementById('edit-tool-url').value = "";
+        document.getElementById('edit-tool-icon').value = "fa-screwdriver-wrench";
+        document.getElementById('edit-tool-desc').value = "";
+        document.getElementById('edit-tool-features').value = "";
+        document.getElementById('edit-tool-embed').checked = true;
+      } else {
+        const item = toolsData.find(t => t.id === id);
+        if (!item) return;
+        document.getElementById('edit-tool-title').value = item.title;
+        document.getElementById('edit-tool-badge').value = item.badge || "OFICIAL";
+        document.getElementById('edit-tool-btn-text').value = item.btnText || "ABRIR";
+        document.getElementById('edit-tool-url').value = item.url || "";
+        document.getElementById('edit-tool-icon').value = item.icon || "fa-screwdriver-wrench";
+        document.getElementById('edit-tool-desc').value = item.desc || "";
+        document.getElementById('edit-tool-features').value = (item.features || []).join('\n');
+        document.getElementById('edit-tool-embed').checked = item.allowEmbed !== false;
+      }
+      document.getElementById('tool-editor-modal').classList.add('open');
+    }
+
+    function closeToolModal() {
+      document.getElementById('tool-editor-modal').classList.remove('open');
+    }
+
+    function saveToolData() {
+      const id = document.getElementById('edit-tool-id').value;
+      const title = document.getElementById('edit-tool-title').value.trim();
+      const badge = document.getElementById('edit-tool-badge').value.trim() || "HERRAMIENTA";
+      const btnText = document.getElementById('edit-tool-btn-text').value.trim() || "ABRIR ENLACE";
+      const url = document.getElementById('edit-tool-url').value.trim();
+      const icon = document.getElementById('edit-tool-icon').value;
+      const desc = document.getElementById('edit-tool-desc').value.trim();
+      const features = document.getElementById('edit-tool-features').value.split('\n').map(f => f.trim()).filter(Boolean);
+      const allowEmbed = document.getElementById('edit-tool-embed').checked;
+
+      if (!title || !url) return alert("Por favor ingresa un título y la URL del enlace.");
+
+      if (id) {
+        const idx = toolsData.findIndex(t => t.id === id);
+        if (idx !== -1) {
+          toolsData[idx] = { ...toolsData[idx], title, badge, btnText, url, icon, desc, features, allowEmbed };
+        }
+      } else {
+        toolsData.push({
+          id: 'tool-' + Date.now(),
+          title, badge, btnText, url, icon, desc, features, allowEmbed,
+          visibleToStudents: true
+        });
+      }
+
+      localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+      renderTools();
+      closeToolModal();
+      alert("✓ ¡Herramienta guardada con éxito!");
+    }
+
+    function deleteTool(id) {
+      if (confirm("¿Estás seguro de eliminar esta herramienta?")) {
+        toolsData = toolsData.filter(t => t.id !== id);
+        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+        renderTools();
+      }
+    }
+
+    function openEmbeddedViewer(url, title) {
+      const wrap = document.getElementById('embedded-journal-wrap');
+      const iframe = document.getElementById('journal-iframe');
+      const titleEl = document.getElementById('embedded-viewer-title');
+      if (!wrap || !iframe) return;
+
+      iframe.src = url;
+      if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-window-maximize" style="color:var(--red-accent);"></i> ${title} (Visor Activo)`;
+      wrap.style.display = 'block';
+      wrap.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeEmbeddedViewer() {
+      const wrap = document.getElementById('embedded-journal-wrap');
+      const iframe = document.getElementById('journal-iframe');
+      if (wrap) wrap.style.display = 'none';
+      if (iframe) iframe.src = '';
+    }
+
+    // ==========================================
+    // SECCIÓN EN VIVO / GOOGLE MEET
+    // ==========================================
+    function togglePlatformLiveFields() {
+      const type = document.getElementById('cfg-live-platform').value;
+      document.getElementById('wrap-meet-url').style.display = type === 'meet' ? 'block' : 'none';
+      document.getElementById('wrap-youtube-url').style.display = type === 'youtube' ? 'block' : 'none';
+    }
+
+    function openLiveConfigModal() {
+      document.getElementById('cfg-live-platform').value = liveConfig.platformType || 'meet';
+      document.getElementById('cfg-live-status').value = liveConfig.status || 'scheduled';
+      document.getElementById('cfg-meet-url').value = liveConfig.meetUrl || '';
+      document.getElementById('cfg-live-url').value = liveConfig.url || '';
+      document.getElementById('cfg-live-title').value = liveConfig.title;
+      document.getElementById('cfg-live-date').value = liveConfig.date;
+      document.getElementById('cfg-live-desc').value = liveConfig.desc;
+      togglePlatformLiveFields();
+      document.getElementById('live-config-modal').classList.add('open');
+    }
+
+    function closeLiveModal() {
+      document.getElementById('live-config-modal').classList.remove('open');
+    }
+
+    function saveLiveConfig() {
+      liveConfig.platformType = document.getElementById('cfg-live-platform').value;
+      liveConfig.status = document.getElementById('cfg-live-status').value;
+      liveConfig.meetUrl = document.getElementById('cfg-meet-url').value.trim() || 'https://meet.google.com/new';
+      liveConfig.url = document.getElementById('cfg-live-url').value.trim();
+      liveConfig.title = document.getElementById('cfg-live-title').value.trim();
+      liveConfig.date = document.getElementById('cfg-live-date').value.trim();
+      liveConfig.desc = document.getElementById('cfg-live-desc').value.trim();
+
+      localStorage.setItem('0red_live', JSON.stringify(liveConfig));
+      applyLiveConfig();
+      closeLiveModal();
+      alert("✓ ¡Configuración del En Vivo / Google Meet guardada correctamente!");
+    }
+
+    function applyLiveConfig() {
+      document.getElementById('display-live-date').innerText = liveConfig.date;
+      document.getElementById('live-stream-title').innerText = liveConfig.title;
+      document.getElementById('live-stream-desc').innerText = liveConfig.desc;
+
+      const livePill = document.getElementById('sidebar-live-pill');
+      if (livePill) {
+        livePill.style.display = liveConfig.status === 'active' ? 'inline-block' : 'none';
+      }
+
+      const displayContainer = document.getElementById('live-display-container');
+      if (!displayContainer) return;
+
+      const isLiveActive = liveConfig.status === 'active';
+
+      if (liveConfig.platformType === 'meet') {
+        displayContainer.innerHTML = `
+          <div class="meet-hero-card">
+            <div class="meet-icon-badge">
+              <i class="fa-solid fa-users-viewfinder"></i>
+            </div>
+            
+            <div>
+              <div class="meet-live-pill ${isLiveActive ? 'active' : 'scheduled'}" style="margin-bottom:12px;">
+                ${isLiveActive ? '<span class="live-indicator-dot"></span> SALA ACTIVA Y EN DIRECTO' : '<i class="fa-regular fa-calendar-check"></i> SALA PROGRAMADA'}
+              </div>
+              <h2 style="font-size:1.6rem; font-weight:800; color:#fff; margin-bottom:8px;">${liveConfig.title}</h2>
+              <p style="color:var(--text-muted); font-size:0.95rem; max-width:540px; margin:0 auto 10px; line-height:1.5;">${liveConfig.desc}</p>
+              <div style="font-family:var(--font-mono); font-size:0.85rem; color:#fca5a5;">
+                <i class="fa-solid fa-clock"></i> Horario: <strong>${liveConfig.date}</strong>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center; z-index:2;">
+              <a href="${liveConfig.meetUrl}" target="_blank" rel="noopener noreferrer" class="btn-meet-join">
+                <i class="fa-solid fa-video"></i> UNIRSE A GOOGLE MEET
+              </a>
+              <button class="btn-view" style="padding:13px 18px; border-radius:10px;" onclick="copyMeetLink('${liveConfig.meetUrl}')">
+                <i class="fa-solid fa-copy"></i> Copiar Enlace
+              </button>
+            </div>
+
+            <div style="margin-top:10px; font-size:0.75rem; color:#6b7280; font-family:var(--font-mono);">
+              <i class="fa-solid fa-shield-halved"></i> Ingresa con tu cuenta de Google. Mantén tu micrófono silenciado al entrar.
+            </div>
+          </div>
+        `;
+      } else {
+        displayContainer.innerHTML = `
+          <div class="player-wrapper">
+            <iframe id="live-iframe" src="${liveConfig.url}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+          </div>
+        `;
+      }
+    }
+
+    function copyMeetLink(url) {
+      if (!url) return alert("No hay enlace de Google Meet configurado.");
+      navigator.clipboard.writeText(url).then(() => {
+        alert("✓ Enlace de Google Meet copiado al portapapeles:\n" + url);
+      });
+    }
+
+    // ==========================================
+    // GESTIÓN DE CLASES
+    // ==========================================
+    function renderClasses() {
+      const container = document.getElementById('classes-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+
+      classesData.forEach((item) => {
+        const isVisible = item.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const card = document.createElement('div');
+        card.className = `class-card ${!isVisible ? 'item-hidden-admin' : ''}`;
+        card.innerHTML = `
+          <div class="card-thumb-container" onclick="${item.unlocked ? `playClass('${item.id}')` : ''}">
+            <img src="${item.thumbUrl || 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'}" class="card-thumb-img" alt="${item.title}">
+            ${item.unlocked ? `
+              <div class="card-play-overlay">
+                <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
+              </div>
+              <span class="duration-tag"><i class="fa-regular fa-clock"></i> ${item.duration}</span>
+            ` : `
+              <div class="card-locked-overlay">
+                <div class="lock-circle"><i class="fa-solid fa-lock"></i></div>
+                <span style="font-size:0.75rem; font-family:var(--font-mono);">Bloqueado hasta la sesión</span>
+              </div>
+            `}
+          </div>
+          <div class="card-body">
+            <div class="card-meta-top">
+              <span class="meta-week">${item.week} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
+              <span class="meta-status ${item.unlocked ? 'status-unlocked' : 'status-locked'}">
+                ${item.unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}
+              </span>
+            </div>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-desc">${item.desc}</p>
+            <div class="card-tags">
+              ${(item.tags || []).map(t => `<span class="concept-tag">${t}</span>`).join('')}
+            </div>
+            <div class="card-actions">
+              ${item.unlocked ? `
+                <button class="btn-view" onclick="playClass('${item.id}')"><i class="fa-solid fa-play"></i> Ver Grabación</button>
+              ` : `
+                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> ${item.date}</span>
+              `}
+              <div class="admin-card-controls">
+                <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="togglePlayClassVisibility('${item.id}')">
+                  <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                </button>
+                <button class="btn-admin-icon" title="Editar Clase" onclick="openClassModal('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-admin-icon" title="Eliminar Clase" onclick="deleteClass('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function togglePlayClassVisibility(id) {
+      const c = classesData.find(x => x.id === id);
+      if (c) {
+        c.visibleToStudents = (c.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_classes', JSON.stringify(classesData));
+        renderClasses();
+      }
+    }
+
+    function playClass(id) {
+      const cls = classesData.find(c => c.id === id);
+      if (!cls || !cls.unlocked) return;
+      document.getElementById('modal-class-week').innerText = cls.week + " • " + cls.date;
+      document.getElementById('modal-class-title').innerText = cls.title;
+      document.getElementById('modal-class-desc').innerText = cls.desc;
+      document.getElementById('modal-video-frame').src = cls.videoUrl;
+      document.getElementById('player-modal').classList.add('open');
+    }
+
+    function closePlayerModal() {
+      document.getElementById('player-modal').classList.remove('open');
+      document.getElementById('modal-video-frame').src = "";
+    }
+
+    function openClassModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('editor-title').innerText = isNew ? "Agregar Nueva Clase" : "Editar Clase";
+      document.getElementById('edit-class-id').value = isNew ? "" : id;
+      if (isNew) {
+        document.getElementById('edit-week').value = `SEMANA 0${classesData.length + 1}`;
+        document.getElementById('edit-title').value = "";
+        document.getElementById('edit-date').value = "Viernes • 12:00 UTC-6";
+        document.getElementById('edit-video').value = "";
+        document.getElementById('edit-thumb').value = "";
+        document.getElementById('edit-duration').value = "1h 30m";
+        document.getElementById('edit-desc').value = "";
+        document.getElementById('edit-tags').value = "Liquidez, SMC, 0RED";
+        document.getElementById('edit-unlocked').checked = true;
+      } else {
+        const item = classesData.find(c => c.id === id);
+        if (!item) return;
+        document.getElementById('edit-week').value = item.week;
+        document.getElementById('edit-title').value = item.title;
+        document.getElementById('edit-date').value = item.date;
+        document.getElementById('edit-video').value = item.videoUrl;
+        document.getElementById('edit-thumb').value = item.thumbUrl;
+        document.getElementById('edit-duration').value = item.duration;
+        document.getElementById('edit-desc').value = item.desc;
+        document.getElementById('edit-tags').value = (item.tags || []).join(', ');
+        document.getElementById('edit-unlocked').checked = item.unlocked;
+      }
+      document.getElementById('class-editor-modal').classList.add('open');
+    }
+
+    function closeEditorModal() { document.getElementById('class-editor-modal').classList.remove('open'); }
+
+    function saveClassData() {
+      const id = document.getElementById('edit-class-id').value;
+      const week = document.getElementById('edit-week').value.trim();
+      const title = document.getElementById('edit-title').value.trim();
+      const date = document.getElementById('edit-date').value.trim();
+      const videoUrl = document.getElementById('edit-video').value.trim();
+      const thumbUrl = document.getElementById('edit-thumb').value.trim();
+      const duration = document.getElementById('edit-duration').value.trim();
+      const desc = document.getElementById('edit-desc').value.trim();
+      const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const unlocked = document.getElementById('edit-unlocked').checked;
+
+      if (!title) return alert("Por favor ingresa un título para la clase.");
+
+      if (id) {
+        const idx = classesData.findIndex(c => c.id === id);
+        if (idx !== -1) classesData[idx] = { ...classesData[idx], week, title, date, videoUrl, thumbUrl, duration, desc, tags, unlocked };
+      } else {
+        classesData.push({ id: 'class-' + Date.now(), week, title, date, videoUrl, thumbUrl, duration, desc, tags, unlocked, visibleToStudents: true });
+      }
+
+      localStorage.setItem('0red_classes', JSON.stringify(classesData));
+      renderClasses();
+      closeEditorModal();
+    }
+
+    function deleteClass(id) {
+      if (confirm("¿Eliminar esta clase del temario?")) {
+        classesData = classesData.filter(c => c.id !== id);
+        localStorage.setItem('0red_classes', JSON.stringify(classesData));
+        renderClasses();
+      }
+    }
+
+    // ==========================================
+    // REGLAS
+    // ==========================================
+    function renderRules() {
+      const container = document.getElementById('rules-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+
+      rulesData.forEach((rule) => {
+        const isVisible = rule.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const item = document.createElement('div');
+        item.className = `rule-item ${!isVisible ? 'item-hidden-admin' : ''}`;
+        item.innerHTML = `
+          <div class="rule-left">
+            <div class="rule-num">${rule.num}</div>
+            <div class="rule-content">
+              <h4>${rule.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h4>
+              <p>${rule.desc}</p>
+            </div>
+          </div>
+          <div class="admin-card-controls">
+            <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleRuleVisibility('${rule.id}')">
+              <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+            </button>
+            <button class="btn-admin-icon" title="Editar Regla" onclick="openRuleModal('${rule.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-admin-icon" title="Eliminar Regla" onclick="deleteRule('${rule.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function toggleRuleVisibility(id) {
+      const r = rulesData.find(x => x.id === id);
+      if (r) {
+        r.visibleToStudents = (r.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_rules', JSON.stringify(rulesData));
+        renderRules();
+      }
+    }
+
+    function openRuleModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('rule-modal-title').innerText = isNew ? "Agregar Nueva Regla" : "Editar Regla";
+      document.getElementById('edit-rule-id').value = isNew ? "" : id;
+      if (isNew) {
+        document.getElementById('edit-rule-num').value = String(rulesData.length + 1).padStart(2, '0');
+        document.getElementById('edit-rule-title').value = "";
+        document.getElementById('edit-rule-desc').value = "";
+      } else {
+        const r = rulesData.find(x => x.id === id);
+        if (!r) return;
+        document.getElementById('edit-rule-num').value = r.num;
+        document.getElementById('edit-rule-title').value = r.title;
+        document.getElementById('edit-rule-desc').value = r.desc;
+      }
+      document.getElementById('rule-modal').classList.add('open');
+    }
+
+    function closeRuleModal() { document.getElementById('rule-modal').classList.remove('open'); }
+
+    function saveRuleData() {
+      const id = document.getElementById('edit-rule-id').value;
+      const num = document.getElementById('edit-rule-num').value.trim() || "01";
+      const title = document.getElementById('edit-rule-title').value.trim();
+      const desc = document.getElementById('edit-rule-desc').value.trim();
+
+      if (!title) return alert("Por favor ingresa un título para la regla.");
+
+      if (id) {
+        const idx = rulesData.findIndex(r => r.id === id);
+        if (idx !== -1) rulesData[idx] = { ...rulesData[idx], num, title, desc };
+      } else {
+        rulesData.push({ id: 'rule-' + Date.now(), num, title, desc, visibleToStudents: true });
+      }
+
+      localStorage.setItem('0red_rules', JSON.stringify(rulesData));
+      renderRules();
+      closeRuleModal();
+    }
+
+    function deleteRule(id) {
+      if (confirm("¿Eliminar esta regla de conducta?")) {
+        rulesData = rulesData.filter(r => r.id !== id);
+        localStorage.setItem('0red_rules', JSON.stringify(rulesData));
+        renderRules();
+      }
+    }
+
+    // ==========================================
+    // MATERIALES
+    // ==========================================
+    function renderMaterials() {
+      const container = document.getElementById('materials-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+
+      materialsData.forEach((mat) => {
+        const isVisible = mat.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const item = document.createElement('div');
+        item.className = `material-item ${!isVisible ? 'item-hidden-admin' : ''}`;
+        item.innerHTML = `
+          <div class="material-info">
+            <i class="fa-solid ${mat.icon || 'fa-file-pdf'} material-icon"></i>
+            <div>
+              <h4 style="color:#fff; font-size:0.95rem;">${mat.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h4>
+              <p style="color:var(--text-muted); font-size:0.78rem; font-family:var(--font-mono);">${mat.subtitle}</p>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button class="btn-view" onclick="downloadMaterial('${mat.url}', '${mat.title}')"><i class="fa-solid fa-download"></i> Descargar</button>
+            <div class="admin-card-controls">
+              <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleMaterialVisibility('${mat.id}')">
+                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+              </button>
+              <button class="btn-admin-icon" title="Editar Material" onclick="openMaterialModal('${mat.id}')"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-admin-icon" title="Eliminar Material" onclick="deleteMaterial('${mat.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function toggleMaterialVisibility(id) {
+      const m = materialsData.find(x => x.id === id);
+      if (m) {
+        m.visibleToStudents = (m.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_materials', JSON.stringify(materialsData));
+        renderMaterials();
+      }
+    }
+
+    function downloadMaterial(url, title) {
+      if (url && url !== "#") window.open(url, '_blank');
+      else alert("Descargando archivo institucional: " + title);
+    }
+
+    function openMaterialModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('material-modal-title').innerText = isNew ? "Agregar Material Descargable" : "Editar Material";
+      document.getElementById('edit-material-id').value = isNew ? "" : id;
+      if (isNew) {
+        document.getElementById('edit-mat-title').value = "";
+        document.getElementById('edit-mat-subtitle').value = "PDF • 10.5 MB • 2026";
+        document.getElementById('edit-mat-icon').value = "fa-file-pdf";
+        document.getElementById('edit-mat-url').value = "";
+      } else {
+        const m = materialsData.find(x => x.id === id);
+        if (!m) return;
+        document.getElementById('edit-mat-title').value = m.title;
+        document.getElementById('edit-mat-subtitle').value = m.subtitle;
+        document.getElementById('edit-mat-icon').value = m.icon || "fa-file-pdf";
+        document.getElementById('edit-mat-url').value = m.url || "";
+      }
+      document.getElementById('material-modal').classList.add('open');
+    }
+
+    function closeMaterialModal() { document.getElementById('material-modal').classList.remove('open'); }
+
+    function saveMaterialData() {
+      const id = document.getElementById('edit-material-id').value;
+      const title = document.getElementById('edit-mat-title').value.trim();
+      const subtitle = document.getElementById('edit-mat-subtitle').value.trim();
+      const icon = document.getElementById('edit-mat-icon').value;
+      const url = document.getElementById('edit-mat-url').value.trim();
+
+      if (!title) return alert("Por favor ingresa un título para el material.");
+
+      if (id) {
+        const idx = materialsData.findIndex(m => m.id === id);
+        if (idx !== -1) materialsData[idx] = { ...materialsData[idx], title, subtitle, icon, url };
+      } else {
+        materialsData.push({ id: 'mat-' + Date.now(), title, subtitle, icon, url, visibleToStudents: true });
+      }
+
+      localStorage.setItem('0red_materials', JSON.stringify(materialsData));
+      renderMaterials();
+      closeMaterialModal();
+    }
+
+    function deleteMaterial(id) {
+      if (confirm("¿Eliminar este material de la lista?")) {
+        materialsData = materialsData.filter(m => m.id !== id);
+        localStorage.setItem('0red_materials', JSON.stringify(materialsData));
+        renderMaterials();
+      }
+    }
+
+    // ==========================================
+    // SCRIPTS PINE SCRIPT
+    // ==========================================
+    function renderScripts() {
+      const container = document.getElementById('scripts-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+
+      scriptsData.forEach((s) => {
+        const isVisible = s.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const box = document.createElement('div');
+        box.className = `script-box ${!isVisible ? 'item-hidden-admin' : ''}`;
+        box.innerHTML = `
+          <div class="script-header">
+            <div>
+              <strong style="color:#fff; font-size:0.95rem;">${s.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</strong>
+              <span style="font-size:0.75rem; color:var(--red-accent); font-family:var(--font-mono); margin-left:10px;">${s.badge}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="btn-view" onclick="copyPineScript('code-${s.id}')"><i class="fa-solid fa-copy"></i> Copiar Código</button>
+              <div class="admin-card-controls">
+                <button class="btn-admin-icon" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="toggleScriptVisibility('${s.id}')">
+                  <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                </button>
+                <button class="btn-admin-icon" title="Editar Script" onclick="openScriptModal('${s.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-admin-icon" title="Eliminar Script" onclick="deleteScript('${s.id}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="script-code-area" id="code-${s.id}">${s.code}</div>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function toggleScriptVisibility(id) {
+      const sc = scriptsData.find(x => x.id === id);
+      if (sc) {
+        sc.visibleToStudents = (sc.visibleToStudents === false) ? true : false;
+        localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
+        renderScripts();
+      }
+    }
+
+    function openScriptModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('script-modal-title').innerText = isNew ? "Publicar Nuevo Script Pine" : "Editar Script Pine";
+      document.getElementById('edit-script-id').value = isNew ? "" : id;
+      if (isNew) {
+        document.getElementById('edit-script-title').value = "";
+        document.getElementById('edit-script-badge').value = "PINE SCRIPT V5";
+        document.getElementById('edit-script-code').value = "//@version=5\nindicator('0RED STRUCTURE - Nuevo Indicador', overlay=true)\n\n// Escribe o pega tu algoritmo aquí";
+      } else {
+        const sc = scriptsData.find(x => x.id === id);
+        if (!sc) return;
+        document.getElementById('edit-script-title').value = sc.title;
+        document.getElementById('edit-script-badge').value = sc.badge;
+        document.getElementById('edit-script-code').value = sc.code;
+      }
+      document.getElementById('script-modal').classList.add('open');
+    }
+
+    function closeScriptModal() { document.getElementById('script-modal').classList.remove('open'); }
+
+    function saveScriptData() {
+      const id = document.getElementById('edit-script-id').value;
+      const title = document.getElementById('edit-script-title').value.trim();
+      const badge = document.getElementById('edit-script-badge').value.trim() || "PINE SCRIPT V5";
+      const code = document.getElementById('edit-script-code').value;
+
+      if (!title || !code) return alert("Por favor completa el título y el código.");
+
+      if (id) {
+        const idx = scriptsData.findIndex(s => s.id === id);
+        if (idx !== -1) scriptsData[idx] = { ...scriptsData[idx], title, badge, code };
+      } else {
+        scriptsData.push({ id: 'script-' + Date.now(), title, badge, code, visibleToStudents: true });
+      }
+
+      localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
+      renderScripts();
+      closeScriptModal();
+    }
+
+    function deleteScript(id) {
+      if (confirm("¿Eliminar este indicador de la plataforma?")) {
+        scriptsData = scriptsData.filter(s => s.id !== id);
+        localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
+        renderScripts();
+      }
+    }
+
+    function copyPineScript(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        alert("✓ ¡Código Pine Script copiado con éxito! Pégalo en tu Pine Editor de TradingView.");
+      });
+    }
+
+    // ==========================================
+    // APARTADOS PERSONALIZADOS
+    // ==========================================
+    function openNewSectionModal() {
+      document.getElementById('new-sec-name').value = "";
+      document.getElementById('new-sec-title').value = "";
+      document.getElementById('new-sec-desc').value = "";
+      document.getElementById('new-sec-content').value = "";
+      document.getElementById('new-section-modal').classList.add('open');
+    }
+
+    function closeNewSectionModal() { document.getElementById('new-section-modal').classList.remove('open'); }
+
+    function saveNewSection() {
+      const name = document.getElementById('new-sec-name').value.trim();
+      const icon = document.getElementById('new-sec-icon').value;
+      const title = document.getElementById('new-sec-title').value.trim();
+      const desc = document.getElementById('new-sec-desc').value.trim();
+      const content = document.getElementById('new-sec-content').value.trim();
+
+      if (!name || !title) return alert("Debes asignarle un nombre y un título al apartado.");
+
+      const secId = 'custom-' + Date.now();
+      const newSec = { id: secId, name, icon, title, desc, content, visibleToStudents: true };
+      customSections.push(newSec);
+
+      localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
+      renderCustomSections();
+      closeNewSectionModal();
+      switchSidebarTab(secId);
+    }
+
+    function renderCustomSections() {
+      const listContainer = document.getElementById('sidebar-community-list');
+      const viewsContainer = document.getElementById('custom-views-container');
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      
+      document.querySelectorAll('.custom-sidebar-item').forEach(el => el.remove());
+      viewsContainer.innerHTML = '';
+
+      customSections.forEach((sec) => {
+        const isVisible = sec.visibleToStudents !== false;
+        if (isStudentView && !isVisible) return;
+
+        const li = document.createElement('li');
+        li.className = `custom-sidebar-item ${!isVisible ? 'item-hidden-admin' : ''}`;
+        li.innerHTML = `
+          <a class="sidebar-link" id="custom-slink-${sec.id}" onclick="switchSidebarTab('${sec.id}')">
+            <span class="link-label-group"><i class="fa-solid ${sec.icon}"></i> ${sec.name} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
+            <span class="sidebar-controls-wrap">
+              <button class="btn-toggle-eye ${isVisible ? '' : 'is-hidden'}" title="${isVisible ? 'Ocultar a alumnos' : 'Desocultar a alumnos'}" onclick="event.stopPropagation(); toggleCustomSectionVisibility('${sec.id}')">
+                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+              </button>
+              <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteCustomSection('${sec.id}')">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </span>
+          </a>
+        `;
+        listContainer.appendChild(li);
+
+        const viewDiv = document.createElement('div');
+        viewDiv.id = 'custom-view-' + sec.id;
+        viewDiv.className = 'custom-created-view';
+        viewDiv.style.display = 'none';
+        viewDiv.innerHTML = `
+          <div class="page-header">
+            <div>
+              <div class="badge-pill"><i class="fa-solid ${sec.icon}"></i> Módulo Exclusivo ${!isVisible ? '<span class="hidden-badge-tag">OCULTO PARA ALUMNOS</span>' : ''}</div>
+              <h1 class="page-title">${sec.title}</h1>
+              <p class="page-desc">${sec.desc}</p>
+            </div>
+          </div>
+          <div class="content-panel-card">
+            <div style="font-size:0.95rem; line-height:1.7; color:#d1d5db; white-space:pre-wrap;">${sec.content}</div>
+          </div>
+        `;
+        viewsContainer.appendChild(viewDiv);
+      });
+    }
+
+    function deleteCustomSection(id) {
+      if (confirm("¿Eliminar este apartado por completo de la barra lateral?")) {
+        customSections = customSections.filter(s => s.id !== id);
+        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
+        renderCustomSections();
+        switchSidebarTab('classes');
+      }
+    }
+
+    // ==========================================
+    // MENSAJERÍA Y CHAT
+    // ==========================================
+    function renderGlobalChat() {
+      const container = document.getElementById('global-chat-container');
+      if (!container) return;
+      container.innerHTML = '';
+      globalChatMessages.forEach(msg => {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${msg.role === 'admin' ? 'admin-msg' : ''}`;
+        bubble.innerHTML = `
+          <div class="chat-bubble-meta">
+            <strong style="color:${msg.role === 'admin' ? '#f87171' : 'var(--cyan-accent)'};">${msg.author}</strong>
+            <span style="color:#6b7280;">${msg.time}</span>
+          </div>
+          <div style="font-size:0.9rem; line-height:1.45; color:#e5e7eb;">${msg.text}</div>
+        `;
+        container.appendChild(bubble);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendGlobalChatMessage() {
+      const input = document.getElementById('global-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const newMsg = {
+        author: currentUserSession ? currentUserSession.username : 'Alumno',
+        role: isUserAdmin ? 'admin' : 'student',
+        text: text,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      globalChatMessages.push(newMsg);
+      localStorage.setItem('0red_global_chat', JSON.stringify(globalChatMessages));
+      renderGlobalChat();
+      input.value = '';
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const chatBox = document.getElementById('chat-box');
+      const msg = document.createElement('div');
+      msg.className = 'chat-msg';
+      const sender = currentUserSession ? currentUserSession.username : 'Alumno';
+      msg.innerHTML = `
+        <div class="chat-author" style="color:var(--cyan-accent);">${isUserAdmin ? sender + ' (ADMIN)' : sender}</div>
+        ${text}
+      `;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = '';
+    }
+
+    // ==========================================
+    // CONTADOR DE CONEXIONES EN VIVO
+    // ==========================================
+    function initRealUserCounter() {
+      const counterEl = document.getElementById('user-count-num');
+      const mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
+      const presenceChannel = new BroadcastChannel('0red_real_presence');
+      let activeSessions = new Set([mySessionId]);
+
+      function updateCounterUI() {
+        if (counterEl) counterEl.innerText = activeSessions.size;
+      }
+
+      presenceChannel.postMessage({ type: 'join', id: mySessionId });
+      presenceChannel.onmessage = (event) => {
+        const { type, id } = event.data;
+        if (type === 'join' || type === 'heartbeat') {
+          activeSessions.add(id);
+          if (type === 'join') presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId });
+          updateCounterUI();
+        } else if (type === 'leave') {
+          activeSessions.delete(id);
+          updateCounterUI();
+        }
+      };
+
+      setInterval(() => presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId }), 3000);
+      window.addEventListener('beforeunload', () => presenceChannel.postMessage({ type: 'leave', id: mySessionId }));
+      updateCounterUI();
+    }
+  </script>
+</body>
+</html>
