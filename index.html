@@ -1207,124 +1207,181 @@
     // =======================================================
     /* %%EMBEDDED_CONFIG_START%% */
     const DEFAULT_SITE_CONFIG = {
-      brandTitle: "0REDSTRUCTURE",
-      brandSub: "INSTITUTIONAL MENTORSHIP",
-      brandIcon: "0R",
-      badgeText: '<i class="fa-solid fa-shield-halved"></i> Programa Institucional • SMC / ICT / 0RED',
-      headerTitle: "Módulos & Clases Magistrales",
-      headerDesc: "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
-      adminUser: "balanzarivan885",
-      adminPass: "Espartan117"
-    };
+  "brandTitle": "0REDSTRUCTURE",
+  "brandSub": "INSTITUTIONAL MENTORSHIP",
+  "brandIcon": "0R",
+  "badgeText": "<i class=\"fa-solid fa-shield-halved\"></i> Programa Institucional • SMC / ICT / 0RED",
+  "headerTitle": "Módulos & Clases 1",
+  "headerDesc": "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
+  "adminUser": "balanzarivan885",
+  "adminPass": "Espartan117"
+};
 
     const DEFAULT_CLASSES = [
-      {
-        id: "class-1",
-        week: "SEMANA 01",
-        date: "Oct 2, 2026 • 12:00 UTC-6",
-        title: "Fundamentos y Mapeo de Estructura Institucional",
-        desc: "Identificación precisa de Highs/Lows significativos, quiebres de estructura (BOS) y cambios de carácter (CHoCH).",
-        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
-        thumbUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
-        duration: "1h 45m",
-        tags: ["Estructura", "BOS", "CHoCH"],
-        unlocked: true,
-        visibleToStudents: true
-      },
-      {
-        id: "class-2",
-        week: "SEMANA 02",
-        date: "Oct 9, 2026 • 12:00 UTC-6",
-        title: "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
-        desc: "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
-        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
-        thumbUrl: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
-        duration: "2h 10m",
-        tags: ["FVG", "Ineficiencias", "Entry Drills"],
-        unlocked: true,
-        visibleToStudents: true
-      },
-      {
-        id: "class-3",
-        week: "SEMANA 03",
-        date: "Oct 16, 2026 • 12:00 UTC-6",
-        title: "Killzones y Manipulación de Sesión (Londres & NY)",
-        desc: "Comportamiento del precio durante las aperturas de mercado, Judas Swings y tomas de liquidez.",
-        videoUrl: "",
-        thumbUrl: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
-        duration: "1h 50m",
-        tags: ["Killzones", "Judas Swing", "Horarios"],
-        unlocked: false,
-        visibleToStudents: true
-      }
-    ];
+  {
+    "id": "class-1",
+    "week": "SEMANA 01",
+    "date": "Oct 2, 2026 • 12:00 UTC-6",
+    "title": "Fundamentos y Mapeo de Estructura Institucional",
+    "desc": "Identificación precisa de Highs/Lows significativos, quiebres de estructura (BOS) y cambios de carácter (CHoCH).",
+    "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+    "thumbUrl": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+    "duration": "1h 45m",
+    "tags": [
+      "Estructura",
+      "BOS",
+      "CHoCH"
+    ],
+    "unlocked": true,
+    "visibleToStudents": true
+  },
+  {
+    "id": "class-2",
+    "week": "SEMANA 02",
+    "date": "Oct 9, 2026 • 12:00 UTC-6",
+    "title": "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
+    "desc": "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
+    "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+    "thumbUrl": "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
+    "duration": "2h 10m",
+    "tags": [
+      "FVG",
+      "Ineficiencias",
+      "Entry Drills"
+    ],
+    "unlocked": true,
+    "visibleToStudents": true
+  },
+  {
+    "id": "class-3",
+    "week": "SEMANA 03",
+    "date": "Oct 16, 2026 • 12:00 UTC-6",
+    "title": "Killzones y Manipulación de Sesión (Londres & NY)",
+    "desc": "Comportamiento del precio durante las aperturas de mercado, Judas Swings y tomas de liquidez.",
+    "videoUrl": "",
+    "thumbUrl": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+    "duration": "1h 50m",
+    "tags": [
+      "Killzones",
+      "Judas Swing",
+      "Horarios"
+    ],
+    "unlocked": false,
+    "visibleToStudents": true
+  }
+];
 
     const DEFAULT_TOOLS = [
-      {
-        id: "tool-1",
-        title: "Crea tu Journal",
-        badge: "OFICIAL",
-        btnText: "CREAR TU JOURNAL",
-        url: "https://0red-journal.github.io/0red-journal/",
-        icon: "fa-book-open",
-        desc: "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
-        features: [
-          "Registro de Winrate y Expectativa",
-          "Cálculo automático de Ratio Riesgo:Beneficio",
-          "Seguimiento de sesiones Londres y Nueva York"
-        ],
-        allowEmbed: true,
-        visibleToStudents: true
-      }
-    ];
+  {
+    "id": "tool-1",
+    "title": "Crea tu Journal",
+    "badge": "OFICIAL",
+    "btnText": "CREAR TU JOURNAL",
+    "url": "https://0red-journal.github.io/0red-journal/",
+    "icon": "fa-book-open",
+    "desc": "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
+    "features": [
+      "Registro de Winrate y Expectativa",
+      "Cálculo automático de Ratio Riesgo:Beneficio",
+      "Seguimiento de sesiones Londres y Nueva York"
+    ],
+    "allowEmbed": true,
+    "visibleToStudents": true
+  }
+];
 
     const DEFAULT_LIVE = {
-      platformType: "meet",
-      status: "scheduled",
-      meetUrl: "https://meet.google.com/new",
-      url: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
-      title: "Sesión Institucional en Vivo: Análisis SMC / ICT",
-      date: "Viernes, 12:00 PM UTC-6",
-      desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
-    };
+  "platformType": "meet",
+  "status": "scheduled",
+  "meetUrl": "https://meet.google.com/new",
+  "url": "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
+  "title": "Sesión Institucional en Vivo: Análisis SMC / ICT",
+  "date": "Viernes, 12:00 PM UTC-6",
+  "desc": "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
+};
 
     const DEFAULT_RULES = [
-      { id: "rule-1", num: "01", title: "Gestión de Riesgo No Negociable", desc: "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia. El sobreapalancamiento destruye la consistencia matemática.", visibleToStudents: true },
-      { id: "rule-2", num: "02", title: "Respeto y Feedback Constructivo", desc: "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez) y expresadas con respeto hacia los compañeros.", visibleToStudents: true },
-      { id: "rule-3", num: "03", title: "Confidencialidad del Material Institucional", desc: "Los scripts de 0REDSTRUCTURE, plantillas y grabaciones son estrictamente para uso personal de los miembros matriculados.", visibleToStudents: true },
-      { id: "rule-4", num: "04", title: "Prohibido Fomentar Operativa Impulsiva", desc: "No se admiten comentarios de euforia, FOMO o señales sin un contexto estructural previo documentado en TradingView.", visibleToStudents: true }
-    ];
+  {
+    "id": "rule-1",
+    "num": "01",
+    "title": "Gestión de Riesgo No Negociable",
+    "desc": "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia. El sobreapalancamiento destruye la consistencia matemática.",
+    "visibleToStudents": true
+  },
+  {
+    "id": "rule-2",
+    "num": "02",
+    "title": "Respeto y Feedback Constructivo",
+    "desc": "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez) y expresadas con respeto hacia los compañeros.",
+    "visibleToStudents": true
+  },
+  {
+    "id": "rule-3",
+    "num": "03",
+    "title": "Confidencialidad del Material Institucional",
+    "desc": "Los scripts de 0REDSTRUCTURE, plantillas y grabaciones son estrictamente para uso personal de los miembros matriculados.",
+    "visibleToStudents": true
+  },
+  {
+    "id": "rule-4",
+    "num": "04",
+    "title": "Prohibido Fomentar Operativa Impulsiva",
+    "desc": "No se admiten comentarios de euforia, FOMO o señales sin un contexto estructural previo documentado en TradingView.",
+    "visibleToStudents": true
+  }
+];
 
     const DEFAULT_MATERIALS = [
-      { id: "mat-1", title: "Guía Maestra: Mapeo de Estructura Institucional (0RED)", subtitle: "PDF • 14.8 MB • Actualizado 2026", icon: "fa-file-pdf", url: "#", visibleToStudents: true },
-      { id: "mat-2", title: "Trading Journal & Calculadora de Riesgo Institucional", subtitle: "XLSX • 4.2 MB • Registro de R:R y Drawdown", icon: "fa-table", url: "#", visibleToStudents: true },
-      { id: "mat-3", title: "Cheat Sheet: Modelos de Entrada FVG + Killzones", subtitle: "PDF • 8.1 MB • Resumen Gráfico de Alta Probabilidad", icon: "fa-file-pdf", url: "#", visibleToStudents: true }
-    ];
+  {
+    "id": "mat-1",
+    "title": "Guía Maestra: Mapeo de Estructura Institucional (0RED)",
+    "subtitle": "PDF • 14.8 MB • Actualizado 2026",
+    "icon": "fa-file-pdf",
+    "url": "#",
+    "visibleToStudents": true
+  },
+  {
+    "id": "mat-2",
+    "title": "Trading Journal & Calculadora de Riesgo Institucional",
+    "subtitle": "XLSX • 4.2 MB • Registro de R:R y Drawdown",
+    "icon": "fa-table",
+    "url": "#",
+    "visibleToStudents": true
+  },
+  {
+    "id": "mat-3",
+    "title": "Cheat Sheet: Modelos de Entrada FVG + Killzones",
+    "subtitle": "PDF • 8.1 MB • Resumen Gráfico de Alta Probabilidad",
+    "icon": "fa-file-pdf",
+    "url": "#",
+    "visibleToStudents": true
+  }
+];
 
     const DEFAULT_SCRIPTS = [
-      {
-        id: "script-1",
-        title: "0RED STRUCTURE - Sessions & Liquidity Engine v5",
-        badge: "PINE SCRIPT V5",
-        code: `//@version=5\nindicator("0RED STRUCTURE - Liquidity & Killzones", overlay=true)\n\nshow_london = input.bool(true, "Killzone Londres (02:00 - 05:00 UTC-4)")\nshow_ny = input.bool(true, "Killzone Nueva York (07:00 - 10:00 UTC-4)")\n\nin_london = not na(time(timeframe.period, "0200-0500:23456"))\nin_ny = not na(time(timeframe.period, "0700-1000:23456"))\n\nbgcolor(show_london and in_london ? color.new(color.blue, 90) : na, title="Background Londres")\nbgcolor(show_ny and in_ny ? color.new(color.red, 90) : na, title="Background NY")\n\nbullish_fvg = low > high[2]\nbearish_fvg = high < low[2]\n\nplotshape(bullish_fvg, title="Bullish FVG", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)\nplotshape(bearish_fvg, title="Bearish FVG", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)`,
-        visibleToStudents: true
-      },
-      {
-        id: "script-2",
-        title: "0RED STRUCTURE - Daily / Weekly Range Open Filter",
-        badge: "PINE SCRIPT V5",
-        code: `//@version=5\nindicator("0RED STRUCTURE - True Open Filter", overlay=true)\n\nmidnight_open = request.security(syminfo.tickerid, "D", open)\nplot(midnight_open, "NY Midnight Open (00:00)", color=color.yellow, linewidth=2, style=plot.style_circles)`,
-        visibleToStudents: true
-      }
-    ];
+  {
+    "id": "script-1",
+    "title": "0RED STRUCTURE - Sessions & Liquidity Engine v5",
+    "badge": "PINE SCRIPT V5",
+    "code": "//@version=5\nindicator(\"0RED STRUCTURE - Liquidity & Killzones\", overlay=true)\n\nshow_london = input.bool(true, \"Killzone Londres (02:00 - 05:00 UTC-4)\")\nshow_ny = input.bool(true, \"Killzone Nueva York (07:00 - 10:00 UTC-4)\")\n\nin_london = not na(time(timeframe.period, \"0200-0500:23456\"))\nin_ny = not na(time(timeframe.period, \"0700-1000:23456\"))\n\nbgcolor(show_london and in_london ? color.new(color.blue, 90) : na, title=\"Background Londres\")\nbgcolor(show_ny and in_ny ? color.new(color.red, 90) : na, title=\"Background NY\")\n\nbullish_fvg = low > high[2]\nbearish_fvg = high < low[2]\n\nplotshape(bullish_fvg, title=\"Bullish FVG\", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)\nplotshape(bearish_fvg, title=\"Bearish FVG\", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)",
+    "visibleToStudents": true
+  },
+  {
+    "id": "script-2",
+    "title": "0RED STRUCTURE - Daily / Weekly Range Open Filter",
+    "badge": "PINE SCRIPT V5",
+    "code": "//@version=5\nindicator(\"0RED STRUCTURE - True Open Filter\", overlay=true)\n\nmidnight_open = request.security(syminfo.tickerid, \"D\", open)\nplot(midnight_open, \"NY Midnight Open (00:00)\", color=color.yellow, linewidth=2, style=plot.style_circles)",
+    "visibleToStudents": true
+  }
+];
 
     const DEFAULT_SECTIONS_VISIBILITY = {
-      chat: true,
-      rules: true,
-      materials: true,
-      scripts: true,
-      tools: true
-    };
+  "chat": true,
+  "rules": true,
+  "materials": true,
+  "scripts": true,
+  "tools": true
+};
     /* %%EMBEDDED_CONFIG_END%% */
 
     // Carga de variables prioritarias (Memoria local de trabajo)
