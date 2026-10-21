@@ -316,6 +316,28 @@
     .mat-author-tag { font-family: var(--font-mono); font-size: 0.72rem; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
     .mat-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; }
 
+    /* ESTILO BOTÓN BORRAR EN ARCHIVO */
+    .btn-delete-file {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-delete-file:hover {
+      background: var(--red-accent);
+      color: #fff;
+      border-color: var(--red-accent);
+      transform: translateY(-1px);
+    }
+
     .script-box { background: #090d14; border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
     .script-header { padding: 12px 18px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
     .script-code-area { padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; white-space: pre-wrap; line-height: 1.6; }
@@ -354,7 +376,7 @@
     .btn-meet-join {
       background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; padding: 14px 28px;
       border-radius: 10px; font-weight: 800; font-size: 1rem; text-decoration: none; display: inline-flex;
-      align-items: gap: 10px; box-shadow: 0 10px 25px var(--red-glow); transition: all 0.2s; border: none; cursor: pointer;
+      align-items: center; gap: 10px; box-shadow: 0 10px 25px var(--red-glow); transition: all 0.2s; border: none; cursor: pointer;
     }
     .btn-meet-join:hover { transform: translateY(-2px); box-shadow: 0 15px 35px var(--red-glow); }
     .player-wrapper { position: relative; padding-top: 56.25%; background: #000; height: 100%; }
@@ -416,6 +438,23 @@
     .lightbox-img-wrap { max-width: 92vw; max-height: 84vh; position: relative; }
     .lightbox-full-img { max-width: 100%; max-height: 84vh; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: contain; }
     .lightbox-title { color: #fff; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 14px; text-align: center; }
+
+    /* MODAL DE MENSAJES Y CONFIRMACIONES REEMPLAZANDO ALERT/CONFIRM */
+    #custom-confirm-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+      z-index: 11000; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    #custom-confirm-modal.open { display: flex; }
+    .custom-dialog-card {
+      background: #0d1117; border: 1px solid var(--card-border); border-radius: 14px;
+      padding: 24px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+    .custom-dialog-icon {
+      width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 1.4rem;
+    }
+    .dialog-icon-danger { background: rgba(239, 68, 68, 0.15); color: var(--red-accent); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .dialog-icon-info { background: rgba(6, 182, 212, 0.15); color: var(--cyan-accent); border: 1px solid rgba(6, 182, 212, 0.3); }
 
     .online-badge-corner {
       position: fixed; bottom: 20px; left: 20px; z-index: 99;
@@ -880,7 +919,7 @@
     </div>
   </div>
 
-  <!-- MODALES -->
+  <!-- MODAL: VISOR DE IMAGEN LIGHTBOX -->
   <div id="image-lightbox-modal" onclick="closeImageLightbox()">
     <div class="lightbox-img-wrap" onclick="event.stopPropagation()">
       <img id="lightbox-target-img" src="" class="lightbox-full-img" alt="Esquema Institucional">
@@ -891,6 +930,22 @@
     <div class="lightbox-title" id="lightbox-target-title"></div>
   </div>
 
+  <!-- MODAL DE DIÁLOGO / CONFIRMACIÓN PERSONALIZADO -->
+  <div id="custom-confirm-modal">
+    <div class="custom-dialog-card" onclick="event.stopPropagation()">
+      <div class="custom-dialog-icon dialog-icon-danger" id="dialog-icon-container">
+        <i class="fa-solid fa-trash-can" id="dialog-icon-glyph"></i>
+      </div>
+      <h3 style="color:#fff; font-size:1.15rem; font-weight:700; margin-bottom:8px;" id="dialog-title">Confirmar acción</h3>
+      <p style="color:var(--text-muted); font-size:0.86rem; line-height:1.5; margin-bottom:20px;" id="dialog-desc">¿Estás seguro de continuar?</p>
+      <div style="display:flex; justify-content:center; gap:10px;">
+        <button class="btn-view" id="dialog-btn-cancel" onclick="closeCustomDialog(false)">Cancelar</button>
+        <button class="btn-action-primary" id="dialog-btn-confirm" onclick="closeCustomDialog(true)">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURAR CANAL -->
   <div class="modal-backdrop" id="channel-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -937,6 +992,7 @@
     </div>
   </div>
 
+  <!-- MODAL: SUBIR IMAGEN / ANÁLISIS -->
   <div class="modal-backdrop" id="upload-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -978,6 +1034,7 @@
     </div>
   </div>
 
+  <!-- MODAL: REPRODUCTOR CLASE -->
   <div class="modal-backdrop" id="player-modal">
     <div class="modal-content" style="max-width: 800px;">
       <div class="modal-header">
@@ -1006,6 +1063,7 @@
     </div>
   </div>
 
+  <!-- MODAL: EDITAR / CREAR CLASE -->
   <div class="modal-backdrop" id="class-editor-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1060,6 +1118,7 @@
     </div>
   </div>
 
+  <!-- MODAL: GESTIÓN DE HERRAMIENTA -->
   <div class="modal-backdrop" id="tool-editor-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1110,6 +1169,7 @@
     </div>
   </div>
 
+  <!-- MODAL: REGLA -->
   <div class="modal-backdrop" id="rule-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1135,6 +1195,7 @@
     </div>
   </div>
 
+  <!-- MODAL: SCRIPT -->
   <div class="modal-backdrop" id="script-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1160,6 +1221,7 @@
     </div>
   </div>
 
+  <!-- MODAL: CONFIGURAR EN VIVO -->
   <div class="modal-backdrop" id="live-config-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1215,6 +1277,7 @@
     </div>
   </div>
 
+  <!-- MODAL: AJUSTES GLOBALES -->
   <div class="modal-backdrop" id="global-site-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1269,14 +1332,14 @@
     };
     let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
 
-    // BASE DE DATOS DE USUARIOS (INCLUYE ALUMNO INGRID_KARI)
+    // BASE DE DATOS DE USUARIOS (INCLUYE ADMIN Y ALUMNO INGRID_KARI)
     const DEFAULT_USERS_DB = [
       { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" },
       { username: "Ingrid_kari", password: "Tezha07", role: "student", name: "Ingrid Kari" }
     ];
     let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
 
-    // Asegurar que el usuario Ingrid_kari exista en caso de que localStorage ya contuviera la versión vieja
+    // Asegurar que Ingrid_kari siempre esté registrada en storage existente
     if (!usersDB.some(u => u.username.toLowerCase() === 'ingrid_kari')) {
       usersDB.push({ username: "Ingrid_kari", password: "Tezha07", role: "student", name: "Ingrid Kari" });
       localStorage.setItem('0red_users_db', JSON.stringify(usersDB));
@@ -1286,7 +1349,6 @@
     let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
     let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
 
-    // CANALES CON PERMISOS DE SUBIDA (allowStudents: true/false)
     let channels = JSON.parse(localStorage.getItem('0red_channels_list_v2')) || [
       { id: "power_of_3", name: "Power Of 3", icon: "fa-brain", desc: "Esquemas oficiales de acumulación, manipulación y distribución (AMD).", allowStudents: false },
       { id: "setups_alumnos", name: "Setups de Alumnos", icon: "fa-chart-line", desc: "Espacio abierto para que la comunidad comparta sus operaciones y análisis.", allowStudents: true }
@@ -1346,6 +1408,7 @@
     ];
     let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
 
+    // BANCO DE IMÁGENES Y MATERIALES CON AUTORÍA ESTRICTA
     const DEFAULT_MATERIALS = [
       { 
         id: "mat-1", 
@@ -1354,6 +1417,8 @@
         desc: "Captura oficial de setup en GBP/USD con confirmación de quiebre institucional.", 
         image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
         author: "Ivan Balanzar (0RED)",
+        authorUser: "balanzarivan885",
+        authorRole: "admin",
         date: "2026-10-20",
         visibleToStudents: true 
       }
@@ -1390,6 +1455,85 @@
     let isUserAdmin = currentUserSession && currentUserSession.role === 'admin';
     let adminVisualMode = localStorage.getItem('0red_admin_visual_mode') || 'admin';
     let currentActiveTab = 'classes';
+
+    // ==========================================
+    // SISTEMA DE DIÁLOGOS Y MODALES PERSONALIZADOS
+    // ==========================================
+    let dialogCallback = null;
+
+    function showCustomDialog({ title, desc, icon = "danger", onConfirm }) {
+      const modal = document.getElementById('custom-confirm-modal');
+      const titleEl = document.getElementById('dialog-title');
+      const descEl = document.getElementById('dialog-desc');
+      const iconWrap = document.getElementById('dialog-icon-container');
+      const iconGlyph = document.getElementById('dialog-icon-glyph');
+
+      titleEl.innerText = title;
+      descEl.innerText = desc;
+
+      if (icon === 'danger') {
+        iconWrap.className = 'custom-dialog-icon dialog-icon-danger';
+        iconGlyph.className = 'fa-solid fa-trash-can';
+      } else {
+        iconWrap.className = 'custom-dialog-icon dialog-icon-info';
+        iconGlyph.className = 'fa-solid fa-circle-info';
+      }
+
+      dialogCallback = onConfirm;
+      modal.classList.add('open');
+    }
+
+    function closeCustomDialog(confirmed) {
+      const modal = document.getElementById('custom-confirm-modal');
+      modal.classList.remove('open');
+      if (confirmed && typeof dialogCallback === 'function') {
+        dialogCallback();
+      }
+      dialogCallback = null;
+    }
+
+    // ==========================================
+    // CONTROL ESTRICTO DE BORRADO DE ARCHIVOS
+    // ==========================================
+    function canCurrentUserDelete(item) {
+      if (!currentUserSession) return false;
+      
+      // 1. Admin siempre puede borrar cualquier archivo
+      if (currentUserSession.role === 'admin') return true;
+
+      // 2. Alumno solo puede borrar su propio archivo
+      const currentU = (currentUserSession.username || '').toLowerCase().trim();
+      const authorU = (item.authorUser || item.author || '').toLowerCase().trim();
+
+      return currentU === authorU;
+    }
+
+    function deleteMaterialItem(id) {
+      const item = materialsData.find(m => m.id === id);
+      if (!item) return;
+
+      if (!canCurrentUserDelete(item)) {
+        showCustomDialog({
+          title: "Acceso Denegado",
+          desc: "No tienes permiso para eliminar esta publicación. Solo el creador o el administrador pueden borrarla.",
+          icon: "info",
+          onConfirm: () => {}
+        });
+        return;
+      }
+
+      showCustomDialog({
+        title: "¿Eliminar publicación?",
+        desc: `Se borrará permanentemente "${item.title}". Esta acción no se puede deshacer.`,
+        icon: "danger",
+        onConfirm: () => {
+          materialsData = materialsData.filter(m => m.id !== id);
+          localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
+          renderMaterials();
+          renderCustomChannels();
+        }
+      });
+    }
 
     // ==========================================
     // MOTOR DE COMPRESIÓN EN CANVAS (OPTIMIZACIÓN)
@@ -1516,6 +1660,8 @@
         currentUserSession = { username: siteConfig.adminUser || rawUser, password: p, role: 'admin', name: "Ivan Balanzar" };
         localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
         checkAuthSession();
+        renderMaterials();
+        renderCustomChannels();
         return;
       }
 
@@ -1525,6 +1671,8 @@
         currentUserSession = matchedUser;
         localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
         checkAuthSession();
+        renderMaterials();
+        renderCustomChannels();
       } else {
         errorEl.style.display = 'block';
       }
@@ -1608,7 +1756,12 @@
       localStorage.setItem('0red_site_config', JSON.stringify(siteConfig));
       applySiteConfig();
       closeGlobalSiteModal();
-      alert("✓ ¡Configuración global guardada!");
+      showCustomDialog({
+        title: "Ajustes Actualizados",
+        desc: "La configuración global del sistema fue guardada exitosamente.",
+        icon: "info",
+        onConfirm: () => {}
+      });
     }
     function applySiteConfig() {
       document.getElementById('site-logo-icon').innerText = siteConfig.brandIcon;
@@ -1622,29 +1775,42 @@
 
     function deleteNativeSection(sectionKey, sectionName) {
       if (!isUserAdmin) return;
-      if (confirm(`¿Eliminar el apartado "${sectionName}"?`)) {
-        if (!deletedSections.includes(sectionKey)) {
-          deletedSections.push(sectionKey);
-          localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
+      showCustomDialog({
+        title: `¿Eliminar "${sectionName}"?`,
+        desc: "El apartado dejará de mostrarse en la barra de navegación lateral.",
+        icon: "danger",
+        onConfirm: () => {
+          if (!deletedSections.includes(sectionKey)) {
+            deletedSections.push(sectionKey);
+            localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
+          }
+          applySectionsVisibilityUI();
+          if (currentActiveTab === sectionKey) switchSidebarTab('classes');
         }
-        applySectionsVisibilityUI();
-        if (currentActiveTab === sectionKey) switchSidebarTab('classes');
-      }
+      });
     }
+
     function restoreDeletedNativeSections() {
       deletedSections = [];
       localStorage.removeItem('0red_deleted_sections');
       sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
       localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
       applySectionsVisibilityUI();
-      alert("✓ Apartados iniciales restaurados.");
+      showCustomDialog({
+        title: "Apartados Restaurados",
+        desc: "Los apartados nativos han sido restaurados exitosamente.",
+        icon: "info",
+        onConfirm: () => {}
+      });
     }
+
     function toggleSectionVisibility(sectionKey) {
       if (!isUserAdmin) return;
       sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
       localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
       applySectionsVisibilityUI();
     }
+
     function applySectionsVisibilityUI() {
       const isStudentView = !isUserAdmin || adminVisualMode === 'student';
       const keys = ['chat', 'rules', 'materials', 'scripts', 'tools'];
@@ -1722,7 +1888,15 @@
       const desc = document.getElementById('cfg-channel-desc').value.trim();
       const allowStudents = document.getElementById('cfg-channel-allow-students').checked;
 
-      if (!name) return alert("Por favor ingresa un nombre para el canal.");
+      if (!name) {
+        showCustomDialog({
+          title: "Campo Requerido",
+          desc: "Por favor ingresa un nombre para el canal.",
+          icon: "info",
+          onConfirm: () => {}
+        });
+        return;
+      }
 
       if (id) {
         const idx = channels.findIndex(c => c.id === id);
@@ -1735,18 +1909,22 @@
       localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
       closeChannelConfigModal();
       renderCustomChannels();
-      alert("✓ ¡Canal y permisos guardados exitosamente!");
     }
 
     function deleteChannel(id) {
-      if (confirm("¿Eliminar este canal y todo el material publicado en él?")) {
-        channels = channels.filter(c => c.id !== id);
-        materialsData = materialsData.filter(m => m.targetChannel !== id);
-        localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
-        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
-        renderCustomChannels();
-        switchSidebarTab('classes');
-      }
+      showCustomDialog({
+        title: "¿Eliminar canal completo?",
+        desc: "Se eliminarán el canal y todas las publicaciones o imágenes alojadas en él.",
+        icon: "danger",
+        onConfirm: () => {
+          channels = channels.filter(c => c.id !== id);
+          materialsData = materialsData.filter(m => m.targetChannel !== id);
+          localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
+          localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
+          renderCustomChannels();
+          switchSidebarTab('classes');
+        }
+      });
     }
 
     function renderCustomChannels() {
@@ -1801,25 +1979,30 @@
             </div>
           `;
         } else {
-          gridHtml = channelItems.map(it => `
-            <div class="mat-image-card">
-              <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
-                <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
-                <img src="${it.image}" alt="${it.title}">
-              </div>
-              <div class="mat-body">
-                <div class="mat-author-tag"><i class="fa-solid fa-user-circle"></i> Publicado por: ${it.author}</div>
-                <h4 class="mat-title">${it.title}</h4>
-                <p class="mat-desc">${it.desc || ''}</p>
-                <div class="mat-footer">
-                  <span style="font-size:0.75rem; color:#6b7280;">${it.date}</span>
-                  ${(isUserAdmin && adminVisualMode === 'admin') ? `
-                    <button class="btn-delete-section" title="Eliminar Publicación" onclick="deleteMaterialItem('${it.id}')"><i class="fa-solid fa-trash"></i></button>
-                  ` : ''}
+          gridHtml = channelItems.map(it => {
+            const userCanDelete = canCurrentUserDelete(it);
+            return `
+              <div class="mat-image-card">
+                <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
+                  <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
+                  <img src="${it.image}" alt="${it.title}">
+                </div>
+                <div class="mat-body">
+                  <div class="mat-author-tag"><i class="fa-solid fa-user-circle"></i> Publicado por: ${it.author}</div>
+                  <h4 class="mat-title">${it.title}</h4>
+                  <p class="mat-desc">${it.desc || ''}</p>
+                  <div class="mat-footer">
+                    <span style="font-size:0.75rem; color:#6b7280;">${it.date}</span>
+                    ${userCanDelete ? `
+                      <button class="btn-delete-file" title="Eliminar este archivo" onclick="deleteMaterialItem('${it.id}')">
+                        <i class="fa-solid fa-trash-can"></i> Borrar
+                      </button>
+                    ` : ''}
+                  </div>
                 </div>
               </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
 
         view.innerHTML = `
@@ -1869,8 +2052,17 @@
       const desc = document.getElementById('upload-desc').value.trim();
       const image = document.getElementById('upload-url').value.trim();
 
-      if (!title) return alert("Por favor ingresa un título para el gráfico.");
-      if (!image) return alert("Por favor selecciona una captura desde tu PC o escribe una URL.");
+      if (!title) {
+        showCustomDialog({ title: "Campo requerido", desc: "Por favor ingresa un título para el gráfico.", icon: "info", onConfirm: () => {} });
+        return;
+      }
+      if (!image) {
+        showCustomDialog({ title: "Imagen requerida", desc: "Por favor selecciona una captura desde tu PC o escribe una URL válida.", icon: "info", onConfirm: () => {} });
+        return;
+      }
+
+      const activeUser = currentUserSession ? currentUserSession.username : 'Alumno';
+      const activeRole = currentUserSession ? currentUserSession.role : 'student';
 
       const newItem = {
         id: 'mat_' + Date.now(),
@@ -1878,7 +2070,9 @@
         title,
         desc,
         image,
-        author: currentUserSession ? currentUserSession.username : 'Alumno',
+        author: activeUser,
+        authorUser: activeUser.toLowerCase(),
+        authorRole: activeRole,
         date: new Date().toLocaleDateString()
       };
 
@@ -1887,23 +2081,18 @@
       try {
         localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
       } catch (err) {
-        alert("Alerta de almacenamiento: La imagen es muy pesada. Elige otra imagen o usa una URL directa.");
+        showCustomDialog({
+          title: "Espacio insuficiente",
+          desc: "La imagen es demasiado pesada para el almacenamiento local. Usa una imagen más liviana o un enlace directo.",
+          icon: "info",
+          onConfirm: () => {}
+        });
         return;
       }
 
       closeUploadModal();
       renderMaterials();
       renderCustomChannels();
-      alert("✓ ¡Publicado exitosamente!");
-    }
-
-    function deleteMaterialItem(id) {
-      if (confirm("¿Eliminar este gráfico de la plataforma?")) {
-        materialsData = materialsData.filter(m => m.id !== id);
-        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
-        renderMaterials();
-        renderCustomChannels();
-      }
     }
 
     function renderMaterials() {
@@ -1914,24 +2103,30 @@
         container.innerHTML = `<div style="grid-column:1/-1; padding:35px; text-align:center; color:#6b7280;">Sin esquemas oficiales todavía.</div>`;
         return;
       }
-      container.innerHTML = officialItems.map(it => `
-        <div class="mat-image-card">
-          <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
-            <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
-            <img src="${it.image}" alt="${it.title}">
-          </div>
-          <div class="mat-body">
-            <h4 class="mat-title">${it.title}</h4>
-            <p class="mat-desc">${it.desc || ''}</p>
-            ${(isUserAdmin && adminVisualMode === 'admin') ? `
+      container.innerHTML = officialItems.map(it => {
+        const userCanDelete = canCurrentUserDelete(it);
+        return `
+          <div class="mat-image-card">
+            <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
+              <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
+              <img src="${it.image}" alt="${it.title}">
+            </div>
+            <div class="mat-body">
+              <div class="mat-author-tag"><i class="fa-solid fa-user-circle"></i> Publicado por: ${it.author}</div>
+              <h4 class="mat-title">${it.title}</h4>
+              <p class="mat-desc">${it.desc || ''}</p>
               <div class="mat-footer">
                 <span style="font-size:0.75rem; color:#6b7280;">${it.date}</span>
-                <button class="btn-delete-section" onclick="deleteMaterialItem('${it.id}')"><i class="fa-solid fa-trash"></i></button>
+                ${userCanDelete ? `
+                  <button class="btn-delete-file" title="Eliminar este archivo" onclick="deleteMaterialItem('${it.id}')">
+                    <i class="fa-solid fa-trash-can"></i> Borrar
+                  </button>
+                ` : ''}
               </div>
-            ` : ''}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     // ==========================================
@@ -2006,7 +2201,7 @@
       const diagramImg = document.getElementById('modal-class-diagram-img');
       if (cls.chartImg) {
         diagramImg.src = cls.chartImg;
-        diagramWrap.style.display = 'block';
+        diagramsWrap.style.display = 'block';
       } else {
         diagramsWrap.style.display = 'none';
         diagramImg.src = "";
@@ -2014,10 +2209,12 @@
 
       document.getElementById('player-modal').classList.add('open');
     }
+
     function closePlayerModal() {
       document.getElementById('player-modal').classList.remove('open');
       document.getElementById('modal-video-frame').src = "";
     }
+
     function openClassModal(id) {
       const isNew = id === 'new';
       document.getElementById('editor-title').innerText = isNew ? "Agregar Nueva Clase" : "Editar Clase";
@@ -2049,7 +2246,9 @@
       }
       document.getElementById('class-editor-modal').classList.add('open');
     }
+
     function closeEditorModal() { document.getElementById('class-editor-modal').classList.remove('open'); }
+
     function saveClassData() {
       const id = document.getElementById('edit-class-id').value;
       const week = document.getElementById('edit-week').value.trim();
@@ -2063,7 +2262,10 @@
       const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
       const unlocked = document.getElementById('edit-unlocked').checked;
 
-      if (!title) return alert("Por favor ingresa un título para la clase.");
+      if (!title) {
+        showCustomDialog({ title: "Campo requerido", desc: "Por favor ingresa un título para la clase.", icon: "info", onConfirm: () => {} });
+        return;
+      }
 
       if (id) {
         const idx = classesData.findIndex(c => c.id === id);
@@ -2076,12 +2278,18 @@
       renderClasses();
       closeEditorModal();
     }
+
     function deleteClass(id) {
-      if (confirm("¿Eliminar esta clase del temario?")) {
-        classesData = classesData.filter(c => c.id !== id);
-        localStorage.setItem('0red_classes', JSON.stringify(classesData));
-        renderClasses();
-      }
+      showCustomDialog({
+        title: "¿Eliminar esta clase?",
+        desc: "La clase seleccionada será retirada del temario de la plataforma.",
+        icon: "danger",
+        onConfirm: () => {
+          classesData = classesData.filter(c => c.id !== id);
+          localStorage.setItem('0red_classes', JSON.stringify(classesData));
+          renderClasses();
+        }
+      });
     }
 
     // ==========================================
@@ -2126,26 +2334,38 @@
         container.appendChild(card);
       });
     }
+
     function openToolModal() { document.getElementById('tool-editor-modal').classList.add('open'); }
     function closeToolModal() { document.getElementById('tool-editor-modal').classList.remove('open'); }
+
     function saveToolData() {
       const title = document.getElementById('edit-tool-title').value.trim();
       const url = document.getElementById('edit-tool-url').value.trim();
       const desc = document.getElementById('edit-tool-desc').value.trim();
       const features = document.getElementById('edit-tool-features').value.split('\n').filter(Boolean);
-      if (!title || !url) return alert("Completa título y enlace.");
+      if (!title || !url) {
+        showCustomDialog({ title: "Datos Incompletos", desc: "Por favor completa el título y el enlace de la herramienta.", icon: "info", onConfirm: () => {} });
+        return;
+      }
       toolsData.push({ id: 'tool-' + Date.now(), title, url, desc, features, visibleToStudents: true, allowEmbed: true });
       localStorage.setItem('0red_tools', JSON.stringify(toolsData));
       renderTools();
       closeToolModal();
     }
+
     function deleteTool(id) {
-      if (confirm("¿Eliminar herramienta?")) {
-        toolsData = toolsData.filter(t => t.id !== id);
-        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-        renderTools();
-      }
+      showCustomDialog({
+        title: "¿Eliminar herramienta?",
+        desc: "La herramienta seleccionada será removida de la vista de los miembros.",
+        icon: "danger",
+        onConfirm: () => {
+          toolsData = toolsData.filter(t => t.id !== id);
+          localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+          renderTools();
+        }
+      });
     }
+
     function openEmbeddedViewer(url, title) {
       const wrap = document.getElementById('embedded-journal-wrap');
       const iframe = document.getElementById('journal-iframe');
@@ -2154,6 +2374,7 @@
       wrap.style.display = 'block';
       wrap.scrollIntoView({ behavior: 'smooth' });
     }
+
     function closeEmbeddedViewer() {
       document.getElementById('embedded-journal-wrap').style.display = 'none';
       document.getElementById('journal-iframe').src = '';
@@ -2170,12 +2391,17 @@
         container.appendChild(item);
       });
     }
+
     function openRuleModal() { document.getElementById('rule-modal').classList.add('open'); }
     function closeRuleModal() { document.getElementById('rule-modal').classList.remove('open'); }
+
     function saveRuleData() {
       const title = document.getElementById('edit-rule-title').value.trim();
       const desc = document.getElementById('edit-rule-desc').value.trim();
-      if (!title) return alert("Título obligatorio.");
+      if (!title) {
+        showCustomDialog({ title: "Título Requerido", desc: "Por favor ingresa un título para la regla.", icon: "info", onConfirm: () => {} });
+        return;
+      }
       rulesData.push({ id: 'rule-' + Date.now(), num: String(rulesData.length+1).padStart(2,'0'), title, desc, visibleToStudents: true });
       localStorage.setItem('0red_rules', JSON.stringify(rulesData));
       renderRules();
@@ -2199,20 +2425,34 @@
         container.appendChild(box);
       });
     }
+
     function openScriptModal() { document.getElementById('script-modal').classList.add('open'); }
     function closeScriptModal() { document.getElementById('script-modal').classList.remove('open'); }
+
     function saveScriptData() {
       const title = document.getElementById('edit-script-title').value.trim();
       const code = document.getElementById('edit-script-code').value;
-      if (!title || !code) return alert("Completa título y código.");
+      if (!title || !code) {
+        showCustomDialog({ title: "Datos Incompletos", desc: "Completa el título y el código del script Pine.", icon: "info", onConfirm: () => {} });
+        return;
+      }
       scriptsData.push({ id: 'script-' + Date.now(), title, badge: 'PINE SCRIPT V5', code, visibleToStudents: true });
       localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
       renderScripts();
       closeScriptModal();
     }
+
     function copyPineScript(id) {
       const el = document.getElementById(id);
-      if (el) navigator.clipboard.writeText(el.innerText).then(() => alert("✓ ¡Código copiado!"));
+      if (el) {
+        const temp = document.createElement('textarea');
+        temp.value = el.innerText;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showCustomDialog({ title: "Copiado", desc: "Código Pine Script copiado exitosamente al portapapeles.", icon: "info", onConfirm: () => {} });
+      }
     }
 
     // LIVE & CHAT
@@ -2221,6 +2461,7 @@
       document.getElementById('wrap-meet-url').style.display = type === 'meet' ? 'block' : 'none';
       document.getElementById('wrap-youtube-url').style.display = type === 'youtube' ? 'block' : 'none';
     }
+
     function openLiveConfigModal() {
       document.getElementById('cfg-live-platform').value = liveConfig.platformType || 'meet';
       document.getElementById('cfg-live-status').value = liveConfig.status || 'scheduled';
@@ -2232,7 +2473,9 @@
       togglePlatformLiveFields();
       document.getElementById('live-config-modal').classList.add('open');
     }
+
     function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
+
     function saveLiveConfig() {
       liveConfig.platformType = document.getElementById('cfg-live-platform').value;
       liveConfig.status = document.getElementById('cfg-live-status').value;
@@ -2244,8 +2487,9 @@
       localStorage.setItem('0red_live', JSON.stringify(liveConfig));
       applyLiveConfig();
       closeLiveModal();
-      alert("✓ ¡Configuración en vivo guardada!");
+      showCustomDialog({ title: "Transmisión Actualizada", desc: "La configuración de la sala en vivo ha sido guardada.", icon: "info", onConfirm: () => {} });
     }
+
     function applyLiveConfig() {
       document.getElementById('display-live-date').innerText = liveConfig.date;
       document.getElementById('live-stream-title').innerText = liveConfig.title;
@@ -2290,6 +2534,7 @@
       });
       container.scrollTop = container.scrollHeight;
     }
+
     function sendGlobalChatMessage() {
       const input = document.getElementById('global-chat-input');
       const text = input.value.trim();
@@ -2304,6 +2549,7 @@
       renderGlobalChat();
       input.value = '';
     }
+
     function sendChatMessage() {
       const input = document.getElementById('chat-input');
       const text = input.value.trim();
