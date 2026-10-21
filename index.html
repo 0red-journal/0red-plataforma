@@ -20,6 +20,7 @@
       --red-glow: rgba(239, 68, 68, 0.25);
       --cyan-accent: #06b6d4;
       --green-accent: #10b981;
+      --telegram-blue: #229ED9;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
       --font-sans: 'Plus Jakarta Sans', sans-serif;
@@ -137,43 +138,28 @@
     }
     .sidebar-link i { width: 18px; font-size: 1rem; text-align: center; }
 
-    /* ESTILOS VISUALES ADMIN / OCULTOS */
-    .item-hidden-admin {
-      opacity: 0.55;
-      border-style: dashed !important;
-      position: relative;
-    }
+    .item-hidden-admin { opacity: 0.55; border-style: dashed !important; position: relative; }
     .hidden-badge-tag {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-left: 6px;
-      display: inline-block;
+      background: rgba(239, 68, 68, 0.2); color: #f87171; font-family: var(--font-mono); font-size: 0.65rem;
+      padding: 2px 6px; border-radius: 4px; margin-left: 6px; display: inline-block;
     }
+    .channel-perm-badge {
+      font-size: 0.65rem; font-family: var(--font-mono); padding: 2px 6px; border-radius: 4px; margin-left: 6px;
+    }
+    .perm-read-only { background: rgba(107, 114, 128, 0.2); color: #9ca3af; border: 1px solid rgba(107, 114, 128, 0.4); }
+    .perm-open-uploads { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
     .live-indicator-dot {
       width: 8px; height: 8px; background: var(--green-accent); border-radius: 50%;
       box-shadow: 0 0 8px var(--green-accent); display: inline-block; animation: pulse-live 1.8s infinite;
     }
-    @keyframes pulse-live {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(0.6); opacity: 0.4; }
-    }
+    @keyframes pulse-live { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.6); opacity: 0.4; } }
 
-    .btn-toggle-eye {
-      background: none; border: none; color: #9ca3af; cursor: pointer;
-      font-size: 0.85rem; padding: 4px 6px; border-radius: 4px; transition: all 0.2s;
+    .btn-toggle-eye, .btn-delete-section {
+      background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 0.85rem; padding: 4px 6px; border-radius: 4px;
     }
-    .btn-toggle-eye:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .btn-toggle-eye:hover, .btn-delete-section:hover { color: #ef4444; background: rgba(255,255,255,0.08); }
     .btn-toggle-eye.is-hidden { color: #ef4444; }
-
-    .btn-delete-section {
-      background: none; border: none; color: #9ca3af; cursor: pointer;
-      font-size: 0.85rem; padding: 4px 6px; border-radius: 4px; transition: all 0.2s;
-    }
-    .btn-delete-section:hover { color: #ef4444; background: rgba(255,255,255,0.08); }
 
     .sidebar-controls-wrap { display: none; align-items: center; gap: 4px; }
     body.admin-edit-active .sidebar-controls-wrap { display: flex; }
@@ -217,55 +203,66 @@
       display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; text-decoration: none;
     }
     .btn-view:hover { background: var(--red-accent); color: #fff; }
-    .btn-admin-add-item {
-      background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #fff; padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
-      cursor: pointer; display: none; align-items: center; gap: 6px; transition: all 0.2s;
+    .btn-action-primary {
+      background: var(--red-accent); color: #fff; border: none; padding: 8px 16px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
     }
-    .btn-admin-add-item:hover { background: var(--red-accent); }
-    body.admin-edit-active .btn-admin-add-item { display: inline-flex; }
+    .btn-action-primary:hover { opacity: 0.9; }
 
-    /* BOTÓN DE SINCRONIZAR GITHUB */
-    .btn-sync-github {
-      background: #10b981; color: #fff; border: none; padding: 7px 14px;
-      border-radius: 6px; font-size: 0.82rem; font-weight: 700; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    /* SECCIÓN DE MENTORÍAS */
+    .mentor-section-wrap {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.5) 0%, rgba(13, 17, 24, 0.95) 100%);
+      border: 1px solid var(--card-border); border-radius: 18px; padding: 30px; margin-bottom: 35px; position: relative; overflow: hidden;
     }
-    .btn-sync-github:hover { background: #059669; }
+    .mentor-section-wrap::before {
+      content: ''; position: absolute; top: -120px; right: -80px; width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.18) 0%, transparent 70%); pointer-events: none;
+    }
+    .mentor-section-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .mentor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 22px; }
+    .mentor-card {
+      background: rgba(10, 14, 22, 0.95); border: 1px solid var(--card-border); border-radius: 16px;
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.25s ease;
+    }
+    .mentor-card:hover { border-color: var(--card-border-hover); transform: translateY(-4px); box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6); }
+    .mentor-card.featured-card {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, rgba(10, 14, 22, 0.98) 100%);
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.12);
+    }
+    .mentor-badge-top { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 5px; text-transform: uppercase; display: inline-block; margin-bottom: 12px; }
+    .badge-inter { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-advanced { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-conserv { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .mentor-price-tag { font-size: 1.85rem; font-weight: 800; color: #fff; font-family: var(--font-mono); margin: 10px 0 16px; display: flex; align-items: baseline; gap: 6px; }
+    .mentor-price-period { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .mentor-specs-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .mentor-specs-list li { font-size: 0.84rem; color: #d1d5db; display: flex; align-items: center; gap: 10px; }
+    .mentor-specs-list li i { color: var(--green-accent); font-size: 0.8rem; width: 16px; text-align: center; }
+    .mentor-btn-telegram {
+      background: linear-gradient(135deg, #229ED9, #1b7fb0); color: #fff; font-weight: 700; font-size: 0.88rem; padding: 12px 18px;
+      border-radius: 9px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 18px rgba(34, 158, 217, 0.3); transition: all 0.2s;
+    }
+    .mentor-btn-telegram:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(34, 158, 217, 0.45); color: #fff; }
+    .mentor-btn-telegram.vip-btn { background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 6px 18px var(--red-glow); }
+    .mentor-btn-telegram.vip-btn:hover { box-shadow: 0 10px 26px rgba(239, 68, 68, 0.45); }
 
     /* GRILLA CLASES */
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 22px; }
     .class-card {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;
       transition: all 0.25s ease; position: relative;
     }
     .class-card:hover { border-color: var(--card-border-hover); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
     .card-thumb-container { position: relative; width: 100%; height: 200px; background: #111622; overflow: hidden; cursor: pointer; }
     .card-thumb-img { width: 100%; height: 100%; object-fit: cover; }
-    .card-play-overlay {
-      position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex;
-      align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;
-    }
+    .card-play-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
     .class-card:hover .card-play-overlay { opacity: 1; }
-    .play-btn-circle {
-      width: 50px; height: 50px; background: var(--red-accent); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem;
-      box-shadow: 0 0 20px var(--red-glow);
-    }
-    .card-locked-overlay {
-      position: absolute; inset: 0; background: rgba(7, 9, 14, 0.85); backdrop-filter: blur(4px);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted);
-    }
-    .lock-circle {
-      width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff;
-    }
-    .duration-tag {
-      position: absolute; bottom: 10px; left: 10px; background: rgba(0, 0, 0, 0.8);
-      font-family: var(--font-mono); font-size: 0.75rem; padding: 3px 7px; border-radius: 5px; color: #e5e7eb;
-    }
+    .play-btn-circle { width: 50px; height: 50px; background: var(--red-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; box-shadow: 0 0 20px var(--red-glow); }
+    .card-locked-overlay { position: absolute; inset: 0; background: rgba(7, 9, 14, 0.85); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); }
+    .lock-circle { width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; }
+    .duration-tag { position: absolute; bottom: 10px; left: 10px; background: rgba(0, 0, 0, 0.8); font-family: var(--font-mono); font-size: 0.75rem; padding: 3px 7px; border-radius: 5px; color: #e5e7eb; }
     .card-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
     .card-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.75rem; font-family: var(--font-mono); }
     .meta-week { color: var(--text-muted); font-weight: 700; }
@@ -275,10 +272,7 @@
     .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
     .card-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.45; margin-bottom: 14px; flex: 1; }
     .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .concept-tag {
-      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; color: #d1d5db; font-family: var(--font-mono);
-    }
+    .concept-tag { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; color: #d1d5db; font-family: var(--font-mono); }
     .card-actions { border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
     .admin-card-controls { display: none; gap: 6px; }
     body.admin-edit-active .admin-card-controls { display: flex; }
@@ -288,67 +282,55 @@
     }
     .btn-admin-icon:hover { color: #fff; border-color: var(--red-accent); }
 
-    /* CONTENEDORES DE APARTADOS */
-    .content-panel-card {
-      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 24px; margin-bottom: 24px;
-    }
+    /* CONTENEDORES Y REGLAS */
+    .content-panel-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 24px; margin-bottom: 24px; }
     .rule-item {
       display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
-      padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border);
-      border-radius: 10px; margin-bottom: 14px;
+      padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 14px;
     }
     .rule-left { display: flex; gap: 16px; flex: 1; }
     .rule-num {
       width: 34px; height: 34px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3);
-      color: var(--red-accent); border-radius: 8px; display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-mono); font-weight: 700; flex-shrink: 0;
+      color: var(--red-accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; flex-shrink: 0;
     }
     .rule-content h4 { font-size: 1rem; margin-bottom: 4px; color: #fff; }
     .rule-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
 
-    .material-item {
-      display: flex; align-items: center; justify-content: space-between; padding: 16px 20px;
-      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 12px;
+    /* GRILLA DE IMÁGENES Y SETUPS */
+    .materials-custom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-top: 16px; }
+    .mat-image-card {
+      background: rgba(10, 14, 22, 0.95); border: 1px solid var(--card-border); border-radius: 14px;
+      overflow: hidden; display: flex; flex-direction: column; transition: all 0.25s ease; position: relative;
     }
-    .material-info { display: flex; align-items: center; gap: 14px; }
-    .material-icon { font-size: 1.6rem; color: #f87171; }
+    .mat-image-card:hover { border-color: var(--card-border-hover); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); }
+    .mat-img-wrap { width: 100%; height: 220px; background: #000; overflow: hidden; position: relative; cursor: zoom-in; display: flex; align-items: center; justify-content: center; }
+    .mat-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.25s; }
+    .mat-img-wrap:hover img { transform: scale(1.03); }
+    .mat-img-badge {
+      position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+      font-family: var(--font-mono); font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; color: #38bdf8; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .mat-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .mat-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .mat-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 12px; flex: 1; }
+    .mat-author-tag { font-family: var(--font-mono); font-size: 0.72rem; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .mat-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; }
 
-    .script-box {
-      background: #090d14; border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 20px; overflow: hidden;
-    }
-    .script-header {
-      padding: 12px 18px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--card-border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .script-code-area {
-      padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8;
-      overflow-x: auto; white-space: pre-wrap; line-height: 1.6;
-    }
+    .script-box { background: #090d14; border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    .script-header { padding: 12px 18px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .script-code-area { padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; white-space: pre-wrap; line-height: 1.6; }
 
-    .general-chat-wrapper {
-      display: flex; flex-direction: column; height: 620px; background: var(--card-bg);
-      border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden;
-    }
+    .general-chat-wrapper { display: flex; flex-direction: column; height: 620px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; }
     .chat-global-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .chat-bubble {
-      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
-      padding: 10px 14px; border-radius: 10px; max-width: 80%;
-    }
+    .chat-bubble { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 10px; max-width: 80%; }
     .chat-bubble.admin-msg { border-left: 3px solid var(--red-accent); background: rgba(239, 68, 68, 0.05); }
     .chat-bubble-meta { display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 4px; font-family: var(--font-mono); }
     .chat-input-area { padding: 14px; border-top: 1px solid var(--card-border); display: flex; gap: 8px; }
 
-    /* SECCIÓN EN VIVO / MEET DUAL */
+    /* SECCIÓN EN VIVO */
     .live-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; min-height: 600px; }
-    .live-chat-panel {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; height: 100%;
-    }
-    .chat-header {
-      padding: 14px 18px; background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between;
-      align-items: center; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700;
-    }
+    .live-chat-panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
+    .chat-header { padding: 14px 18px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
     .chat-msg { background: rgba(255, 255, 255, 0.03); padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid var(--card-border); }
     .chat-author { font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--red-accent); margin-bottom: 3px; }
@@ -359,52 +341,35 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; gap: 20px; height: 100%; min-height: 480px; position: relative; overflow: hidden;
     }
-    .meet-hero-card::before {
-      content: ''; position: absolute; inset: -50%;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 60%);
-      pointer-events: none;
-    }
+    .meet-hero-card::before { content: ''; position: absolute; inset: -50%; background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 60%); pointer-events: none; }
     .meet-icon-badge {
       width: 76px; height: 76px; background: rgba(239, 68, 68, 0.14);
       border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 20px; display: flex;
-      align-items: center; justify-content: center; font-size: 2.2rem; color: var(--red-accent);
-      box-shadow: 0 0 30px var(--red-glow);
+      align-items: center; justify-content: center; font-size: 2.2rem; color: var(--red-accent); box-shadow: 0 0 30px var(--red-glow);
     }
-    .meet-live-pill {
-      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; padding: 5px 14px;
-      border-radius: 30px; display: inline-flex; align-items: center; gap: 8px;
-    }
+    .meet-live-pill { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; }
     .meet-live-pill.active { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
     .meet-live-pill.scheduled { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; }
 
     .btn-meet-join {
-      background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;
-      padding: 14px 28px; border-radius: 10px; font-weight: 800; font-size: 1rem;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
-      box-shadow: 0 10px 25px var(--red-glow); transition: all 0.2s; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; padding: 14px 28px;
+      border-radius: 10px; font-weight: 800; font-size: 1rem; text-decoration: none; display: inline-flex;
+      align-items: center; gap: 10px; box-shadow: 0 10px 25px var(--red-glow); transition: all 0.2s; border: none; cursor: pointer;
     }
     .btn-meet-join:hover { transform: translateY(-2px); box-shadow: 0 15px 35px var(--red-glow); }
-
     .player-wrapper { position: relative; padding-top: 56.25%; background: #000; height: 100%; }
     .player-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-    /* ESTILOS DE HERRAMIENTAS / JOURNAL */
+    /* HERRAMIENTAS */
     .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; margin-bottom: 24px; }
     .tool-card {
       background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px;
-      padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
-      transition: all 0.25s ease; position: relative; overflow: hidden;
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s ease; position: relative; overflow: hidden;
     }
     .tool-card:hover { border-color: var(--card-border-hover); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-    .tool-card::before {
-      content: ''; position: absolute; top: 0; right: 0; width: 120px; height: 120px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
     .tool-icon-wrap {
       width: 48px; height: 48px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--red-accent);
-      margin-bottom: 16px;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--red-accent); margin-bottom: 16px;
     }
     .tool-features-list { list-style: none; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 8px; }
     .tool-features-list li { font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
@@ -441,41 +406,37 @@
       border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 0.95rem;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-submit:hover { opacity: 0.92; }
+
+    /* LIGHTBOX VISOR */
+    #image-lightbox-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+      z-index: 10000; display: none; align-items: center; justify-content: center; padding: 24px; flex-direction: column;
+    }
+    #image-lightbox-modal.open { display: flex; }
+    .lightbox-img-wrap { max-width: 92vw; max-height: 84vh; position: relative; }
+    .lightbox-full-img { max-width: 100%; max-height: 84vh; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: contain; }
+    .lightbox-title { color: #fff; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 14px; text-align: center; }
 
     .online-badge-corner {
       position: fixed; bottom: 20px; left: 20px; z-index: 99;
       background: rgba(10, 14, 20, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 30px; padding: 8px 16px; display: flex; align-items: center; gap: 10px;
     }
-    .online-dot {
-      width: 9px; height: 9px; background: var(--green-accent); border-radius: 50%;
-      box-shadow: 0 0 10px var(--green-accent); animation: pulse-online 2s infinite ease-in-out;
-    }
-    @keyframes pulse-online {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
+    .online-dot { width: 9px; height: 9px; background: var(--green-accent); border-radius: 50%; box-shadow: 0 0 10px var(--green-accent); animation: pulse-online 2s infinite ease-in-out; }
+    @keyframes pulse-online { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
     .online-count-text { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
-    .platform-footer {
-      border-top: 1px solid var(--card-border); padding: 22px 20px; text-align: center;
-      font-size: 0.82rem; font-family: var(--font-mono); color: #6b7280; background: rgba(10, 14, 20, 0.95); margin-top: auto;
-    }
+    .platform-footer { border-top: 1px solid var(--card-border); padding: 22px 20px; text-align: center; font-size: 0.82rem; font-family: var(--font-mono); color: #6b7280; background: rgba(10, 14, 20, 0.95); margin-top: auto; }
   </style>
 </head>
 <body>
 
-  <!-- 1. LOGIN GATEWAY -->
+  <!-- 1. LOGIN -->
   <div id="login-view-wrapper">
     <div class="login-box">
       <div class="login-brand-icon" id="login-brand-badge">0R</div>
       <h2 class="login-title" id="login-box-title">0REDSTRUCTURE</h2>
       <div class="login-subtitle">Área Exclusiva de Miembros</div>
-
-      <div class="login-error-msg" id="gateway-error-msg">
-        <i class="fa-solid fa-triangle-exclamation"></i> Usuario o contraseña incorrectos.
-      </div>
-
+      <div class="login-error-msg" id="gateway-error-msg"><i class="fa-solid fa-triangle-exclamation"></i> Usuario o contraseña incorrectos.</div>
       <form class="login-form" onsubmit="handleGatewayLogin(event)">
         <div class="input-field-wrap">
           <label>USUARIO:</label>
@@ -485,21 +446,14 @@
           <label>CONTRASEÑA:</label>
           <input type="password" id="gw-pass" class="login-input" placeholder="••••••••" required autocomplete="current-password">
         </div>
-        <button type="submit" class="login-btn-submit">
-          <i class="fa-solid fa-right-to-bracket"></i> INGRESAR AL CURSO
-        </button>
+        <button type="submit" class="login-btn-submit"><i class="fa-solid fa-right-to-bracket"></i> INGRESAR AL CURSO</button>
       </form>
-
-      <div class="copyright-login-footer">
-        © 2026 <strong id="login-copy-brand">0REDSTRUCTURE</strong> por <strong id="login-copy-author">Ivan Balanzar</strong>.<br>Todos los derechos reservados.
-      </div>
+      <div class="copyright-login-footer">© 2026 <strong>0REDSTRUCTURE</strong> por <strong>Ivan Balanzar</strong>.<br>Todos los derechos reservados.</div>
     </div>
   </div>
 
   <!-- 2. PLATAFORMA INTERNA -->
   <div id="platform-app-wrapper">
-
-    <!-- Navbar superior -->
     <nav class="navbar">
       <div class="brand-area" onclick="switchSidebarTab('classes')">
         <div class="brand-icon" id="site-logo-icon">0R</div>
@@ -508,26 +462,18 @@
           <div class="brand-sub" id="site-brand-sub">INSTITUTIONAL MENTORSHIP</div>
         </div>
       </div>
-
       <div class="user-actions">
         <div class="user-session-badge">
           <i class="fa-solid fa-crown" id="user-role-icon" style="color:#f59e0b;"></i>
           <span id="active-session-username">balanzarivan885</span>
-          <button class="btn-logout-header" title="Cerrar Sesión" onclick="logoutSession()">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
-          </button>
+          <button class="btn-logout-header" title="Cerrar Sesión" onclick="logoutSession()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</button>
         </div>
-
-        <button class="admin-toggle-mode-btn" id="btn-admin-view-toggle" onclick="toggleAdminVisualMode()">
-          <i class="fa-solid fa-pen-to-square"></i> MODO: ADMIN
-        </button>
+        <button class="admin-toggle-mode-btn" id="btn-admin-view-toggle" onclick="toggleAdminVisualMode()"><i class="fa-solid fa-pen-to-square"></i> MODO: ADMIN</button>
       </div>
     </nav>
 
-    <!-- CUERPO PRINCIPAL CON SIDEBAR -->
     <div class="app-body-layout">
-      
-      <!-- SIDEBAR DINÁMICO -->
+      <!-- SIDEBAR -->
       <aside class="app-sidebar">
         <div>
           <div class="sidebar-section-title">Contenido Principal</div>
@@ -535,6 +481,14 @@
             <li>
               <a class="sidebar-link active" id="slink-classes" onclick="switchSidebarTab('classes')">
                 <span class="link-label-group"><i class="fa-solid fa-graduation-cap"></i> Módulos & Clases</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-link" id="slink-mentorias" onclick="scrollToMentorships()">
+                <span class="link-label-group">
+                  <i class="fa-solid fa-gem" style="color:var(--red-accent);"></i> Mentorías Oficiales
+                  <span style="font-size:0.65rem; background:rgba(239,68,68,0.2); color:#fca5a5; padding:2px 6px; border-radius:4px; font-family:var(--font-mono); margin-left:auto;">COMPRA</span>
+                </span>
               </a>
             </li>
             <li>
@@ -549,93 +503,70 @@
         </div>
 
         <div>
-          <div class="sidebar-section-title">
-            <span>Comunidad & Recursos</span>
-          </div>
+          <div class="sidebar-section-title">Comunidad & Recursos</div>
           <ul class="sidebar-nav-list" id="sidebar-community-list">
             <!-- 1. Chat General -->
             <li id="slink-item-chat">
               <a class="sidebar-link" id="slink-chat" onclick="switchSidebarTab('chat')">
                 <span class="link-label-group"><i class="fa-solid fa-comments"></i> Chat General <span id="tag-hidden-chat" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
                 <span class="sidebar-controls-wrap">
-                  <button class="btn-toggle-eye" id="eye-chat" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('chat')">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('chat', 'Chat General')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                  <button class="btn-toggle-eye" id="eye-chat" title="Ocultar/Desocultar" onclick="event.stopPropagation(); toggleSectionVisibility('chat')"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('chat', 'Chat General')"><i class="fa-solid fa-trash"></i></button>
                 </span>
               </a>
             </li>
-
             <!-- 2. Reglas de Mentoría -->
             <li id="slink-item-rules">
               <a class="sidebar-link" id="slink-rules" onclick="switchSidebarTab('rules')">
                 <span class="link-label-group"><i class="fa-solid fa-book-bookmark"></i> Reglas de Mentoría <span id="tag-hidden-rules" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
                 <span class="sidebar-controls-wrap">
-                  <button class="btn-toggle-eye" id="eye-rules" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('rules')">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('rules', 'Reglas de Mentoría')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                  <button class="btn-toggle-eye" id="eye-rules" title="Ocultar/Desocultar" onclick="event.stopPropagation(); toggleSectionVisibility('rules')"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('rules', 'Reglas de Mentoría')"><i class="fa-solid fa-trash"></i></button>
                 </span>
               </a>
             </li>
-
             <!-- 3. Material de Clases -->
             <li id="slink-item-materials">
               <a class="sidebar-link" id="slink-materials" onclick="switchSidebarTab('materials')">
                 <span class="link-label-group"><i class="fa-solid fa-folder-open"></i> Material de Clases <span id="tag-hidden-materials" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
                 <span class="sidebar-controls-wrap">
-                  <button class="btn-toggle-eye" id="eye-materials" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('materials')">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('materials', 'Material de Clases')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                  <button class="btn-toggle-eye" id="eye-materials" title="Ocultar/Desocultar" onclick="event.stopPropagation(); toggleSectionVisibility('materials')"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('materials', 'Material de Clases')"><i class="fa-solid fa-trash"></i></button>
                 </span>
               </a>
             </li>
-
             <!-- 4. Indicadores & Scripts -->
             <li id="slink-item-scripts">
               <a class="sidebar-link" id="slink-scripts" onclick="switchSidebarTab('scripts')">
                 <span class="link-label-group"><i class="fa-solid fa-code"></i> Indicadores & Scripts <span id="tag-hidden-scripts" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
                 <span class="sidebar-controls-wrap">
-                  <button class="btn-toggle-eye" id="eye-scripts" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('scripts')">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('scripts', 'Indicadores & Scripts')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                  <button class="btn-toggle-eye" id="eye-scripts" title="Ocultar/Desocultar" onclick="event.stopPropagation(); toggleSectionVisibility('scripts')"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('scripts', 'Indicadores & Scripts')"><i class="fa-solid fa-trash"></i></button>
                 </span>
               </a>
             </li>
-
             <!-- 5. Herramientas & Journal -->
             <li id="slink-item-tools">
               <a class="sidebar-link" id="slink-tools" onclick="switchSidebarTab('tools')">
                 <span class="link-label-group"><i class="fa-solid fa-screwdriver-wrench"></i> Herramientas <span id="tag-hidden-tools" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
                 <span class="sidebar-controls-wrap">
-                  <button class="btn-toggle-eye" id="eye-tools" title="Ocultar/Desocultar para alumnos" onclick="event.stopPropagation(); toggleSectionVisibility('tools')">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('tools', 'Herramientas')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
+                  <button class="btn-toggle-eye" id="eye-tools" title="Ocultar/Desocultar" onclick="event.stopPropagation(); toggleSectionVisibility('tools')"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn-delete-section" title="Eliminar Apartado" onclick="event.stopPropagation(); deleteNativeSection('tools', 'Herramientas')"><i class="fa-solid fa-trash"></i></button>
                 </span>
               </a>
             </li>
           </ul>
 
-          <button class="btn-sidebar-add-custom" onclick="openNewSectionModal()">
-            <i class="fa-solid fa-plus-circle"></i> CREAR APARTADO
+          <div class="sidebar-section-title" style="margin-top:20px;">Canales Creados</div>
+          <ul class="sidebar-nav-list" id="sidebar-channels-list"></ul>
+
+          <button class="btn-sidebar-add-custom" onclick="openChannelConfigModal('new')">
+            <i class="fa-solid fa-plus-circle"></i> CREAR NUEVO CANAL
           </button>
         </div>
       </aside>
 
-      <!-- ÁREA DE CONTENIDO -->
+      <!-- MAIN WORKSPACE -->
       <main class="main-workspace">
 
         <!-- Admin Banner -->
@@ -645,21 +576,134 @@
             <div>
               <strong style="color:#fff; font-size:0.95rem;">PANEL TOTAL DE ADMINISTRACIÓN (<span id="banner-admin-name">balanzarivan885</span>)</strong>
               <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">
-                Controla clases, Google Meet, herramientas y sincroniza cambios para todos los alumnos:
+                Controla clases, imágenes de setups, salas de Google Meet, indicadores y apartados para toda tu comunidad:
               </p>
             </div>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn-sync-github" onclick="syncAllToGitHub()"><i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS</button>
             <button class="btn-view" onclick="openClassModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR CLASE</button>
+            <button class="btn-view" onclick="openUploadModal('materials')"><i class="fa-solid fa-image"></i> SUBIR MATERIAL / IMAGEN</button>
             <button class="btn-view" onclick="openToolModal('new')"><i class="fa-solid fa-screwdriver-wrench"></i> AGREGAR HERRAMIENTA</button>
             <button class="btn-view" onclick="openLiveConfigModal()"><i class="fa-solid fa-video"></i> CONFIGURAR LIVE / MEET</button>
             <button class="btn-view" style="background:rgba(255,255,255,0.1);" onclick="openGlobalSiteModal()"><i class="fa-solid fa-sliders"></i> AJUSTES GLOBALES</button>
           </div>
         </div>
 
-        <!-- 1. VISTA: CLASES -->
+        <!-- 1. VISTA: INICIO / CLASES / MENTORÍAS -->
         <div id="view-classes" class="workspace-view">
+
+          <!-- SECCIÓN: MENTORÍAS INSTITUCIONALES -->
+          <section class="mentor-section-wrap" id="mentorships-section">
+            <div class="mentor-section-header">
+              <div>
+                <div class="badge-pill"><i class="fa-solid fa-award"></i> Admisiones Oficiales • 0REDSTRUCTURE</div>
+                <h2 style="font-size:1.85rem; font-weight:800; letter-spacing:-0.5px; color:#fff;">Programas de Mentoría Institucional</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; max-width:680px; margin-top:6px; line-height:1.5;">
+                  Elige el programa según tu estilo de ejecución y nivel analítico. Para completar tu inscripción, haz clic en el botón de Telegram y solicita tu acceso directo con soporte institucional.
+                </p>
+              </div>
+
+              <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram" style="white-space:nowrap;">
+                <i class="fa-brands fa-telegram" style="font-size:1.2rem;"></i> Canal Oficial de Telegram
+              </a>
+            </div>
+
+            <div class="mentor-grid">
+              
+              <!-- Plan 1: Intraday ICT -->
+              <div class="mentor-card">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="mentor-badge-top badge-inter">Nivel Intermedio</span>
+                    <span style="font-family:var(--font-mono); font-size:0.75rem; color:#38bdf8;"><i class="fa-solid fa-bolt"></i> Intraday</span>
+                  </div>
+                  <h3 style="font-size:1.35rem; font-weight:800; color:#fff;">Intraday ICT • Power of 3</h3>
+                  <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
+                    Especialización en modelos de acumulación, manipulación y distribución (PO3) con foco en GBP/USD.
+                  </p>
+
+                  <div class="mentor-price-tag">
+                    $10 <span style="font-size:1rem; color:#9ca3af;">USD</span>
+                    <span class="mentor-price-period">/ mes</span>
+                  </div>
+
+                  <ul class="mentor-specs-list">
+                    <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 60% a 70% comprobado</li>
+                    <li><i class="fa-solid fa-chart-line"></i> <strong>Par principal:</strong> GBP/USD especializado</li>
+                    <li><i class="fa-solid fa-layer-group"></i> <strong>Metodología:</strong> Power of Three (AMD)</li>
+                    <li><i class="fa-solid fa-clock"></i> <strong>Operativa:</strong> Intraday diario sesiones NY / Londres</li>
+                  </ul>
+                </div>
+
+                <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram">
+                  <i class="fa-brands fa-telegram"></i> Mensaje al Telegram ($10/mes)
+                </a>
+              </div>
+
+              <!-- Plan 2: Mentoría Conservadora -->
+              <div class="mentor-card">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="mentor-badge-top badge-conserv">Nivel Intermedio</span>
+                    <span style="font-family:var(--font-mono); font-size:0.75rem; color:#34d399;"><i class="fa-solid fa-shield"></i> Alta Rentabilidad</span>
+                  </div>
+                  <h3 style="font-size:1.35rem; font-weight:800; color:#fff;">Mentoría Conservadora</h3>
+                  <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
+                    Enfoque de bajo drawdown orientado a proteger capital y expandir cuentas fondeadas con alta certidumbre.
+                  </p>
+
+                  <div class="mentor-price-tag">
+                    $300 <span style="font-size:1rem; color:#9ca3af;">USD</span>
+                    <span class="mentor-price-period">/ único pago</span>
+                  </div>
+
+                  <ul class="mentor-specs-list">
+                    <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 70% a 80% de rentabilidad</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>Operativa:</strong> Entradas Intraday & Swing</li>
+                    <li><i class="fa-solid fa-arrows-split-up-and-left"></i> <strong>Distribución:</strong> Mayoría del comercio swing</li>
+                    <li><i class="fa-solid fa-infinity"></i> <strong>Acceso:</strong> Acceso permanente sin mensualidades</li>
+                  </ul>
+                </div>
+
+                <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram">
+                  <i class="fa-brands fa-telegram"></i> Mensaje al Telegram ($300 USD)
+                </a>
+              </div>
+
+              <!-- Plan 3: Mentoría 1 a 1 0REDSTRUCTURE -->
+              <div class="mentor-card featured-card">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="mentor-badge-top badge-advanced">Nivel Avanzado • VIP</span>
+                    <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--red-accent);"><i class="fa-solid fa-crown"></i> 1 a 1</span>
+                  </div>
+                  <h3 style="font-size:1.35rem; font-weight:800; color:#fff;">Mentoría 1 a 1 0REDSTRUCTURE</h3>
+                  <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
+                    Acompañamiento personal directo, auditoría de operativas y desarrollo de ratios asimétricos extremos.
+                  </p>
+
+                  <div class="mentor-price-tag" style="color:#f87171;">
+                    $5,000 <span style="font-size:1rem; color:#9ca3af;">USD</span>
+                    <span class="mentor-price-period">/ único pago</span>
+                  </div>
+
+                  <ul class="mentor-specs-list">
+                    <li><i class="fa-solid fa-fire" style="color:var(--red-accent);"></i> <strong>Ratios R:R:</strong> Mínimo 1:10 hasta 1:100</li>
+                    <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 70% a 80% institucional</li>
+                    <li><i class="fa-solid fa-user-tie"></i> <strong>Sesiones:</strong> Coaching privado y directo 1 a 1</li>
+                    <li><i class="fa-solid fa-shield-virus"></i> <strong>Garantía:</strong> Metodología propietaria 0RED completa</li>
+                  </ul>
+                </div>
+
+                <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram vip-btn">
+                  <i class="fa-brands fa-telegram"></i> Solicitar 1 a 1 en Telegram ($5,000)
+                </a>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- CABECERA DE CLASES -->
           <div class="page-header">
             <div>
               <div class="badge-pill" id="site-header-badge">
@@ -667,7 +711,7 @@
               </div>
               <h1 class="page-title" id="site-header-title">Módulos & Clases Magistrales</h1>
               <p class="page-desc" id="site-header-desc">
-                Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.
+                Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los esquemas quedan desbloqueados de por vida.
               </p>
             </div>
 
@@ -694,7 +738,7 @@
               <p class="page-desc" id="live-stream-desc">Conexión directa en tiempo real con análisis de liquidez institucional y operativa en vivo.</p>
             </div>
             <div>
-              <button class="btn-admin-add-item" onclick="openLiveConfigModal()"><i class="fa-solid fa-gear"></i> CONFIGURAR SALA</button>
+              <button class="btn-action-primary" onclick="openLiveConfigModal()"><i class="fa-solid fa-gear"></i> CONFIGURAR SALA</button>
             </div>
           </div>
 
@@ -729,13 +773,12 @@
               <p class="page-desc">Utilidades, bitácoras y aplicaciones desarrolladas para profesionalizar tu proceso analítico y gestión matemática.</p>
             </div>
             <div>
-              <button class="btn-admin-add-item" onclick="openToolModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR HERRAMIENTA</button>
+              <button class="btn-action-primary" onclick="openToolModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR HERRAMIENTA</button>
             </div>
           </div>
 
           <div class="tools-grid" id="tools-container"></div>
 
-          <!-- VISOR INCORPORADO PARA HERRAMIENTAS -->
           <div id="embedded-journal-wrap" style="display:none; margin-top:20px; border-radius:12px; overflow:hidden; border:1px solid var(--card-border); background:#0d1117;">
             <div style="padding:12px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--card-border); display:flex; justify-content:space-between; align-items:center;">
               <span style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:#fff;" id="embedded-viewer-title">
@@ -775,7 +818,7 @@
               <p class="page-desc">Normas esenciales para mantener el estándar profesional, la gestión estricta de riesgo y el respeto en la comunidad.</p>
             </div>
             <div>
-              <button class="btn-admin-add-item" onclick="openRuleModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR REGLA</button>
+              <button class="btn-action-primary" onclick="openRuleModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR REGLA</button>
             </div>
           </div>
 
@@ -784,20 +827,20 @@
           </div>
         </div>
 
-        <!-- 6. VISTA: MATERIAL DE CLASES -->
+        <!-- 6. VISTA: MATERIAL DE CLASES (OFICIAL) -->
         <div id="view-materials" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
-              <div class="badge-pill"><i class="fa-solid fa-folder-tree"></i> Recursos Descargables</div>
-              <h1 class="page-title">Materiales & Documentación</h1>
-              <p class="page-desc">Plantillas de gestión, bitácoras de trading en Excel/Sheets y guías institucionales en formato PDF.</p>
+              <div class="badge-pill"><i class="fa-solid fa-lock"></i> Canal Oficial (Solo Mentor)</div>
+              <h1 class="page-title">Materiales & Gráficos Institucionales</h1>
+              <p class="page-desc">Visualiza y descarga capturas de setups en alta resolución, esquemas de entrada SMC/ICT y plantillas en PDF oficiales.</p>
             </div>
-            <div>
-              <button class="btn-admin-add-item" onclick="openMaterialModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR MATERIAL</button>
+            <div id="admin-official-mat-action">
+              <button class="btn-action-primary" onclick="openUploadModal('materials')"><i class="fa-solid fa-plus"></i> SUBIR MATERIAL OFICIAL</button>
             </div>
           </div>
 
-          <div class="content-panel-card" id="materials-container"></div>
+          <div class="materials-custom-grid" id="materials-container"></div>
         </div>
 
         <!-- 7. VISTA: INDICADORES & SCRIPTS -->
@@ -809,14 +852,14 @@
               <p class="page-desc">Algoritmos oficiales desarrollados para TradingView. Copia el código fuente e instálalo en tu editor Pine.</p>
             </div>
             <div>
-              <button class="btn-admin-add-item" onclick="openScriptModal('new')"><i class="fa-solid fa-plus"></i> PUBLICAR SCRIPT</button>
+              <button class="btn-action-primary" onclick="openScriptModal('new')"><i class="fa-solid fa-plus"></i> PUBLICAR SCRIPT</button>
             </div>
           </div>
 
           <div class="content-panel-card" id="scripts-container"></div>
         </div>
 
-        <!-- CONTENEDOR DE APARTADOS CREADOS -->
+        <!-- CONTENEDOR DE CANALES DINÁMICOS (POWER OF 3, ETC.) -->
         <div id="custom-views-container"></div>
 
       </main>
@@ -841,9 +884,110 @@
        MODALES
        ========================================= -->
 
+  <!-- MODAL: VISOR DE IMAGEN LIGHTBOX -->
+  <div id="image-lightbox-modal" onclick="closeImageLightbox()">
+    <div class="lightbox-img-wrap" onclick="event.stopPropagation()">
+      <img id="lightbox-target-img" src="" class="lightbox-full-img" alt="Esquema Institucional">
+      <button class="close-btn" style="position:absolute; top:-38px; right:0; font-size:1.6rem; color:#fff;" onclick="closeImageLightbox()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="lightbox-title" id="lightbox-target-title"></div>
+  </div>
+
+  <!-- MODAL: CONFIGURAR CANAL / APARTADO (CON SELECTOR DE PERMISOS) -->
+  <div class="modal-backdrop" id="channel-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="channel-modal-title" style="color:#fff; font-size:1.1rem;"><i class="fa-solid fa-sliders" style="color:var(--red-accent);"></i> Configuración de Canal</h3>
+        <button class="close-btn" onclick="closeChannelConfigModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding:20px;">
+        <input type="hidden" id="cfg-channel-id">
+        <div class="form-group">
+          <label>NOMBRE DEL CANAL (Ej: Power Of 3, Setups Alumnos):</label>
+          <input type="text" id="cfg-channel-name" class="form-control" placeholder="Ej: Power Of 3">
+        </div>
+        <div class="form-group">
+          <label>ICONO:</label>
+          <select id="cfg-channel-icon" class="form-control">
+            <option value="fa-brain">fa-brain (Cerebro / Modelo Institucional)</option>
+            <option value="fa-images">fa-images (Galería de Imágenes)</option>
+            <option value="fa-chart-line">fa-chart-line (Gráficos / Análisis)</option>
+            <option value="fa-bullseye">fa-bullseye (Metas / Setups)</option>
+            <option value="fa-folder-open">fa-folder-open (Documentos / Archivos)</option>
+            <option value="fa-trophy">fa-trophy (Resultados)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN DEL CANAL:</label>
+          <textarea id="cfg-channel-desc" class="form-control" rows="2" placeholder="Explica qué tipo de gráficos o setups se encontrarán aquí..."></textarea>
+        </div>
+
+        <!-- SELECTOR DE PERMISOS -->
+        <div class="form-group" style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:16px; border-radius:10px;">
+          <label style="color:#38bdf8; font-weight:700;"><i class="fa-solid fa-shield-halved"></i> PERMISOS DE SUBIDA PARA ALUMNOS:</label>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
+            <input type="checkbox" id="cfg-channel-allow-students" style="width:20px; height:20px; accent-color:var(--green-accent); cursor:pointer;">
+            <label for="cfg-channel-allow-students" style="margin:0; cursor:pointer; color:#fff; font-size:0.88rem;">
+              Permitir que los alumnos suban imágenes y análisis en este canal
+            </label>
+          </div>
+          <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:6px;">
+            * Si está desmarcado, el canal será de <strong>Solo Lectura</strong> para los alumnos y únicamente tú (Admin) podrás subir material.
+          </span>
+        </div>
+
+        <button class="btn-submit" onclick="saveChannelConfig()"><i class="fa-solid fa-check"></i> GUARDAR CANAL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SUBIR IMAGEN / ANÁLISIS (CON COMPRESIÓN EN CANVAS) -->
+  <div class="modal-backdrop" id="upload-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="upload-modal-title" style="color:#fff; font-size:1.1rem;"><i class="fa-solid fa-image" style="color:var(--red-accent);"></i> Subir Análisis / Gráfico</h3>
+        <button class="close-btn" onclick="closeUploadModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding:20px;">
+        <input type="hidden" id="upload-target-channel">
+        <input type="hidden" id="upload-edit-id">
+
+        <div class="form-group">
+          <label>TÍTULO DEL ANÁLISIS / GRÁFICO:</label>
+          <input type="text" id="upload-title" class="form-control" placeholder="Ej: Setup Power Of 3: Manipulación en Londres">
+        </div>
+        <div class="form-group">
+          <label>DESCRIPCIÓN / DETALLES DE LA OPERACIÓN:</label>
+          <textarea id="upload-desc" class="form-control" rows="2" placeholder="Detalles de entrada, FVG, temporalidad, confluencias..."></textarea>
+        </div>
+
+        <div class="form-group" style="background:rgba(255,255,255,0.03); border:1px dashed var(--card-border); padding:16px; border-radius:12px;">
+          <label style="color:#38bdf8; font-weight:700; margin-bottom:8px;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> SELECCIONA LA CAPTURA DESDE TU PC:
+          </label>
+          <input type="file" id="upload-file" accept="image/*" class="form-control" style="font-size:0.85rem;" onchange="handleImageOptimization(event)">
+          
+          <div style="margin-top:10px;">
+            <label style="font-size:0.75rem;">O escribe una URL directa de imagen:</label>
+            <input type="text" id="upload-url" class="form-control" placeholder="https://..." oninput="document.getElementById('upload-preview-img').src=this.value; document.getElementById('upload-preview-wrap').style.display='block';">
+          </div>
+
+          <div id="upload-preview-wrap" style="display:none; margin-top:14px; text-align:center;">
+            <span style="font-size:0.72rem; color:var(--green-accent); font-family:var(--font-mono); display:block; margin-bottom:4px;">✓ Vista previa optimizada:</span>
+            <img id="upload-preview-img" src="" style="max-height:180px; max-width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.15);" alt="Preview">
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="submitContentUpload()"><i class="fa-solid fa-cloud-check"></i> PUBLICAR ANÁLISIS</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: REPRODUCTOR CLASE -->
   <div class="modal-backdrop" id="player-modal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 800px;">
       <div class="modal-header">
         <div>
           <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--red-accent);" id="modal-class-week">SEMANA 01</span>
@@ -856,7 +1000,16 @@
       </div>
       <div style="padding: 20px;">
         <h4 style="font-size:0.9rem; margin-bottom:8px; color:var(--text-muted); text-transform:uppercase; font-family:var(--font-mono);">Resumen de la Sesión</h4>
-        <p id="modal-class-desc" style="font-size:0.9rem; line-height:1.6; color:#d1d5db;"></p>
+        <p id="modal-class-desc" style="font-size:0.9rem; line-height:1.6; color:#d1d5db; margin-bottom:16px;"></p>
+        
+        <div id="modal-class-diagrams-wrap" style="display:none; border-top:1px solid var(--card-border); padding-top:16px;">
+          <h5 style="font-size:0.82rem; color:var(--cyan-accent); font-family:var(--font-mono); margin-bottom:10px;">
+            <i class="fa-solid fa-diagram-project"></i> ESQUEMA GRÁFICO DEL SETUP (Clic para ampliar)
+          </h5>
+          <div style="border-radius:10px; overflow:hidden; background:#000; max-height:360px; display:flex; justify-content:center; cursor:zoom-in;">
+            <img id="modal-class-diagram-img" src="" style="width:100%; max-height:360px; object-fit:contain;" onclick="openImageLightbox(this.src, 'Esquema de la Clase')" alt="Esquema">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -889,6 +1042,11 @@
         <div class="form-group">
           <label>IMAGEN DE PORTADA (URL):</label>
           <input type="text" id="edit-thumb" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>ESQUEMA GRÁFICO DEL SETUP (Subir desde PC o URL):</label>
+          <input type="file" id="edit-class-chart-file" accept="image/*" class="form-control" style="font-size:0.8rem; margin-bottom:6px;" onchange="handleClassImageOptimization(event)">
+          <input type="text" id="edit-class-chart" class="form-control" placeholder="URL o imagen cargada">
         </div>
         <div class="form-group">
           <label>DURACIÓN:</label>
@@ -943,8 +1101,6 @@
             <option value="fa-calculator">fa-calculator (Calculadora)</option>
             <option value="fa-chart-pie">fa-chart-pie (Métricas / Gráficos)</option>
             <option value="fa-screwdriver-wrench">fa-screwdriver-wrench (Herramienta)</option>
-            <option value="fa-link">fa-link (Enlace / Web)</option>
-            <option value="fa-compass">fa-compass (Brújula / Guía)</option>
           </select>
         </div>
         <div class="form-group">
@@ -990,41 +1146,6 @@
     </div>
   </div>
 
-  <!-- MODAL: MATERIAL -->
-  <div class="modal-backdrop" id="material-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="material-modal-title" style="font-size:1.1rem; font-weight:700;">Nuevo Material Descargable</h3>
-        <button class="close-btn" onclick="closeMaterialModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div style="padding: 20px;">
-        <input type="hidden" id="edit-material-id">
-        <div class="form-group">
-          <label>TÍTULO DEL DOCUMENTO O PLANTILLA:</label>
-          <input type="text" id="edit-mat-title" class="form-control" placeholder="Ej: Guía de Modelos de Entrada FVG">
-        </div>
-        <div class="form-group">
-          <label>TIPO O SUBTÍTULO:</label>
-          <input type="text" id="edit-mat-subtitle" class="form-control" placeholder="Ej: PDF • 12 MB • Actualizado 2026">
-        </div>
-        <div class="form-group">
-          <label>TIPO DE ARCHIVO (Icono):</label>
-          <select id="edit-mat-icon" class="form-control">
-            <option value="fa-file-pdf">PDF Documento (Rojo)</option>
-            <option value="fa-table">Excel / Hoja de Cálculo (Verde)</option>
-            <option value="fa-file-zipper">Archivo Comprimido ZIP/RAR</option>
-            <option value="fa-file-lines">Documento de Texto</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>ENLACE DE DESCARGA:</label>
-          <input type="text" id="edit-mat-url" class="form-control" placeholder="https://drive.google.com/...">
-        </div>
-        <button class="btn-submit" onclick="saveMaterialData()"><i class="fa-solid fa-check"></i> GUARDAR MATERIAL</button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: SCRIPT -->
   <div class="modal-backdrop" id="script-modal">
     <div class="modal-content">
@@ -1047,46 +1168,6 @@
           <textarea id="edit-script-code" class="form-control" rows="8" style="font-family:var(--font-mono); font-size:0.8rem; color:#38bdf8;"></textarea>
         </div>
         <button class="btn-submit" onclick="saveScriptData()"><i class="fa-solid fa-check"></i> GUARDAR SCRIPT</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: NUEVO APARTADO PERSONALIZADO -->
-  <div class="modal-backdrop" id="new-section-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 style="font-size:1.1rem; font-weight:700;"><i class="fa-solid fa-plus-circle" style="color:var(--red-accent);"></i> Crear Nuevo Apartado Lateral</h3>
-        <button class="close-btn" onclick="closeNewSectionModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div style="padding: 20px;">
-        <div class="form-group">
-          <label>NOMBRE DEL APARTADO (Ej: Bitácora, Psicotrading):</label>
-          <input type="text" id="new-sec-name" class="form-control" placeholder="Ej: Psicotrading Institucional">
-        </div>
-        <div class="form-group">
-          <label>ICONO:</label>
-          <select id="new-sec-icon" class="form-control">
-            <option value="fa-brain">fa-brain (Psicología / Mente)</option>
-            <option value="fa-chart-line">fa-chart-line (Gráficos / Análisis)</option>
-            <option value="fa-bullseye">fa-bullseye (Metas / Disciplina)</option>
-            <option value="fa-calendar-days">fa-calendar-days (Calendario)</option>
-            <option value="fa-trophy">fa-trophy (Resultados)</option>
-            <option value="fa-circle-question">fa-circle-question (FAQ / Preguntas)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>TÍTULO PRINCIPAL DE LA PÁGINA:</label>
-          <input type="text" id="new-sec-title" class="form-control" placeholder="Ej: Mentalidad y Gestión Emocional">
-        </div>
-        <div class="form-group">
-          <label>DESCRIPCIÓN DEL APARTADO:</label>
-          <textarea id="new-sec-desc" class="form-control" rows="2"></textarea>
-        </div>
-        <div class="form-group">
-          <label>CONTENIDO INICIAL:</label>
-          <textarea id="new-sec-content" class="form-control" rows="5"></textarea>
-        </div>
-        <button class="btn-submit" onclick="saveNewSection()"><i class="fa-solid fa-plus"></i> CREAR APARTADO Y AGREGAR A LA BARRA</button>
       </div>
     </div>
   </div>
@@ -1168,21 +1249,6 @@
           <input type="text" id="cfg-site-icon" class="form-control" maxlength="4">
         </div>
         <div class="form-group">
-          <label>INSIGNIA SUPERIOR:</label>
-          <input type="text" id="cfg-site-badge" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>TÍTULO DE SECCIÓN:</label>
-          <input type="text" id="cfg-section-title" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>DESCRIPCIÓN DE LA SECCIÓN:</label>
-          <textarea id="cfg-section-desc" class="form-control" rows="3"></textarea>
-        </div>
-        
-        <hr style="border:0; border-top:1px solid var(--card-border); margin:20px 0;">
-        
-        <div class="form-group">
           <label>USUARIO ADMIN:</label>
           <input type="text" id="cfg-admin-user" class="form-control">
         </div>
@@ -1202,204 +1268,126 @@
   </div>
 
   <script>
-    // =======================================================
-    // DATOS PREDETERMINADOS (SE ACTUALIZAN VÍA GITHUB API)
-    // =======================================================
-    /* %%EMBEDDED_CONFIG_START%% */
+    // ==========================================
+    // 1. CONFIGURACIÓN Y BASES DE DATOS
+    // ==========================================
     const DEFAULT_SITE_CONFIG = {
-  "brandTitle": "0REDSTRUCTURE",
-  "brandSub": "INSTITUTIONAL MENTORSHIP",
-  "brandIcon": "0R",
-  "badgeText": "<i class=\"fa-solid fa-shield-halved\"></i> Programa Institucional • SMC / ICT / 0RED",
-  "headerTitle": "Módulos & Clases 1",
-  "headerDesc": "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
-  "adminUser": "balanzarivan885",
-  "adminPass": "Espartan117"
-};
-
-    const DEFAULT_CLASSES = [
-  {
-    "id": "class-1",
-    "week": "SEMANA 01",
-    "date": "Oct 2, 2026 • 12:00 UTC-6",
-    "title": "Fundamentos y Mapeo de Estructura Institucional",
-    "desc": "Identificación precisa de Highs/Lows significativos, quiebres de estructura (BOS) y cambios de carácter (CHoCH).",
-    "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
-    "thumbUrl": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
-    "duration": "1h 45m",
-    "tags": [
-      "Estructura",
-      "BOS",
-      "CHoCH"
-    ],
-    "unlocked": true,
-    "visibleToStudents": true
-  },
-  {
-    "id": "class-2",
-    "week": "SEMANA 02",
-    "date": "Oct 9, 2026 • 12:00 UTC-6",
-    "title": "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
-    "desc": "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
-    "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
-    "thumbUrl": "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
-    "duration": "2h 10m",
-    "tags": [
-      "FVG",
-      "Ineficiencias",
-      "Entry Drills"
-    ],
-    "unlocked": true,
-    "visibleToStudents": true
-  },
-  {
-    "id": "class-3",
-    "week": "SEMANA 03",
-    "date": "Oct 16, 2026 • 12:00 UTC-6",
-    "title": "Killzones y Manipulación de Sesión (Londres & NY)",
-    "desc": "Comportamiento del precio durante las aperturas de mercado, Judas Swings y tomas de liquidez.",
-    "videoUrl": "",
-    "thumbUrl": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
-    "duration": "1h 50m",
-    "tags": [
-      "Killzones",
-      "Judas Swing",
-      "Horarios"
-    ],
-    "unlocked": false,
-    "visibleToStudents": true
-  }
-];
-
-    const DEFAULT_TOOLS = [
-  {
-    "id": "tool-1",
-    "title": "Crea tu Journal",
-    "badge": "OFICIAL",
-    "btnText": "CREAR TU JOURNAL",
-    "url": "https://0red-journal.github.io/0red-journal/",
-    "icon": "fa-book-open",
-    "desc": "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
-    "features": [
-      "Registro de Winrate y Expectativa",
-      "Cálculo automático de Ratio Riesgo:Beneficio",
-      "Seguimiento de sesiones Londres y Nueva York"
-    ],
-    "allowEmbed": true,
-    "visibleToStudents": true
-  }
-];
-
-    const DEFAULT_LIVE = {
-  "platformType": "meet",
-  "status": "scheduled",
-  "meetUrl": "https://meet.google.com/new",
-  "url": "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
-  "title": "Sesión Institucional en Vivo: Análisis SMC / ICT",
-  "date": "Viernes, 12:00 PM UTC-6",
-  "desc": "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
-};
-
-    const DEFAULT_RULES = [
-  {
-    "id": "rule-1",
-    "num": "01",
-    "title": "Gestión de Riesgo No Negociable",
-    "desc": "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia. El sobreapalancamiento destruye la consistencia matemática.",
-    "visibleToStudents": true
-  },
-  {
-    "id": "rule-2",
-    "num": "02",
-    "title": "Respeto y Feedback Constructivo",
-    "desc": "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez) y expresadas con respeto hacia los compañeros.",
-    "visibleToStudents": true
-  },
-  {
-    "id": "rule-3",
-    "num": "03",
-    "title": "Confidencialidad del Material Institucional",
-    "desc": "Los scripts de 0REDSTRUCTURE, plantillas y grabaciones son estrictamente para uso personal de los miembros matriculados.",
-    "visibleToStudents": true
-  },
-  {
-    "id": "rule-4",
-    "num": "04",
-    "title": "Prohibido Fomentar Operativa Impulsiva",
-    "desc": "No se admiten comentarios de euforia, FOMO o señales sin un contexto estructural previo documentado en TradingView.",
-    "visibleToStudents": true
-  }
-];
-
-    const DEFAULT_MATERIALS = [
-  {
-    "id": "mat-1",
-    "title": "Guía Maestra: Mapeo de Estructura Institucional (0RED)",
-    "subtitle": "PDF • 14.8 MB • Actualizado 2026",
-    "icon": "fa-file-pdf",
-    "url": "#",
-    "visibleToStudents": true
-  },
-  {
-    "id": "mat-2",
-    "title": "Trading Journal & Calculadora de Riesgo Institucional",
-    "subtitle": "XLSX • 4.2 MB • Registro de R:R y Drawdown",
-    "icon": "fa-table",
-    "url": "#",
-    "visibleToStudents": true
-  },
-  {
-    "id": "mat-3",
-    "title": "Cheat Sheet: Modelos de Entrada FVG + Killzones",
-    "subtitle": "PDF • 8.1 MB • Resumen Gráfico de Alta Probabilidad",
-    "icon": "fa-file-pdf",
-    "url": "#",
-    "visibleToStudents": true
-  }
-];
-
-    const DEFAULT_SCRIPTS = [
-  {
-    "id": "script-1",
-    "title": "0RED STRUCTURE - Sessions & Liquidity Engine v5",
-    "badge": "PINE SCRIPT V5",
-    "code": "//@version=5\nindicator(\"0RED STRUCTURE - Liquidity & Killzones\", overlay=true)\n\nshow_london = input.bool(true, \"Killzone Londres (02:00 - 05:00 UTC-4)\")\nshow_ny = input.bool(true, \"Killzone Nueva York (07:00 - 10:00 UTC-4)\")\n\nin_london = not na(time(timeframe.period, \"0200-0500:23456\"))\nin_ny = not na(time(timeframe.period, \"0700-1000:23456\"))\n\nbgcolor(show_london and in_london ? color.new(color.blue, 90) : na, title=\"Background Londres\")\nbgcolor(show_ny and in_ny ? color.new(color.red, 90) : na, title=\"Background NY\")\n\nbullish_fvg = low > high[2]\nbearish_fvg = high < low[2]\n\nplotshape(bullish_fvg, title=\"Bullish FVG\", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)\nplotshape(bearish_fvg, title=\"Bearish FVG\", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)",
-    "visibleToStudents": true
-  },
-  {
-    "id": "script-2",
-    "title": "0RED STRUCTURE - Daily / Weekly Range Open Filter",
-    "badge": "PINE SCRIPT V5",
-    "code": "//@version=5\nindicator(\"0RED STRUCTURE - True Open Filter\", overlay=true)\n\nmidnight_open = request.security(syminfo.tickerid, \"D\", open)\nplot(midnight_open, \"NY Midnight Open (00:00)\", color=color.yellow, linewidth=2, style=plot.style_circles)",
-    "visibleToStudents": true
-  }
-];
-
-    const DEFAULT_SECTIONS_VISIBILITY = {
-  "chat": true,
-  "rules": true,
-  "materials": true,
-  "scripts": true,
-  "tools": true
-};
-    /* %%EMBEDDED_CONFIG_END%% */
-
-    // Carga de variables prioritarias (Memoria local de trabajo)
+      brandTitle: "0REDSTRUCTURE",
+      brandSub: "INSTITUTIONAL MENTORSHIP",
+      brandIcon: "0R",
+      badgeText: '<i class="fa-solid fa-shield-halved"></i> Programa Institucional • SMC / ICT / 0RED',
+      headerTitle: "Módulos & Clases Magistrales",
+      headerDesc: "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
+      adminUser: "balanzarivan885",
+      adminPass: "Espartan117"
+    };
     let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
-    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
-    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
-    let liveConfig = JSON.parse(localStorage.getItem('0red_live')) || DEFAULT_LIVE;
-    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
-    let materialsData = JSON.parse(localStorage.getItem('0red_materials')) || DEFAULT_MATERIALS;
-    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
-    let customSections = JSON.parse(localStorage.getItem('0red_custom_sections')) || [];
-    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
-    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
 
     const DEFAULT_USERS_DB = [
       { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" }
     ];
     let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
+
+    const DEFAULT_SECTIONS_VISIBILITY = { chat: true, rules: true, materials: true, scripts: true, tools: true };
+    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
+    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
+
+    // CANALES CON PERMISOS DE SUBIDA (allowStudents: true/false)
+    let channels = JSON.parse(localStorage.getItem('0red_channels_list_v2')) || [
+      { id: "power_of_3", name: "Power Of 3", icon: "fa-brain", desc: "Esquemas oficiales de acumulación, manipulación y distribución (AMD).", allowStudents: false },
+      { id: "setups_alumnos", name: "Setups de Alumnos", icon: "fa-chart-line", desc: "Espacio abierto para que la comunidad comparta sus operaciones y análisis.", allowStudents: true }
+    ];
+
+    const DEFAULT_CLASSES = [
+      {
+        id: "class-1",
+        week: "SEMANA 01",
+        date: "Oct 2, 2026 • 12:00 UTC-6",
+        title: "Fundamentos y Mapeo de Estructura Institucional",
+        desc: "Identificación precisa de Highs/Lows significativos, quiebres de estructura (BOS) y cambios de carácter (CHoCH).",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
+        thumbUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+        chartImg: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1200&q=80",
+        duration: "1h 45m",
+        tags: ["Estructura", "BOS", "CHoCH"],
+        unlocked: true,
+        visibleToStudents: true
+      },
+      {
+        id: "class-2",
+        week: "SEMANA 02",
+        date: "Oct 9, 2026 • 12:00 UTC-6",
+        title: "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
+        desc: "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
+        thumbUrl: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
+        chartImg: "",
+        duration: "2h 10m",
+        tags: ["FVG", "Ineficiencias", "Entry Drills"],
+        unlocked: true,
+        visibleToStudents: true
+      }
+    ];
+    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
+
+    const DEFAULT_TOOLS = [
+      {
+        id: "tool-1",
+        title: "Crea tu Journal",
+        badge: "OFICIAL",
+        btnText: "CREAR TU JOURNAL",
+        url: "https://0red-journal.github.io/0red-journal/",
+        icon: "fa-book-open",
+        desc: "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
+        features: ["Registro de Winrate y Expectativa", "Cálculo automático de Ratio Riesgo:Beneficio", "Seguimiento de sesiones Londres y Nueva York"],
+        allowEmbed: true,
+        visibleToStudents: true
+      }
+    ];
+    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
+
+    const DEFAULT_RULES = [
+      { id: "rule-1", num: "01", title: "Gestión de Riesgo No Negociable", desc: "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia.", visibleToStudents: true },
+      { id: "rule-2", num: "02", title: "Respeto y Feedback Constructivo", desc: "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez).", visibleToStudents: true }
+    ];
+    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
+
+    // BANCO GLOBAL DE IMÁGENES Y MATERIALES
+    const DEFAULT_MATERIALS = [
+      { 
+        id: "mat-1", 
+        targetChannel: "materials",
+        title: "Esquema Institucional: Mapeo de Estructura BOS y CHoCH", 
+        desc: "Captura oficial de setup en GBP/USD con confirmación de quiebre institucional.", 
+        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+        author: "Ivan Balanzar (0RED)",
+        date: "2026-10-20",
+        visibleToStudents: true 
+      }
+    ];
+    let materialsData = JSON.parse(localStorage.getItem('0red_materials_v3')) || DEFAULT_MATERIALS;
+
+    const DEFAULT_SCRIPTS = [
+      {
+        id: "script-1",
+        title: "0RED STRUCTURE - Sessions & Liquidity Engine v5",
+        badge: "PINE SCRIPT V5",
+        code: `//@version=5\nindicator("0RED STRUCTURE - Liquidity & Killzones", overlay=true)\n\nshow_london = input.bool(true, "Killzone Londres (02:00 - 05:00 UTC-4)")\nshow_ny = input.bool(true, "Killzone Nueva York (07:00 - 10:00 UTC-4)")\n\nin_london = not na(time(timeframe.period, "0200-0500:23456"))\nin_ny = not na(time(timeframe.period, "0700-1000:23456"))\n\nbgcolor(show_london and in_london ? color.new(color.blue, 90) : na, title="Background Londres")\nbgcolor(show_ny and in_ny ? color.new(color.red, 90) : na, title="Background NY")`,
+        visibleToStudents: true
+      }
+    ];
+    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
+
+    const DEFAULT_LIVE = {
+      platformType: "meet",
+      status: "scheduled",
+      meetUrl: "https://meet.google.com/new",
+      url: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
+      title: "Sesión Institucional en Vivo: Análisis SMC / ICT",
+      date: "Viernes, 12:00 PM UTC-6",
+      desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
+    };
+    let liveConfig = JSON.parse(localStorage.getItem('0red_live')) || DEFAULT_LIVE;
 
     let globalChatMessages = JSON.parse(localStorage.getItem('0red_global_chat')) || [
       { author: "Ivan Balanzar (0RED)", role: "admin", text: "Bienvenidos al hub institucional de 0REDSTRUCTURE. Tienes acceso completo al material e indicadores en el menú lateral.", time: "10:00 AM" }
@@ -1410,6 +1398,61 @@
     let adminVisualMode = localStorage.getItem('0red_admin_visual_mode') || 'admin';
     let currentActiveTab = 'classes';
 
+    // ==========================================
+    // MOTOR DE COMPRESIÓN EN CANVAS (OPTIMIZACIÓN)
+    // ==========================================
+    function handleImageOptimization(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1600;
+          let w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+            else { w = Math.round((w * maxDim) / h); h = maxDim; }
+          }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          const base64 = canvas.toDataURL('image/jpeg', 0.8);
+          document.getElementById('upload-url').value = base64;
+          document.getElementById('upload-preview-img').src = base64;
+          document.getElementById('upload-preview-wrap').style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleClassImageOptimization(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let w = img.width, h = img.height;
+          if (w > 1600 || h > 1600) {
+            if (w > h) { h = Math.round((h * 1600) / w); w = 1600; }
+            else { w = Math.round((w * 1600) / h); h = 1600; }
+          }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          document.getElementById('edit-class-chart').value = canvas.toDataURL('image/jpeg', 0.8);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ==========================================
+    // INICIALIZACIÓN
+    // ==========================================
     document.addEventListener("DOMContentLoaded", () => {
       applySiteConfig();
       checkAuthSession();
@@ -1418,109 +1461,34 @@
       renderRules();
       renderMaterials();
       renderScripts();
-      renderCustomSections();
+      renderCustomChannels();
       applySectionsVisibilityUI();
       applyLiveConfig();
       initRealUserCounter();
       renderGlobalChat();
     });
 
-    // =======================================================
-    // FUNCIÓN MAESTRA: PUBLICAR CAMBIOS DIRECTAMENTE A GITHUB
-    // =======================================================
-    async function syncAllToGitHub() {
-      if (!isUserAdmin) return alert("Solo el administrador puede publicar cambios a todos los alumnos.");
+    function scrollToMentorships() {
+      switchSidebarTab('classes');
+      const target = document.getElementById('mentorships-section');
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
 
-      let token = localStorage.getItem('0red_gh_token');
-      if (!token) {
-        token = prompt("Ingresa tu GitHub Personal Access Token (classic) con permiso 'repo':\n(Se guardará de forma segura en este navegador para futuras publicaciones)");
-        if (!token) return;
-        localStorage.setItem('0red_gh_token', token.trim());
-      }
+    // LIGHTBOX
+    function openImageLightbox(src, title) {
+      if (!src) return;
+      document.getElementById('lightbox-target-img').src = src;
+      document.getElementById('lightbox-target-title').innerText = title || "Esquema Institucional";
+      document.getElementById('image-lightbox-modal').classList.add('open');
+    }
 
-      const repoOwner = "0red-journal";
-      const repoName = "0red-plataforma";
-      const filePath = "index.html";
-
-      try {
-        const btn = document.querySelector('.btn-sync-github');
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando a la web...`;
-
-        // 1. Obtener el archivo actual y su SHA
-        const getUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
-        const res = await fetch(getUrl, {
-          headers: {
-            'Authorization': `token ${token.trim()}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
-        });
-
-        if (!res.ok) {
-          if (res.status === 401) {
-            localStorage.removeItem('0red_gh_token');
-            throw new Error("Token de GitHub inválido o expirado. Vuelve a intentarlo.");
-          }
-          throw new Error("Error al conectar con GitHub: " + res.statusText);
-        }
-
-        const data = await res.json();
-        const currentSha = data.sha;
-        const currentContent = decodeURIComponent(escape(atob(data.content)));
-
-        // 2. Preparar el nuevo bloque de configuración
-        const newBlock = `/* %%EMBEDDED_CONFIG_START%% */
-    const DEFAULT_SITE_CONFIG = ${JSON.stringify(siteConfig, null, 2)};
-
-    const DEFAULT_CLASSES = ${JSON.stringify(classesData, null, 2)};
-
-    const DEFAULT_TOOLS = ${JSON.stringify(toolsData, null, 2)};
-
-    const DEFAULT_LIVE = ${JSON.stringify(liveConfig, null, 2)};
-
-    const DEFAULT_RULES = ${JSON.stringify(rulesData, null, 2)};
-
-    const DEFAULT_MATERIALS = ${JSON.stringify(materialsData, null, 2)};
-
-    const DEFAULT_SCRIPTS = ${JSON.stringify(scriptsData, null, 2)};
-
-    const DEFAULT_SECTIONS_VISIBILITY = ${JSON.stringify(sectionsVisibility, null, 2)};
-    /* %%EMBEDDED_CONFIG_END%% */`;
-
-        const regex = /\/\* %%EMBEDDED_CONFIG_START%% \*\/[\s\S]*?\/\* %%EMBEDDED_CONFIG_END%% \*\//;
-        if (!regex.test(currentContent)) {
-          throw new Error("No se encontró la marca de datos en el archivo del repositorio.");
-        }
-
-        const updatedFileContent = currentContent.replace(regex, newBlock);
-
-        // 3. Subir el archivo actualizado a GitHub
-        const putRes = await fetch(getUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${token.trim()}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: "Update plataforma: Cambios institucionales sincronizados por Admin",
-            content: btoa(unescape(encodeURIComponent(updatedFileContent))),
-            sha: currentSha
-          })
-        });
-
-        if (!putRes.ok) throw new Error("Error al guardar en el repositorio: " + putRes.statusText);
-
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS`;
-        alert("✓ ¡ÉXITO TOTAL!\n\nLos cambios se han subido directamente a GitHub.\nEn menos de 60 segundos estarán activos para todos los usuarios y alumnos del mundo.");
-      } catch (err) {
-        alert("Error al sincronizar: " + err.message);
-        const btn = document.querySelector('.btn-sync-github');
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> PUBLICAR CAMBIOS A TODOS`;
-      }
+    function closeImageLightbox() {
+      document.getElementById('image-lightbox-modal').classList.remove('open');
+      document.getElementById('lightbox-target-img').src = "";
     }
 
     // ==========================================
-    // AUTH Y ROLES
+    // AUTENTICACIÓN
     // ==========================================
     function checkAuthSession() {
       const loginGate = document.getElementById('login-view-wrapper');
@@ -1552,19 +1520,13 @@
 
       if (isMasterAdmin) {
         errorEl.style.display = 'none';
-        currentUserSession = {
-          username: siteConfig.adminUser || rawUser,
-          password: p,
-          role: 'admin',
-          name: "Ivan Balanzar"
-        };
+        currentUserSession = { username: siteConfig.adminUser || rawUser, password: p, role: 'admin', name: "Ivan Balanzar" };
         localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
         checkAuthSession();
         return;
       }
 
       const matchedUser = usersDB.find(usr => usr.username.toLowerCase() === u && usr.password === p);
-
       if (matchedUser) {
         errorEl.style.display = 'none';
         currentUserSession = matchedUser;
@@ -1592,7 +1554,7 @@
       renderRules();
       renderMaterials();
       renderScripts();
-      renderCustomSections();
+      renderCustomChannels();
       applySectionsVisibilityUI();
       applyLiveConfig();
     }
@@ -1625,62 +1587,36 @@
         document.getElementById('user-role-icon').className = "fa-solid fa-user-check";
         document.getElementById('user-role-icon').style.color = "var(--green-accent)";
       }
+      
+      const adminMatBtn = document.getElementById('admin-official-mat-action');
+      if (adminMatBtn) {
+        adminMatBtn.style.display = (isUserAdmin && adminVisualMode === 'admin') ? 'block' : 'none';
+      }
+
       applySectionsVisibilityUI();
     }
 
-    // ==========================================
     // AJUSTES GLOBALES
-    // ==========================================
     function openGlobalSiteModal() {
       document.getElementById('cfg-site-title').value = siteConfig.brandTitle;
       document.getElementById('cfg-site-sub').value = siteConfig.brandSub;
       document.getElementById('cfg-site-icon').value = siteConfig.brandIcon;
-      document.getElementById('cfg-site-badge').value = siteConfig.badgeText;
-      document.getElementById('cfg-section-title').value = siteConfig.headerTitle;
-      document.getElementById('cfg-section-desc').value = siteConfig.headerDesc;
       document.getElementById('cfg-admin-user').value = siteConfig.adminUser;
       document.getElementById('cfg-admin-pass').value = siteConfig.adminPass;
       document.getElementById('global-site-modal').classList.add('open');
     }
-
     function closeGlobalSiteModal() { document.getElementById('global-site-modal').classList.remove('open'); }
-
     function saveGlobalSiteConfig() {
-      const newAdminUser = document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser;
-      const newAdminPass = document.getElementById('cfg-admin-pass').value.trim() || siteConfig.adminPass;
-
       siteConfig.brandTitle = document.getElementById('cfg-site-title').value.trim() || siteConfig.brandTitle;
       siteConfig.brandSub = document.getElementById('cfg-site-sub').value.trim() || siteConfig.brandSub;
       siteConfig.brandIcon = document.getElementById('cfg-site-icon').value.trim() || siteConfig.brandIcon;
-      siteConfig.badgeText = document.getElementById('cfg-site-badge').value.trim() || siteConfig.badgeText;
-      siteConfig.headerTitle = document.getElementById('cfg-section-title').value.trim() || siteConfig.headerTitle;
-      siteConfig.headerDesc = document.getElementById('cfg-section-desc').value.trim() || siteConfig.headerDesc;
-      siteConfig.adminUser = newAdminUser;
-      siteConfig.adminPass = newAdminPass;
-
+      siteConfig.adminUser = document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser;
+      siteConfig.adminPass = document.getElementById('cfg-admin-pass').value.trim() || siteConfig.adminPass;
       localStorage.setItem('0red_site_config', JSON.stringify(siteConfig));
-
-      let adminIndex = usersDB.findIndex(u => u.role === 'admin');
-      if (adminIndex !== -1) {
-        usersDB[adminIndex].username = newAdminUser;
-        usersDB[adminIndex].password = newAdminPass;
-      }
-      localStorage.setItem('0red_users_db', JSON.stringify(usersDB));
-
-      if (currentUserSession) {
-        currentUserSession.username = newAdminUser;
-        currentUserSession.password = newAdminPass;
-        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
-      }
-
       applySiteConfig();
-      if (document.getElementById('active-session-username')) document.getElementById('active-session-username').innerText = newAdminUser;
-      if (document.getElementById('banner-admin-name')) document.getElementById('banner-admin-name').innerText = newAdminUser;
-
       closeGlobalSiteModal();
-      alert("✓ Ajustes guardados localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS' para enviarlo a la web.");
+      alert("✓ ¡Configuración global guardada!");
     }
-
     function applySiteConfig() {
       document.getElementById('site-logo-icon').innerText = siteConfig.brandIcon;
       document.getElementById('site-brand-title').innerText = siteConfig.brandTitle;
@@ -1688,56 +1624,7 @@
       document.getElementById('site-header-badge').innerHTML = siteConfig.badgeText;
       document.getElementById('site-header-title').innerText = siteConfig.headerTitle;
       document.getElementById('site-header-desc').innerHTML = siteConfig.headerDesc;
-
-      const loginBrand = document.getElementById('login-brand-badge');
-      if (loginBrand) loginBrand.innerText = siteConfig.brandIcon;
-      const loginTitle = document.getElementById('login-box-title');
-      if (loginTitle) loginTitle.innerText = siteConfig.brandTitle;
-      const copyBrand = document.getElementById('login-copy-brand');
-      if (copyBrand) copyBrand.innerText = siteConfig.brandTitle;
-      const copyAuthor = document.getElementById('login-copy-author');
-      if (copyAuthor) copyAuthor.innerText = siteConfig.adminUser;
-      const footerTitle = document.getElementById('footer-site-title');
-      if (footerTitle) footerTitle.innerText = siteConfig.brandTitle;
-      const footerAuthor = document.getElementById('footer-site-author');
-      if (footerAuthor) footerAuthor.innerText = siteConfig.adminUser;
-
       document.title = siteConfig.brandTitle + " | Institutional Trading Platform";
-    }
-
-    // ==========================================
-    // NAVEGACIÓN Y SECCIONES
-    // ==========================================
-    function switchSidebarTab(tab) {
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
-      if ((isStudentView && sectionsVisibility[tab] === false) || deletedSections.includes(tab)) {
-        tab = 'classes';
-      }
-
-      currentActiveTab = tab;
-      document.querySelectorAll('.workspace-view').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.custom-created-view').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
-
-      const standardView = document.getElementById('view-' + tab);
-      const standardLink = document.getElementById('slink-' + tab);
-
-      if (standardView) standardView.style.display = 'block';
-      const customView = document.getElementById('custom-view-' + tab);
-      if (customView) customView.style.display = 'block';
-
-      if (standardLink) standardLink.classList.add('active');
-      const customLink = document.getElementById('custom-slink-' + tab);
-      if (customLink) customLink.classList.add('active');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleSectionVisibility(sectionKey) {
-      if (!isUserAdmin) return;
-      sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
-      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
-      applySectionsVisibilityUI();
     }
 
     function deleteNativeSection(sectionKey, sectionName) {
@@ -1751,22 +1638,23 @@
         if (currentActiveTab === sectionKey) switchSidebarTab('classes');
       }
     }
-
     function restoreDeletedNativeSections() {
-      if (confirm("¿Restaurar todos los apartados nativos?")) {
-        deletedSections = [];
-        localStorage.removeItem('0red_deleted_sections');
-        sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
-        localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
-        applySectionsVisibilityUI();
-        alert("✓ Apartados restaurados.");
-      }
+      deletedSections = [];
+      localStorage.removeItem('0red_deleted_sections');
+      sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
+      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
+      applySectionsVisibilityUI();
+      alert("✓ Apartados iniciales restaurados.");
     }
-
+    function toggleSectionVisibility(sectionKey) {
+      if (!isUserAdmin) return;
+      sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
+      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
+      applySectionsVisibilityUI();
+    }
     function applySectionsVisibilityUI() {
       const isStudentView = !isUserAdmin || adminVisualMode === 'student';
       const keys = ['chat', 'rules', 'materials', 'scripts', 'tools'];
-
       keys.forEach(k => {
         const itemLi = document.getElementById('slink-item-' + k);
         const eyeBtn = document.getElementById('eye-' + k);
@@ -1774,11 +1662,7 @@
         const isDeleted = deletedSections.includes(k);
         const isVisible = sectionsVisibility[k] !== false;
 
-        if (isDeleted) {
-          if (itemLi) itemLi.style.display = 'none';
-          return;
-        }
-
+        if (isDeleted) { if (itemLi) itemLi.style.display = 'none'; return; }
         if (isStudentView) {
           if (itemLi) itemLi.style.display = isVisible ? 'block' : 'none';
           if (tag) tag.style.display = 'none';
@@ -1796,229 +1680,268 @@
       });
     }
 
+    function switchSidebarTab(tab) {
+      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      if ((isStudentView && sectionsVisibility[tab] === false) || deletedSections.includes(tab)) tab = 'classes';
+
+      currentActiveTab = tab;
+      document.querySelectorAll('.workspace-view').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+
+      const standardView = document.getElementById('view-' + tab);
+      const standardLink = document.getElementById('slink-' + tab);
+      if (standardView) standardView.style.display = 'block';
+      if (standardLink) standardLink.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     // ==========================================
-    // HERRAMIENTAS
+    // CANALES PERSONALIZADOS Y GESTIÓN DE PERMISOS
     // ==========================================
-    function renderTools() {
-      const container = document.getElementById('tools-container');
-      if (!container) return;
-      container.innerHTML = '';
+    function openChannelConfigModal(id) {
+      const isNew = id === 'new';
+      document.getElementById('channel-modal-title').innerHTML = isNew ? `<i class="fa-solid fa-plus-circle" style="color:var(--red-accent);"></i> Crear Nuevo Canal` : `<i class="fa-solid fa-sliders" style="color:var(--red-accent);"></i> Configuración del Canal`;
+      document.getElementById('cfg-channel-id').value = isNew ? '' : id;
+      
+      if (isNew) {
+        document.getElementById('cfg-channel-name').value = '';
+        document.getElementById('cfg-channel-icon').value = 'fa-brain';
+        document.getElementById('cfg-channel-desc').value = '';
+        document.getElementById('cfg-channel-allow-students').checked = false;
+      } else {
+        const ch = channels.find(c => c.id === id);
+        if (!ch) return;
+        document.getElementById('cfg-channel-name').value = ch.name;
+        document.getElementById('cfg-channel-icon').value = ch.icon || 'fa-brain';
+        document.getElementById('cfg-channel-desc').value = ch.desc || '';
+        document.getElementById('cfg-channel-allow-students').checked = !!ch.allowStudents;
+      }
+      document.getElementById('channel-modal').classList.add('open');
+    }
+
+    function closeChannelConfigModal() { document.getElementById('channel-modal').classList.remove('open'); }
+
+    function saveChannelConfig() {
+      const id = document.getElementById('cfg-channel-id').value;
+      const name = document.getElementById('cfg-channel-name').value.trim();
+      const icon = document.getElementById('cfg-channel-icon').value;
+      const desc = document.getElementById('cfg-channel-desc').value.trim();
+      const allowStudents = document.getElementById('cfg-channel-allow-students').checked;
+
+      if (!name) return alert("Por favor ingresa un nombre para el canal.");
+
+      if (id) {
+        const idx = channels.findIndex(c => c.id === id);
+        if (idx !== -1) channels[idx] = { ...channels[idx], name, icon, desc, allowStudents };
+      } else {
+        const newId = 'chan_' + Date.now();
+        channels.push({ id: newId, name, icon, desc, allowStudents });
+      }
+
+      localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
+      closeChannelConfigModal();
+      renderCustomChannels();
+      alert("✓ ¡Canal y permisos guardados exitosamente!");
+    }
+
+    function deleteChannel(id) {
+      if (confirm("¿Eliminar este canal y todo el material publicado en él?")) {
+        channels = channels.filter(c => c.id !== id);
+        materialsData = materialsData.filter(m => m.targetChannel !== id);
+        localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
+        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
+        renderCustomChannels();
+        switchSidebarTab('classes');
+      }
+    }
+
+    function renderCustomChannels() {
+      const listContainer = document.getElementById('sidebar-channels-list');
+      const viewsContainer = document.getElementById('custom-views-container');
       const isStudentView = !isUserAdmin || adminVisualMode === 'student';
 
-      toolsData.forEach((tool) => {
-        const isVisible = tool.visibleToStudents !== false;
-        if (isStudentView && !isVisible) return;
+      listContainer.innerHTML = '';
+      viewsContainer.innerHTML = '';
 
-        const card = document.createElement('div');
-        card.className = `tool-card ${!isVisible ? 'item-hidden-admin' : ''}`;
-        const featuresHtml = (tool.features || []).map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('');
-
-        card.innerHTML = `
-          <div>
-            <div class="tool-icon-wrap"><i class="fa-solid ${tool.icon || 'fa-screwdriver-wrench'}"></i></div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <h3 style="font-size:1.25rem; font-weight:800; color:#fff;">${tool.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h3>
-              <span style="font-family:var(--font-mono); font-size:0.72rem; padding:2px 8px; border-radius:4px; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);">${tool.badge || 'HERRAMIENTA'}</span>
-            </div>
-            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">${tool.desc}</p>
-            <ul class="tool-features-list">${featuresHtml}</ul>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid var(--card-border); padding-top:16px; align-items:center; justify-content:space-between;">
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn-meet-join" style="padding:10px 18px; font-size:0.85rem; text-decoration:none;">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${tool.btnText || 'ABRIR ENLACE'}
-              </a>
-              ${tool.allowEmbed ? `<button class="btn-view" onclick="openEmbeddedViewer('${tool.url}', '${tool.title}')"><i class="fa-solid fa-window-maximize"></i> Ver en Plataforma</button>` : ''}
-            </div>
-            <div class="admin-card-controls">
-              <button class="btn-admin-icon" onclick="toggleToolVisibility('${tool.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
-              <button class="btn-admin-icon" onclick="openToolModal('${tool.id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-admin-icon" onclick="deleteTool('${tool.id}')"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
+      channels.forEach(ch => {
+        // Enlace en la barra lateral
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a class="sidebar-link" id="slink-${ch.id}" onclick="switchSidebarTab('${ch.id}')">
+            <span class="link-label-group">
+              <i class="fa-solid ${ch.icon || 'fa-brain'}"></i>
+              <span>${ch.name}</span>
+              <span class="channel-perm-badge ${ch.allowStudents ? 'perm-open-uploads' : 'perm-read-only'}">
+                ${ch.allowStudents ? 'ABIERTO' : 'SOLO ADMIN'}
+              </span>
+            </span>
+            <span class="sidebar-controls-wrap">
+              <button class="btn-toggle-eye" title="Configurar Permisos de Subida" onclick="event.stopPropagation(); openChannelConfigModal('${ch.id}')"><i class="fa-solid fa-gear"></i></button>
+              <button class="btn-delete-section" title="Eliminar Canal" onclick="event.stopPropagation(); deleteChannel('${ch.id}')"><i class="fa-solid fa-trash"></i></button>
+            </span>
+          </a>
         `;
-        container.appendChild(card);
+        listContainer.appendChild(li);
+
+        // Vista de contenido del canal
+        const view = document.createElement('div');
+        view.id = 'view-' + ch.id;
+        view.className = 'workspace-view';
+        view.style.display = 'none';
+
+        // Comprobación de permiso de subida: ¿Es admin o el canal está abierto para alumnos?
+        const canUpload = (isUserAdmin && adminVisualMode === 'admin') || ch.allowStudents;
+        const channelItems = materialsData.filter(m => m.targetChannel === ch.id);
+
+        let gridHtml = '';
+        if (channelItems.length === 0) {
+          gridHtml = `
+            <div style="grid-column: 1/-1; padding: 45px 20px; text-align:center; background:rgba(255,255,255,0.02); border:1px dashed var(--card-border); border-radius:14px; margin-top:16px;">
+              <i class="fa-solid fa-images" style="font-size:2.4rem; color:#4b5563; margin-bottom:12px;"></i>
+              <h3 style="color:#fff; font-size:1.15rem; font-weight:700;">Aún no hay análisis publicados en ${ch.name}</h3>
+              <p style="color:var(--text-muted); font-size:0.85rem; max-width:500px; margin:6px auto 18px;">
+                ${canUpload ? 'Sé el primero en compartir un setup o esquema gráfico en este canal.' : 'Canal oficial de solo lectura. El profesor publicará el material técnico aquí.'}
+              </p>
+              ${canUpload ? `
+                <button class="btn-view" onclick="openUploadModal('${ch.id}')">
+                  <i class="fa-solid fa-plus"></i> SUBIR PRIMER ANÁLISIS
+                </button>
+              ` : ''}
+            </div>
+          `;
+        } else {
+          gridHtml = channelItems.map(it => `
+            <div class="mat-image-card">
+              <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
+                <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
+                <img src="${it.image}" alt="${it.title}">
+              </div>
+              <div class="mat-body">
+                <div class="mat-author-tag"><i class="fa-solid fa-user-circle"></i> Publicado por: ${it.author}</div>
+                <h4 class="mat-title">${it.title}</h4>
+                <p class="mat-desc">${it.desc || ''}</p>
+                <div class="mat-footer">
+                  <span style="font-size:0.75rem; color:#6b7280;">${it.date}</span>
+                  ${(isUserAdmin && adminVisualMode === 'admin') ? `
+                    <button class="btn-delete-section" title="Eliminar Publicación" onclick="deleteMaterialItem('${it.id}')"><i class="fa-solid fa-trash"></i></button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        view.innerHTML = `
+          <div class="page-header">
+            <div>
+              <div class="badge-pill">
+                <i class="fa-solid ${ch.allowStudents ? 'fa-door-open' : 'fa-lock'}"></i> 
+                ${ch.allowStudents ? 'Canal Colaborativo (Alumnos & Mentor)' : 'Canal Exclusivo (Solo Publica el Mentor)'}
+              </div>
+              <h1 class="page-title">${ch.name}</h1>
+              <p class="page-desc">${ch.desc || 'Galería de análisis técnico y esquemas institucionales.'}</p>
+            </div>
+            <div>
+              ${canUpload ? `
+                <button class="btn-action-primary" onclick="openUploadModal('${ch.id}')">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> SUBIR ANÁLISIS A ${ch.name.toUpperCase()}
+                </button>
+              ` : `
+                <div style="font-size:0.8rem; color:#9ca3af; font-family:var(--font-mono); background:rgba(255,255,255,0.05); padding:8px 14px; border-radius:8px;">
+                  <i class="fa-solid fa-lock"></i> Canal restringido a solo lectura
+                </div>
+              `}
+            </div>
+          </div>
+          <div class="materials-custom-grid">${gridHtml}</div>
+        `;
+        viewsContainer.appendChild(view);
       });
     }
 
-    function toggleToolVisibility(id) {
-      const t = toolsData.find(x => x.id === id);
-      if (t) {
-        t.visibleToStudents = (t.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-        renderTools();
+    // SUBIDA DE ANÁLISIS / IMÁGENES
+    function openUploadModal(targetChannelId) {
+      document.getElementById('upload-target-channel').value = targetChannelId;
+      document.getElementById('upload-title').value = '';
+      document.getElementById('upload-desc').value = '';
+      document.getElementById('upload-url').value = '';
+      document.getElementById('upload-file').value = '';
+      document.getElementById('upload-preview-wrap').style.display = 'none';
+      document.getElementById('upload-preview-img').src = '';
+      document.getElementById('upload-modal').classList.add('open');
+    }
+    function closeUploadModal() { document.getElementById('upload-modal').classList.remove('open'); }
+
+    function submitContentUpload() {
+      const targetChannel = document.getElementById('upload-target-channel').value;
+      const title = document.getElementById('upload-title').value.trim();
+      const desc = document.getElementById('upload-desc').value.trim();
+      const image = document.getElementById('upload-url').value.trim();
+
+      if (!title) return alert("Por favor ingresa un título para el gráfico.");
+      if (!image) return alert("Por favor selecciona una captura desde tu PC o escribe una URL.");
+
+      const newItem = {
+        id: 'mat_' + Date.now(),
+        targetChannel,
+        title,
+        desc,
+        image,
+        author: currentUserSession ? currentUserSession.username : 'Alumno',
+        date: new Date().toLocaleDateString()
+      };
+
+      materialsData.unshift(newItem);
+
+      try {
+        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
+      } catch (err) {
+        alert("Alerta de almacenamiento: La imagen es muy pesada. Elige otra imagen o usa una URL directa.");
+        return;
+      }
+
+      closeUploadModal();
+      renderMaterials();
+      renderCustomChannels();
+      alert("✓ ¡Publicado exitosamente!");
+    }
+
+    function deleteMaterialItem(id) {
+      if (confirm("¿Eliminar este gráfico de la plataforma?")) {
+        materialsData = materialsData.filter(m => m.id !== id);
+        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
+        renderMaterials();
+        renderCustomChannels();
       }
     }
 
-    function openToolModal(id) {
-      const isNew = id === 'new';
-      document.getElementById('tool-editor-title').innerText = isNew ? "Agregar Nueva Herramienta" : "Editar Herramienta";
-      document.getElementById('edit-tool-id').value = isNew ? "" : id;
-      if (isNew) {
-        document.getElementById('edit-tool-title').value = "";
-        document.getElementById('edit-tool-badge').value = "OFICIAL";
-        document.getElementById('edit-tool-btn-text').value = "ABRIR HERRAMIENTA";
-        document.getElementById('edit-tool-url').value = "";
-        document.getElementById('edit-tool-icon').value = "fa-screwdriver-wrench";
-        document.getElementById('edit-tool-desc').value = "";
-        document.getElementById('edit-tool-features').value = "";
-        document.getElementById('edit-tool-embed').checked = true;
-      } else {
-        const item = toolsData.find(t => t.id === id);
-        if (!item) return;
-        document.getElementById('edit-tool-title').value = item.title;
-        document.getElementById('edit-tool-badge').value = item.badge || "OFICIAL";
-        document.getElementById('edit-tool-btn-text').value = item.btnText || "ABRIR";
-        document.getElementById('edit-tool-url').value = item.url || "";
-        document.getElementById('edit-tool-icon').value = item.icon || "fa-screwdriver-wrench";
-        document.getElementById('edit-tool-desc').value = item.desc || "";
-        document.getElementById('edit-tool-features').value = (item.features || []).join('\n');
-        document.getElementById('edit-tool-embed').checked = item.allowEmbed !== false;
+    function renderMaterials() {
+      const container = document.getElementById('materials-container');
+      if (!container) return;
+      const officialItems = materialsData.filter(m => m.targetChannel === 'materials');
+      if (officialItems.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1; padding:35px; text-align:center; color:#6b7280;">Sin esquemas oficiales todavía.</div>`;
+        return;
       }
-      document.getElementById('tool-editor-modal').classList.add('open');
-    }
-
-    function closeToolModal() { document.getElementById('tool-editor-modal').classList.remove('open'); }
-
-    function saveToolData() {
-      const id = document.getElementById('edit-tool-id').value;
-      const title = document.getElementById('edit-tool-title').value.trim();
-      const badge = document.getElementById('edit-tool-badge').value.trim() || "HERRAMIENTA";
-      const btnText = document.getElementById('edit-tool-btn-text').value.trim() || "ABRIR ENLACE";
-      const url = document.getElementById('edit-tool-url').value.trim();
-      const icon = document.getElementById('edit-tool-icon').value;
-      const desc = document.getElementById('edit-tool-desc').value.trim();
-      const features = document.getElementById('edit-tool-features').value.split('\n').map(f => f.trim()).filter(Boolean);
-      const allowEmbed = document.getElementById('edit-tool-embed').checked;
-
-      if (!title || !url) return alert("Ingresa un título y URL.");
-
-      if (id) {
-        const idx = toolsData.findIndex(t => t.id === id);
-        if (idx !== -1) toolsData[idx] = { ...toolsData[idx], title, badge, btnText, url, icon, desc, features, allowEmbed };
-      } else {
-        toolsData.push({ id: 'tool-' + Date.now(), title, badge, btnText, url, icon, desc, features, allowEmbed, visibleToStudents: true });
-      }
-
-      localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-      renderTools();
-      closeToolModal();
-      alert("✓ Guardado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
-    }
-
-    function deleteTool(id) {
-      if (confirm("¿Eliminar esta herramienta?")) {
-        toolsData = toolsData.filter(t => t.id !== id);
-        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-        renderTools();
-      }
-    }
-
-    function openEmbeddedViewer(url, title) {
-      const wrap = document.getElementById('embedded-journal-wrap');
-      const iframe = document.getElementById('journal-iframe');
-      const titleEl = document.getElementById('embedded-viewer-title');
-      if (!wrap || !iframe) return;
-      iframe.src = url;
-      if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-window-maximize" style="color:var(--red-accent);"></i> ${title} (Visor Activo)`;
-      wrap.style.display = 'block';
-      wrap.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function closeEmbeddedViewer() {
-      const wrap = document.getElementById('embedded-journal-wrap');
-      const iframe = document.getElementById('journal-iframe');
-      if (wrap) wrap.style.display = 'none';
-      if (iframe) iframe.src = '';
-    }
-
-    // ==========================================
-    // EN VIVO / MEET
-    // ==========================================
-    function togglePlatformLiveFields() {
-      const type = document.getElementById('cfg-live-platform').value;
-      document.getElementById('wrap-meet-url').style.display = type === 'meet' ? 'block' : 'none';
-      document.getElementById('wrap-youtube-url').style.display = type === 'youtube' ? 'block' : 'none';
-    }
-
-    function openLiveConfigModal() {
-      document.getElementById('cfg-live-platform').value = liveConfig.platformType || 'meet';
-      document.getElementById('cfg-live-status').value = liveConfig.status || 'scheduled';
-      document.getElementById('cfg-meet-url').value = liveConfig.meetUrl || '';
-      document.getElementById('cfg-live-url').value = liveConfig.url || '';
-      document.getElementById('cfg-live-title').value = liveConfig.title;
-      document.getElementById('cfg-live-date').value = liveConfig.date;
-      document.getElementById('cfg-live-desc').value = liveConfig.desc;
-      togglePlatformLiveFields();
-      document.getElementById('live-config-modal').classList.add('open');
-    }
-
-    function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
-
-    function saveLiveConfig() {
-      liveConfig.platformType = document.getElementById('cfg-live-platform').value;
-      liveConfig.status = document.getElementById('cfg-live-status').value;
-      liveConfig.meetUrl = document.getElementById('cfg-meet-url').value.trim() || 'https://meet.google.com/new';
-      liveConfig.url = document.getElementById('cfg-live-url').value.trim();
-      liveConfig.title = document.getElementById('cfg-live-title').value.trim();
-      liveConfig.date = document.getElementById('cfg-live-date').value.trim();
-      liveConfig.desc = document.getElementById('cfg-live-desc').value.trim();
-
-      localStorage.setItem('0red_live', JSON.stringify(liveConfig));
-      applyLiveConfig();
-      closeLiveModal();
-      alert("✓ Actualizado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
-    }
-
-    function applyLiveConfig() {
-      document.getElementById('display-live-date').innerText = liveConfig.date;
-      document.getElementById('live-stream-title').innerText = liveConfig.title;
-      document.getElementById('live-stream-desc').innerText = liveConfig.desc;
-
-      const livePill = document.getElementById('sidebar-live-pill');
-      if (livePill) livePill.style.display = liveConfig.status === 'active' ? 'inline-block' : 'none';
-
-      const displayContainer = document.getElementById('live-display-container');
-      if (!displayContainer) return;
-
-      const isLiveActive = liveConfig.status === 'active';
-
-      if (liveConfig.platformType === 'meet') {
-        displayContainer.innerHTML = `
-          <div class="meet-hero-card">
-            <div class="meet-icon-badge"><i class="fa-solid fa-users-viewfinder"></i></div>
-            <div>
-              <div class="meet-live-pill ${isLiveActive ? 'active' : 'scheduled'}" style="margin-bottom:12px;">
-                ${isLiveActive ? '<span class="live-indicator-dot"></span> SALA ACTIVA Y EN DIRECTO' : '<i class="fa-regular fa-calendar-check"></i> SALA PROGRAMADA'}
-              </div>
-              <h2 style="font-size:1.6rem; font-weight:800; color:#fff; margin-bottom:8px;">${liveConfig.title}</h2>
-              <p style="color:var(--text-muted); font-size:0.95rem; max-width:540px; margin:0 auto 10px; line-height:1.5;">${liveConfig.desc}</p>
-              <div style="font-family:var(--font-mono); font-size:0.85rem; color:#fca5a5;">
-                <i class="fa-solid fa-clock"></i> Horario: <strong>${liveConfig.date}</strong>
-              </div>
-            </div>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center; z-index:2;">
-              <a href="${liveConfig.meetUrl}" target="_blank" rel="noopener noreferrer" class="btn-meet-join">
-                <i class="fa-solid fa-video"></i> UNIRSE A GOOGLE MEET
-              </a>
-              <button class="btn-view" style="padding:13px 18px; border-radius:10px;" onclick="copyMeetLink('${liveConfig.meetUrl}')">
-                <i class="fa-solid fa-copy"></i> Copiar Enlace
-              </button>
-            </div>
+      container.innerHTML = officialItems.map(it => `
+        <div class="mat-image-card">
+          <div class="mat-img-wrap" onclick="openImageLightbox('${it.image}', '${it.title}')">
+            <span class="mat-img-badge"><i class="fa-solid fa-expand"></i> Ampliar</span>
+            <img src="${it.image}" alt="${it.title}">
           </div>
-        `;
-      } else {
-        displayContainer.innerHTML = `
-          <div class="player-wrapper">
-            <iframe id="live-iframe" src="${liveConfig.url}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+          <div class="mat-body">
+            <h4 class="mat-title">${it.title}</h4>
+            <p class="mat-desc">${it.desc || ''}</p>
+            ${(isUserAdmin && adminVisualMode === 'admin') ? `
+              <div class="mat-footer">
+                <span style="font-size:0.75rem; color:#6b7280;">${it.date}</span>
+                <button class="btn-delete-section" onclick="deleteMaterialItem('${it.id}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            ` : ''}
           </div>
-        `;
-      }
-    }
-
-    function copyMeetLink(url) {
-      if (!url) return alert("No hay enlace de Google Meet configurado.");
-      navigator.clipboard.writeText(url).then(() => alert("✓ Enlace copiado: " + url));
+        </div>
+      `).join('');
     }
 
     // ==========================================
@@ -2040,7 +1963,9 @@
           <div class="card-thumb-container" onclick="${item.unlocked ? `playClass('${item.id}')` : ''}">
             <img src="${item.thumbUrl || 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'}" class="card-thumb-img" alt="${item.title}">
             ${item.unlocked ? `
-              <div class="card-play-overlay"><div class="play-btn-circle"><i class="fa-solid fa-play"></i></div></div>
+              <div class="card-play-overlay">
+                <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
+              </div>
               <span class="duration-tag"><i class="fa-regular fa-clock"></i> ${item.duration}</span>
             ` : `
               <div class="card-locked-overlay">
@@ -2052,32 +1977,31 @@
           <div class="card-body">
             <div class="card-meta-top">
               <span class="meta-week">${item.week} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
-              <span class="meta-status ${item.unlocked ? 'status-unlocked' : 'status-locked'}">${item.unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}</span>
+              <span class="meta-status ${item.unlocked ? 'status-unlocked' : 'status-locked'}">
+                ${item.unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}
+              </span>
             </div>
             <h3 class="card-title">${item.title}</h3>
             <p class="card-desc">${item.desc}</p>
-            <div class="card-tags">${(item.tags || []).map(t => `<span class="concept-tag">${t}</span>`).join('')}</div>
+            <div class="card-tags">
+              ${(item.tags || []).map(t => `<span class="concept-tag">${t}</span>`).join('')}
+              ${item.chartImg ? `<span class="concept-tag" style="color:#38bdf8; border-color:rgba(56,189,248,0.4);"><i class="fa-solid fa-image"></i> Esquema Incluido</span>` : ''}
+            </div>
             <div class="card-actions">
-              ${item.unlocked ? `<button class="btn-view" onclick="playClass('${item.id}')"><i class="fa-solid fa-play"></i> Ver Grabación</button>` : `<span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> ${item.date}</span>`}
+              ${item.unlocked ? `
+                <button class="btn-view" onclick="playClass('${item.id}')"><i class="fa-solid fa-play"></i> Ver Grabación</button>
+              ` : `
+                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> ${item.date}</span>
+              `}
               <div class="admin-card-controls">
-                <button class="btn-admin-icon" onclick="togglePlayClassVisibility('${item.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
-                <button class="btn-admin-icon" onclick="openClassModal('${item.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-admin-icon" onclick="deleteClass('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn-admin-icon" title="Editar Clase" onclick="openClassModal('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-admin-icon" title="Eliminar Clase" onclick="deleteClass('${item.id}')"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
         `;
         container.appendChild(card);
       });
-    }
-
-    function togglePlayClassVisibility(id) {
-      const c = classesData.find(x => x.id === id);
-      if (c) {
-        c.visibleToStudents = (c.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_classes', JSON.stringify(classesData));
-        renderClasses();
-      }
     }
 
     function playClass(id) {
@@ -2087,14 +2011,23 @@
       document.getElementById('modal-class-title').innerText = cls.title;
       document.getElementById('modal-class-desc').innerText = cls.desc;
       document.getElementById('modal-video-frame').src = cls.videoUrl;
+
+      const diagramsWrap = document.getElementById('modal-class-diagrams-wrap');
+      const diagramImg = document.getElementById('modal-class-diagram-img');
+      if (cls.chartImg) {
+        diagramImg.src = cls.chartImg;
+        diagramsWrap.style.display = 'block';
+      } else {
+        diagramsWrap.style.display = 'none';
+        diagramImg.src = "";
+      }
+
       document.getElementById('player-modal').classList.add('open');
     }
-
     function closePlayerModal() {
       document.getElementById('player-modal').classList.remove('open');
       document.getElementById('modal-video-frame').src = "";
     }
-
     function openClassModal(id) {
       const isNew = id === 'new';
       document.getElementById('editor-title').innerText = isNew ? "Agregar Nueva Clase" : "Editar Clase";
@@ -2105,6 +2038,7 @@
         document.getElementById('edit-date').value = "Viernes • 12:00 UTC-6";
         document.getElementById('edit-video').value = "";
         document.getElementById('edit-thumb').value = "";
+        document.getElementById('edit-class-chart').value = "";
         document.getElementById('edit-duration').value = "1h 30m";
         document.getElementById('edit-desc').value = "";
         document.getElementById('edit-tags').value = "Liquidez, SMC, 0RED";
@@ -2117,6 +2051,7 @@
         document.getElementById('edit-date').value = item.date;
         document.getElementById('edit-video').value = item.videoUrl;
         document.getElementById('edit-thumb').value = item.thumbUrl;
+        document.getElementById('edit-class-chart').value = item.chartImg || "";
         document.getElementById('edit-duration').value = item.duration;
         document.getElementById('edit-desc').value = item.desc;
         document.getElementById('edit-tags').value = (item.tags || []).join(', ');
@@ -2124,9 +2059,7 @@
       }
       document.getElementById('class-editor-modal').classList.add('open');
     }
-
     function closeEditorModal() { document.getElementById('class-editor-modal').classList.remove('open'); }
-
     function saveClassData() {
       const id = document.getElementById('edit-class-id').value;
       const week = document.getElementById('edit-week').value.trim();
@@ -2134,28 +2067,27 @@
       const date = document.getElementById('edit-date').value.trim();
       const videoUrl = document.getElementById('edit-video').value.trim();
       const thumbUrl = document.getElementById('edit-thumb').value.trim();
+      const chartImg = document.getElementById('edit-class-chart').value.trim();
       const duration = document.getElementById('edit-duration').value.trim();
       const desc = document.getElementById('edit-desc').value.trim();
       const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
       const unlocked = document.getElementById('edit-unlocked').checked;
 
-      if (!title) return alert("Ingresa un título.");
+      if (!title) return alert("Por favor ingresa un título para la clase.");
 
       if (id) {
         const idx = classesData.findIndex(c => c.id === id);
-        if (idx !== -1) classesData[idx] = { ...classesData[idx], week, title, date, videoUrl, thumbUrl, duration, desc, tags, unlocked };
+        if (idx !== -1) classesData[idx] = { ...classesData[idx], week, title, date, videoUrl, thumbUrl, chartImg, duration, desc, tags, unlocked };
       } else {
-        classesData.push({ id: 'class-' + Date.now(), week, title, date, videoUrl, thumbUrl, duration, desc, tags, unlocked, visibleToStudents: true });
+        classesData.push({ id: 'class-' + Date.now(), week, title, date, videoUrl, thumbUrl, chartImg, duration, desc, tags, unlocked, visibleToStudents: true });
       }
 
       localStorage.setItem('0red_classes', JSON.stringify(classesData));
       renderClasses();
       closeEditorModal();
-      alert("✓ Guardado localmente. Recuerda hacer clic en 'PUBLICAR CAMBIOS A TODOS'.");
     }
-
     function deleteClass(id) {
-      if (confirm("¿Eliminar esta clase?")) {
+      if (confirm("¿Eliminar esta clase del temario?")) {
         classesData = classesData.filter(c => c.id !== id);
         localStorage.setItem('0red_classes', JSON.stringify(classesData));
         renderClasses();
@@ -2163,396 +2095,196 @@
     }
 
     // ==========================================
-    // REGLAS
+    // HERRAMIENTAS, REGLAS Y SCRIPTS
     // ==========================================
-    function renderRules() {
-      const container = document.getElementById('rules-container');
+    function renderTools() {
+      const container = document.getElementById('tools-container');
       if (!container) return;
       container.innerHTML = '';
       const isStudentView = !isUserAdmin || adminVisualMode === 'student';
 
-      rulesData.forEach((rule) => {
-        const isVisible = rule.visibleToStudents !== false;
+      toolsData.forEach((tool) => {
+        const isVisible = tool.visibleToStudents !== false;
         if (isStudentView && !isVisible) return;
 
-        const item = document.createElement('div');
-        item.className = `rule-item ${!isVisible ? 'item-hidden-admin' : ''}`;
-        item.innerHTML = `
-          <div class="rule-left">
-            <div class="rule-num">${rule.num}</div>
-            <div class="rule-content">
-              <h4>${rule.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h4>
-              <p>${rule.desc}</p>
+        const card = document.createElement('div');
+        card.className = `tool-card ${!isVisible ? 'item-hidden-admin' : ''}`;
+        const featuresHtml = (tool.features || []).map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('');
+
+        card.innerHTML = `
+          <div>
+            <div class="tool-icon-wrap"><i class="fa-solid ${tool.icon || 'fa-screwdriver-wrench'}"></i></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <h3 style="font-size:1.25rem; font-weight:800; color:#fff;">${tool.title}</h3>
+              <span style="font-family:var(--font-mono); font-size:0.72rem; padding:2px 8px; border-radius:4px; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);">${tool.badge || 'HERRAMIENTA'}</span>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">${tool.desc}</p>
+            <ul class="tool-features-list">${featuresHtml}</ul>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid var(--card-border); padding-top:16px; align-items:center; justify-content:space-between;">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn-meet-join" style="padding:10px 18px; font-size:0.85rem; text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${tool.btnText || 'ABRIR'}
+              </a>
+              ${tool.allowEmbed ? `<button class="btn-view" onclick="openEmbeddedViewer('${tool.url}', '${tool.title}')"><i class="fa-solid fa-window-maximize"></i> Ver en Plataforma</button>` : ''}
+            </div>
+            <div class="admin-card-controls">
+              <button class="btn-admin-icon" title="Eliminar" onclick="deleteTool('${tool.id}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
-          <div class="admin-card-controls">
-            <button class="btn-admin-icon" onclick="toggleRuleVisibility('${rule.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
-            <button class="btn-admin-icon" onclick="openRuleModal('${rule.id}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-admin-icon" onclick="deleteRule('${rule.id}')"><i class="fa-solid fa-trash"></i></button>
-          </div>
         `;
+        container.appendChild(card);
+      });
+    }
+    function openToolModal() { document.getElementById('tool-editor-modal').classList.add('open'); }
+    function closeToolModal() { document.getElementById('tool-editor-modal').classList.remove('open'); }
+    function saveToolData() {
+      const title = document.getElementById('edit-tool-title').value.trim();
+      const url = document.getElementById('edit-tool-url').value.trim();
+      const desc = document.getElementById('edit-tool-desc').value.trim();
+      const features = document.getElementById('edit-tool-features').value.split('\n').filter(Boolean);
+      if (!title || !url) return alert("Completa título y enlace.");
+      toolsData.push({ id: 'tool-' + Date.now(), title, url, desc, features, visibleToStudents: true, allowEmbed: true });
+      localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+      renderTools();
+      closeToolModal();
+    }
+    function deleteTool(id) {
+      if (confirm("¿Eliminar herramienta?")) {
+        toolsData = toolsData.filter(t => t.id !== id);
+        localStorage.setItem('0red_tools', JSON.stringify(toolsData));
+        renderTools();
+      }
+    }
+    function openEmbeddedViewer(url, title) {
+      const wrap = document.getElementById('embedded-journal-wrap');
+      const iframe = document.getElementById('journal-iframe');
+      iframe.src = url;
+      document.getElementById('embedded-viewer-title').innerHTML = `<i class="fa-solid fa-window-maximize" style="color:var(--red-accent);"></i> ${title}`;
+      wrap.style.display = 'block';
+      wrap.scrollIntoView({ behavior: 'smooth' });
+    }
+    function closeEmbeddedViewer() {
+      document.getElementById('embedded-journal-wrap').style.display = 'none';
+      document.getElementById('journal-iframe').src = '';
+    }
+
+    function renderRules() {
+      const container = document.getElementById('rules-container');
+      if (!container) return;
+      container.innerHTML = '';
+      rulesData.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'rule-item';
+        item.innerHTML = `<div class="rule-left"><div class="rule-num">${r.num}</div><div class="rule-content"><h4>${r.title}</h4><p>${r.desc}</p></div></div>`;
         container.appendChild(item);
       });
     }
-
-    function toggleRuleVisibility(id) {
-      const r = rulesData.find(x => x.id === id);
-      if (r) {
-        r.visibleToStudents = (r.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_rules', JSON.stringify(rulesData));
-        renderRules();
-      }
-    }
-
-    function openRuleModal(id) {
-      const isNew = id === 'new';
-      document.getElementById('rule-modal-title').innerText = isNew ? "Agregar Nueva Regla" : "Editar Regla";
-      document.getElementById('edit-rule-id').value = isNew ? "" : id;
-      if (isNew) {
-        document.getElementById('edit-rule-num').value = String(rulesData.length + 1).padStart(2, '0');
-        document.getElementById('edit-rule-title').value = "";
-        document.getElementById('edit-rule-desc').value = "";
-      } else {
-        const r = rulesData.find(x => x.id === id);
-        if (!r) return;
-        document.getElementById('edit-rule-num').value = r.num;
-        document.getElementById('edit-rule-title').value = r.title;
-        document.getElementById('edit-rule-desc').value = r.desc;
-      }
-      document.getElementById('rule-modal').classList.add('open');
-    }
-
+    function openRuleModal() { document.getElementById('rule-modal').classList.add('open'); }
     function closeRuleModal() { document.getElementById('rule-modal').classList.remove('open'); }
-
     function saveRuleData() {
-      const id = document.getElementById('edit-rule-id').value;
-      const num = document.getElementById('edit-rule-num').value.trim() || "01";
       const title = document.getElementById('edit-rule-title').value.trim();
       const desc = document.getElementById('edit-rule-desc').value.trim();
-
-      if (!title) return alert("Ingresa un título.");
-
-      if (id) {
-        const idx = rulesData.findIndex(r => r.id === id);
-        if (idx !== -1) rulesData[idx] = { ...rulesData[idx], num, title, desc };
-      } else {
-        rulesData.push({ id: 'rule-' + Date.now(), num, title, desc, visibleToStudents: true });
-      }
-
+      if (!title) return alert("Título obligatorio.");
+      rulesData.push({ id: 'rule-' + Date.now(), num: String(rulesData.length+1).padStart(2,'0'), title, desc, visibleToStudents: true });
       localStorage.setItem('0red_rules', JSON.stringify(rulesData));
       renderRules();
       closeRuleModal();
     }
 
-    function deleteRule(id) {
-      if (confirm("¿Eliminar esta regla?")) {
-        rulesData = rulesData.filter(r => r.id !== id);
-        localStorage.setItem('0red_rules', JSON.stringify(rulesData));
-        renderRules();
-      }
-    }
-
-    // ==========================================
-    // MATERIALES
-    // ==========================================
-    function renderMaterials() {
-      const container = document.getElementById('materials-container');
-      if (!container) return;
-      container.innerHTML = '';
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
-
-      materialsData.forEach((mat) => {
-        const isVisible = mat.visibleToStudents !== false;
-        if (isStudentView && !isVisible) return;
-
-        const item = document.createElement('div');
-        item.className = `material-item ${!isVisible ? 'item-hidden-admin' : ''}`;
-        item.innerHTML = `
-          <div class="material-info">
-            <i class="fa-solid ${mat.icon || 'fa-file-pdf'} material-icon"></i>
-            <div>
-              <h4 style="color:#fff; font-size:0.95rem;">${mat.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</h4>
-              <p style="color:var(--text-muted); font-size:0.78rem; font-family:var(--font-mono);">${mat.subtitle}</p>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <button class="btn-view" onclick="downloadMaterial('${mat.url}', '${mat.title}')"><i class="fa-solid fa-download"></i> Descargar</button>
-            <div class="admin-card-controls">
-              <button class="btn-admin-icon" onclick="toggleMaterialVisibility('${mat.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
-              <button class="btn-admin-icon" onclick="openMaterialModal('${mat.id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-admin-icon" onclick="deleteMaterial('${mat.id}')"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    function toggleMaterialVisibility(id) {
-      const m = materialsData.find(x => x.id === id);
-      if (m) {
-        m.visibleToStudents = (m.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_materials', JSON.stringify(materialsData));
-        renderMaterials();
-      }
-    }
-
-    function downloadMaterial(url, title) {
-      if (url && url !== "#") window.open(url, '_blank');
-      else alert("Descargando: " + title);
-    }
-
-    function openMaterialModal(id) {
-      const isNew = id === 'new';
-      document.getElementById('material-modal-title').innerText = isNew ? "Agregar Material" : "Editar Material";
-      document.getElementById('edit-material-id').value = isNew ? "" : id;
-      if (isNew) {
-        document.getElementById('edit-mat-title').value = "";
-        document.getElementById('edit-mat-subtitle').value = "PDF • 10.5 MB • 2026";
-        document.getElementById('edit-mat-icon').value = "fa-file-pdf";
-        document.getElementById('edit-mat-url').value = "";
-      } else {
-        const m = materialsData.find(x => x.id === id);
-        if (!m) return;
-        document.getElementById('edit-mat-title').value = m.title;
-        document.getElementById('edit-mat-subtitle').value = m.subtitle;
-        document.getElementById('edit-mat-icon').value = m.icon || "fa-file-pdf";
-        document.getElementById('edit-mat-url').value = m.url || "";
-      }
-      document.getElementById('material-modal').classList.add('open');
-    }
-
-    function closeMaterialModal() { document.getElementById('material-modal').classList.remove('open'); }
-
-    function saveMaterialData() {
-      const id = document.getElementById('edit-material-id').value;
-      const title = document.getElementById('edit-mat-title').value.trim();
-      const subtitle = document.getElementById('edit-mat-subtitle').value.trim();
-      const icon = document.getElementById('edit-mat-icon').value;
-      const url = document.getElementById('edit-mat-url').value.trim();
-
-      if (!title) return alert("Ingresa un título.");
-
-      if (id) {
-        const idx = materialsData.findIndex(m => m.id === id);
-        if (idx !== -1) materialsData[idx] = { ...materialsData[idx], title, subtitle, icon, url };
-      } else {
-        materialsData.push({ id: 'mat-' + Date.now(), title, subtitle, icon, url, visibleToStudents: true });
-      }
-
-      localStorage.setItem('0red_materials', JSON.stringify(materialsData));
-      renderMaterials();
-      closeMaterialModal();
-    }
-
-    function deleteMaterial(id) {
-      if (confirm("¿Eliminar este material?")) {
-        materialsData = materialsData.filter(m => m.id !== id);
-        localStorage.setItem('0red_materials', JSON.stringify(materialsData));
-        renderMaterials();
-      }
-    }
-
-    // ==========================================
-    // SCRIPTS
-    // ==========================================
     function renderScripts() {
       const container = document.getElementById('scripts-container');
       if (!container) return;
       container.innerHTML = '';
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
-
-      scriptsData.forEach((s) => {
-        const isVisible = s.visibleToStudents !== false;
-        if (isStudentView && !isVisible) return;
-
+      scriptsData.forEach(s => {
         const box = document.createElement('div');
-        box.className = `script-box ${!isVisible ? 'item-hidden-admin' : ''}`;
+        box.className = 'script-box';
         box.innerHTML = `
           <div class="script-header">
-            <div>
-              <strong style="color:#fff; font-size:0.95rem;">${s.title} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</strong>
-              <span style="font-size:0.75rem; color:var(--red-accent); font-family:var(--font-mono); margin-left:10px;">${s.badge}</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <button class="btn-view" onclick="copyPineScript('code-${s.id}')"><i class="fa-solid fa-copy"></i> Copiar Código</button>
-              <div class="admin-card-controls">
-                <button class="btn-admin-icon" onclick="toggleScriptVisibility('${s.id}')"><i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></button>
-                <button class="btn-admin-icon" onclick="openScriptModal('${s.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-admin-icon" onclick="deleteScript('${s.id}')"><i class="fa-solid fa-trash"></i></button>
-              </div>
-            </div>
+            <strong>${s.title}</strong>
+            <button class="btn-view" onclick="copyPineScript('code-${s.id}')"><i class="fa-solid fa-copy"></i> Copiar Código</button>
           </div>
           <div class="script-code-area" id="code-${s.id}">${s.code}</div>
         `;
         container.appendChild(box);
       });
     }
-
-    function toggleScriptVisibility(id) {
-      const sc = scriptsData.find(x => x.id === id);
-      if (sc) {
-        sc.visibleToStudents = (sc.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
-        renderScripts();
-      }
-    }
-
-    function openScriptModal(id) {
-      const isNew = id === 'new';
-      document.getElementById('script-modal-title').innerText = isNew ? "Publicar Script" : "Editar Script";
-      document.getElementById('edit-script-id').value = isNew ? "" : id;
-      if (isNew) {
-        document.getElementById('edit-script-title').value = "";
-        document.getElementById('edit-script-badge').value = "PINE SCRIPT V5";
-        document.getElementById('edit-script-code').value = "//@version=5\nindicator('0RED STRUCTURE', overlay=true)\n\n// Código";
-      } else {
-        const sc = scriptsData.find(x => x.id === id);
-        if (!sc) return;
-        document.getElementById('edit-script-title').value = sc.title;
-        document.getElementById('edit-script-badge').value = sc.badge;
-        document.getElementById('edit-script-code').value = sc.code;
-      }
-      document.getElementById('script-modal').classList.add('open');
-    }
-
+    function openScriptModal() { document.getElementById('script-modal').classList.add('open'); }
     function closeScriptModal() { document.getElementById('script-modal').classList.remove('open'); }
-
     function saveScriptData() {
-      const id = document.getElementById('edit-script-id').value;
       const title = document.getElementById('edit-script-title').value.trim();
-      const badge = document.getElementById('edit-script-badge').value.trim() || "PINE SCRIPT V5";
       const code = document.getElementById('edit-script-code').value;
-
       if (!title || !code) return alert("Completa título y código.");
-
-      if (id) {
-        const idx = scriptsData.findIndex(s => s.id === id);
-        if (idx !== -1) scriptsData[idx] = { ...scriptsData[idx], title, badge, code };
-      } else {
-        scriptsData.push({ id: 'script-' + Date.now(), title, badge, code, visibleToStudents: true });
-      }
-
+      scriptsData.push({ id: 'script-' + Date.now(), title, badge: 'PINE SCRIPT V5', code, visibleToStudents: true });
       localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
       renderScripts();
       closeScriptModal();
     }
-
-    function deleteScript(id) {
-      if (confirm("¿Eliminar este indicador?")) {
-        scriptsData = scriptsData.filter(s => s.id !== id);
-        localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
-        renderScripts();
-      }
+    function copyPineScript(id) {
+      const el = document.getElementById(id);
+      if (el) navigator.clipboard.writeText(el.innerText).then(() => alert("✓ ¡Código copiado!"));
     }
 
-    function copyPineScript(elementId) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
-      navigator.clipboard.writeText(el.innerText).then(() => alert("✓ ¡Código copiado!"));
+    // LIVE & CHAT
+    function togglePlatformLiveFields() {
+      const type = document.getElementById('cfg-live-platform').value;
+      document.getElementById('wrap-meet-url').style.display = type === 'meet' ? 'block' : 'none';
+      document.getElementById('wrap-youtube-url').style.display = type === 'youtube' ? 'block' : 'none';
     }
-
-    // ==========================================
-    // APARTADOS PERSONALIZADOS
-    // ==========================================
-    function openNewSectionModal() {
-      document.getElementById('new-sec-name').value = "";
-      document.getElementById('new-sec-title').value = "";
-      document.getElementById('new-sec-desc').value = "";
-      document.getElementById('new-sec-content').value = "";
-      document.getElementById('new-section-modal').classList.add('open');
+    function openLiveConfigModal() {
+      document.getElementById('cfg-live-platform').value = liveConfig.platformType || 'meet';
+      document.getElementById('cfg-live-status').value = liveConfig.status || 'scheduled';
+      document.getElementById('cfg-meet-url').value = liveConfig.meetUrl || '';
+      document.getElementById('cfg-live-url').value = liveConfig.url || '';
+      document.getElementById('cfg-live-title').value = liveConfig.title;
+      document.getElementById('cfg-live-date').value = liveConfig.date;
+      document.getElementById('cfg-live-desc').value = liveConfig.desc;
+      togglePlatformLiveFields();
+      document.getElementById('live-config-modal').classList.add('open');
     }
-
-    function closeNewSectionModal() { document.getElementById('new-section-modal').classList.remove('open'); }
-
-    function saveNewSection() {
-      const name = document.getElementById('new-sec-name').value.trim();
-      const icon = document.getElementById('new-sec-icon').value;
-      const title = document.getElementById('new-sec-title').value.trim();
-      const desc = document.getElementById('new-sec-desc').value.trim();
-      const content = document.getElementById('new-sec-content').value.trim();
-
-      if (!name || !title) return alert("Asigna nombre y título.");
-
-      const secId = 'custom-' + Date.now();
-      customSections.push({ id: secId, name, icon, title, desc, content, visibleToStudents: true });
-      localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
-      renderCustomSections();
-      closeNewSectionModal();
-      switchSidebarTab(secId);
+    function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
+    function saveLiveConfig() {
+      liveConfig.platformType = document.getElementById('cfg-live-platform').value;
+      liveConfig.status = document.getElementById('cfg-live-status').value;
+      liveConfig.meetUrl = document.getElementById('cfg-meet-url').value.trim() || 'https://meet.google.com/new';
+      liveConfig.url = document.getElementById('cfg-live-url').value.trim();
+      liveConfig.title = document.getElementById('cfg-live-title').value.trim();
+      liveConfig.date = document.getElementById('cfg-live-date').value.trim();
+      liveConfig.desc = document.getElementById('cfg-live-desc').value.trim();
+      localStorage.setItem('0red_live', JSON.stringify(liveConfig));
+      applyLiveConfig();
+      closeLiveModal();
+      alert("✓ ¡Configuración en vivo guardada!");
     }
+    function applyLiveConfig() {
+      document.getElementById('display-live-date').innerText = liveConfig.date;
+      document.getElementById('live-stream-title').innerText = liveConfig.title;
+      document.getElementById('live-stream-desc').innerText = liveConfig.desc;
+      const livePill = document.getElementById('sidebar-live-pill');
+      if (livePill) livePill.style.display = liveConfig.status === 'active' ? 'inline-block' : 'none';
 
-    function renderCustomSections() {
-      const listContainer = document.getElementById('sidebar-community-list');
-      const viewsContainer = document.getElementById('custom-views-container');
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
-      
-      document.querySelectorAll('.custom-sidebar-item').forEach(el => el.remove());
-      viewsContainer.innerHTML = '';
-
-      customSections.forEach((sec) => {
-        const isVisible = sec.visibleToStudents !== false;
-        if (isStudentView && !isVisible) return;
-
-        const li = document.createElement('li');
-        li.className = `custom-sidebar-item ${!isVisible ? 'item-hidden-admin' : ''}`;
-        li.innerHTML = `
-          <a class="sidebar-link" id="custom-slink-${sec.id}" onclick="switchSidebarTab('${sec.id}')">
-            <span class="link-label-group"><i class="fa-solid ${sec.icon}"></i> ${sec.name} ${!isVisible ? '<span class="hidden-badge-tag">OCULTO</span>' : ''}</span>
-            <span class="sidebar-controls-wrap">
-              <button class="btn-toggle-eye ${isVisible ? '' : 'is-hidden'}" onclick="event.stopPropagation(); toggleCustomSectionVisibility('${sec.id}')">
-                <i class="fa-solid ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i>
-              </button>
-              <button class="btn-delete-section" onclick="event.stopPropagation(); deleteCustomSection('${sec.id}')">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </span>
-          </a>
-        `;
-        listContainer.appendChild(li);
-
-        const viewDiv = document.createElement('div');
-        viewDiv.id = 'custom-view-' + sec.id;
-        viewDiv.className = 'custom-created-view';
-        viewDiv.style.display = 'none';
-        viewDiv.innerHTML = `
-          <div class="page-header">
+      const display = document.getElementById('live-display-container');
+      if (!display) return;
+      if (liveConfig.platformType === 'meet') {
+        display.innerHTML = `
+          <div class="meet-hero-card">
+            <div class="meet-icon-badge"><i class="fa-solid fa-users-viewfinder"></i></div>
             <div>
-              <div class="badge-pill"><i class="fa-solid ${sec.icon}"></i> Módulo Exclusivo</div>
-              <h1 class="page-title">${sec.title}</h1>
-              <p class="page-desc">${sec.desc}</p>
+              <div class="meet-live-pill ${liveConfig.status === 'active' ? 'active' : 'scheduled'}" style="margin-bottom:12px;">
+                ${liveConfig.status === 'active' ? '<span class="live-indicator-dot"></span> EN DIRECTO AHORA' : '<i class="fa-regular fa-calendar-check"></i> PROGRAMADA'}
+              </div>
+              <h2 style="font-size:1.6rem; font-weight:800; color:#fff; margin-bottom:8px;">${liveConfig.title}</h2>
+              <p style="color:var(--text-muted); font-size:0.95rem; max-width:540px; margin:0 auto 10px;">${liveConfig.desc}</p>
+              <div style="font-family:var(--font-mono); font-size:0.85rem; color:#fca5a5;"><i class="fa-solid fa-clock"></i> Horario: <strong>${liveConfig.date}</strong></div>
             </div>
-          </div>
-          <div class="content-panel-card">
-            <div style="font-size:0.95rem; line-height:1.7; color:#d1d5db; white-space:pre-wrap;">${sec.content}</div>
+            <a href="${liveConfig.meetUrl}" target="_blank" rel="noopener noreferrer" class="btn-meet-join"><i class="fa-solid fa-video"></i> UNIRSE A GOOGLE MEET</a>
           </div>
         `;
-        viewsContainer.appendChild(viewDiv);
-      });
-    }
-
-    function toggleCustomSectionVisibility(secId) {
-      if (!isUserAdmin) return;
-      const sec = customSections.find(s => s.id === secId);
-      if (sec) {
-        sec.visibleToStudents = (sec.visibleToStudents === false) ? true : false;
-        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
-        renderCustomSections();
+      } else {
+        display.innerHTML = `<div class="player-wrapper"><iframe src="${liveConfig.url}" allowfullscreen></iframe></div>`;
       }
     }
 
-    function deleteCustomSection(id) {
-      if (confirm("¿Eliminar este apartado por completo?")) {
-        customSections = customSections.filter(s => s.id !== id);
-        localStorage.setItem('0red_custom_sections', JSON.stringify(customSections));
-        renderCustomSections();
-        switchSidebarTab('classes');
-      }
-    }
-
-    // ==========================================
-    // CHATS
-    // ==========================================
     function renderGlobalChat() {
       const container = document.getElementById('global-chat-container');
       if (!container) return;
@@ -2561,17 +2293,13 @@
         const bubble = document.createElement('div');
         bubble.className = `chat-bubble ${msg.role === 'admin' ? 'admin-msg' : ''}`;
         bubble.innerHTML = `
-          <div class="chat-bubble-meta">
-            <strong style="color:${msg.role === 'admin' ? '#f87171' : 'var(--cyan-accent)'};">${msg.author}</strong>
-            <span style="color:#6b7280;">${msg.time}</span>
-          </div>
+          <div class="chat-bubble-meta"><strong style="color:${msg.role === 'admin' ? '#f87171' : 'var(--cyan-accent)'};">${msg.author}</strong><span style="color:#6b7280;">${msg.time}</span></div>
           <div style="font-size:0.9rem; line-height:1.45; color:#e5e7eb;">${msg.text}</div>
         `;
         container.appendChild(bubble);
       });
       container.scrollTop = container.scrollHeight;
     }
-
     function sendGlobalChatMessage() {
       const input = document.getElementById('global-chat-input');
       const text = input.value.trim();
@@ -2579,14 +2307,13 @@
       globalChatMessages.push({
         author: currentUserSession ? currentUserSession.username : 'Alumno',
         role: isUserAdmin ? 'admin' : 'student',
-        text: text,
+        text,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
       localStorage.setItem('0red_global_chat', JSON.stringify(globalChatMessages));
       renderGlobalChat();
       input.value = '';
     }
-
     function sendChatMessage() {
       const input = document.getElementById('chat-input');
       const text = input.value.trim();
@@ -2594,8 +2321,7 @@
       const chatBox = document.getElementById('chat-box');
       const msg = document.createElement('div');
       msg.className = 'chat-msg';
-      const sender = currentUserSession ? currentUserSession.username : 'Alumno';
-      msg.innerHTML = `<div class="chat-author" style="color:var(--cyan-accent);">${isUserAdmin ? sender + ' (ADMIN)' : sender}</div>${text}`;
+      msg.innerHTML = `<div class="chat-author">${currentUserSession ? currentUserSession.username : 'Alumno'}</div>${text}`;
       chatBox.appendChild(msg);
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = '';
@@ -2606,23 +2332,21 @@
       const mySessionId = 'user_' + Math.random().toString(36).substring(2, 9);
       const presenceChannel = new BroadcastChannel('0red_real_presence');
       let activeSessions = new Set([mySessionId]);
-
-      function updateCounterUI() { if (counterEl) counterEl.innerText = activeSessions.size; }
+      function updateUI() { if (counterEl) counterEl.innerText = activeSessions.size; }
       presenceChannel.postMessage({ type: 'join', id: mySessionId });
-      presenceChannel.onmessage = (event) => {
-        const { type, id } = event.data;
-        if (type === 'join' || type === 'heartbeat') {
-          activeSessions.add(id);
-          if (type === 'join') presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId });
-          updateCounterUI();
-        } else if (type === 'leave') {
-          activeSessions.delete(id);
-          updateCounterUI();
+      presenceChannel.onmessage = (e) => {
+        if (e.data.type === 'join' || e.data.type === 'heartbeat') {
+          activeSessions.add(e.data.id);
+          if (e.data.type === 'join') presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId });
+          updateUI();
+        } else if (e.data.type === 'leave') {
+          activeSessions.delete(e.data.id);
+          updateUI();
         }
       };
       setInterval(() => presenceChannel.postMessage({ type: 'heartbeat', id: mySessionId }), 3000);
       window.addEventListener('beforeunload', () => presenceChannel.postMessage({ type: 'leave', id: mySessionId }));
-      updateCounterUI();
+      updateUI();
     }
   </script>
 </body>
