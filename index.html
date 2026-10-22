@@ -316,7 +316,6 @@
     .mat-author-tag { font-family: var(--font-mono); font-size: 0.72rem; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
     .mat-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; }
 
-    /* ESTILO BOTÓN BORRAR EN ARCHIVO */
     .btn-delete-file {
       background: rgba(239, 68, 68, 0.12);
       border: 1px solid rgba(239, 68, 68, 0.35);
@@ -439,7 +438,6 @@
     .lightbox-full-img { max-width: 100%; max-height: 84vh; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: contain; }
     .lightbox-title { color: #fff; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 14px; text-align: center; }
 
-    /* MODAL DE MENSAJES Y CONFIRMACIONES REEMPLAZANDO ALERT/CONFIRM */
     #custom-confirm-modal {
       position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
       z-index: 11000; display: none; align-items: center; justify-content: center; padding: 20px;
@@ -544,7 +542,6 @@
         <div>
           <div class="sidebar-section-title">Comunidad & Recursos</div>
           <ul class="sidebar-nav-list" id="sidebar-community-list">
-            <!-- 1. Chat General -->
             <li id="slink-item-chat">
               <a class="sidebar-link" id="slink-chat" onclick="switchSidebarTab('chat')">
                 <span class="link-label-group"><i class="fa-solid fa-comments"></i> Chat General <span id="tag-hidden-chat" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
@@ -554,7 +551,6 @@
                 </span>
               </a>
             </li>
-            <!-- 2. Reglas de Mentoría -->
             <li id="slink-item-rules">
               <a class="sidebar-link" id="slink-rules" onclick="switchSidebarTab('rules')">
                 <span class="link-label-group"><i class="fa-solid fa-book-bookmark"></i> Reglas de Mentoría <span id="tag-hidden-rules" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
@@ -564,7 +560,6 @@
                 </span>
               </a>
             </li>
-            <!-- 3. Material de Clases -->
             <li id="slink-item-materials">
               <a class="sidebar-link" id="slink-materials" onclick="switchSidebarTab('materials')">
                 <span class="link-label-group"><i class="fa-solid fa-folder-open"></i> Material de Clases <span id="tag-hidden-materials" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
@@ -574,7 +569,6 @@
                 </span>
               </a>
             </li>
-            <!-- 4. Indicadores & Scripts -->
             <li id="slink-item-scripts">
               <a class="sidebar-link" id="slink-scripts" onclick="switchSidebarTab('scripts')">
                 <span class="link-label-group"><i class="fa-solid fa-code"></i> Indicadores & Scripts <span id="tag-hidden-scripts" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
@@ -584,7 +578,6 @@
                 </span>
               </a>
             </li>
-            <!-- 5. Herramientas & Journal -->
             <li id="slink-item-tools">
               <a class="sidebar-link" id="slink-tools" onclick="switchSidebarTab('tools')">
                 <span class="link-label-group"><i class="fa-solid fa-screwdriver-wrench"></i> Herramientas <span id="tag-hidden-tools" class="hidden-badge-tag" style="display:none;">OCULTO</span></span>
@@ -615,7 +608,7 @@
             <div>
               <strong style="color:#fff; font-size:0.95rem;">PANEL TOTAL DE ADMINISTRACIÓN (<span id="banner-admin-name">balanzarivan885</span>)</strong>
               <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">
-                Controla clases, imágenes de setups, salas de Google Meet, indicadores y apartados para toda tu comunidad:
+                Controla clases, imágenes de setups, salas de Google Meet, indicadores y apartados para toda tu comunidad en la nube:
               </p>
             </div>
           </div>
@@ -628,10 +621,8 @@
           </div>
         </div>
 
-        <!-- 1. VISTA: INICIO / CLASES / MENTORÍAS -->
+        <!-- 1. VISTA: CLASES & MENTORÍAS -->
         <div id="view-classes" class="workspace-view">
-
-          <!-- SECCIÓN: MENTORÍAS INSTITUCIONALES -->
           <section class="mentor-section-wrap" id="mentorships-section">
             <div class="mentor-section-header">
               <div>
@@ -641,15 +632,13 @@
                   Elige el programa según tu estilo de ejecución y nivel analítico. Para completar tu inscripción, haz clic en el botón de Telegram y solicita tu acceso directo con soporte institucional.
                 </p>
               </div>
-
               <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram" style="white-space:nowrap;">
                 <i class="fa-brands fa-telegram" style="font-size:1.2rem;"></i> Canal Oficial de Telegram
               </a>
             </div>
 
             <div class="mentor-grid">
-              
-              <!-- Plan 1: Intraday ICT -->
+              <!-- Plan 1 -->
               <div class="mentor-card">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -660,12 +649,10 @@
                   <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
                     Especialización en modelos de acumulación, manipulación y distribución (PO3) con foco en GBP/USD.
                   </p>
-
                   <div class="mentor-price-tag">
                     $10 <span style="font-size:1rem; color:#9ca3af;">USD</span>
                     <span class="mentor-price-period">/ mes</span>
                   </div>
-
                   <ul class="mentor-specs-list">
                     <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 60% a 70% comprobado</li>
                     <li><i class="fa-solid fa-chart-line"></i> <strong>Par principal:</strong> GBP/USD especializado</li>
@@ -673,13 +660,12 @@
                     <li><i class="fa-solid fa-clock"></i> <strong>Operativa:</strong> Intraday diario sesiones NY / Londres</li>
                   </ul>
                 </div>
-
                 <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram">
                   <i class="fa-brands fa-telegram"></i> Mensaje al Telegram ($10/mes)
                 </a>
               </div>
 
-              <!-- Plan 2: Mentoría Conservadora -->
+              <!-- Plan 2 -->
               <div class="mentor-card">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -690,12 +676,10 @@
                   <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
                     Enfoque de bajo drawdown orientado a proteger capital y expandir cuentas fondeadas con alta certidumbre.
                   </p>
-
                   <div class="mentor-price-tag">
                     $300 <span style="font-size:1rem; color:#9ca3af;">USD</span>
                     <span class="mentor-price-period">/ único pago</span>
                   </div>
-
                   <ul class="mentor-specs-list">
                     <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 70% a 80% de rentabilidad</li>
                     <li><i class="fa-solid fa-scale-balanced"></i> <strong>Operativa:</strong> Entradas Intraday & Swing</li>
@@ -703,13 +687,12 @@
                     <li><i class="fa-solid fa-infinity"></i> <strong>Acceso:</strong> Acceso permanente sin mensualidades</li>
                   </ul>
                 </div>
-
                 <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram">
                   <i class="fa-brands fa-telegram"></i> Mensaje al Telegram ($300 USD)
                 </a>
               </div>
 
-              <!-- Plan 3: Mentoría 1 a 1 0REDSTRUCTURE -->
+              <!-- Plan 3 -->
               <div class="mentor-card featured-card">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -720,12 +703,10 @@
                   <p style="font-size:0.83rem; color:var(--text-muted); margin-top:6px; line-height:1.45;">
                     Acompañamiento personal directo, auditoría de operativas y desarrollo de ratios asimétricos extremos.
                   </p>
-
                   <div class="mentor-price-tag" style="color:#f87171;">
                     $5,000 <span style="font-size:1rem; color:#9ca3af;">USD</span>
                     <span class="mentor-price-period">/ único pago</span>
                   </div>
-
                   <ul class="mentor-specs-list">
                     <li><i class="fa-solid fa-fire" style="color:var(--red-accent);"></i> <strong>Ratios R:R:</strong> Mínimo 1:10 hasta 1:100</li>
                     <li><i class="fa-solid fa-bullseye"></i> <strong>Winrate:</strong> 70% a 80% institucional</li>
@@ -733,16 +714,13 @@
                     <li><i class="fa-solid fa-shield-virus"></i> <strong>Garantía:</strong> Metodología propietaria 0RED completa</li>
                   </ul>
                 </div>
-
                 <a href="https://t.me/+3Dar6KjkOoM3ZjEx" target="_blank" rel="noopener noreferrer" class="mentor-btn-telegram vip-btn">
                   <i class="fa-brands fa-telegram"></i> Solicitar 1 a 1 en Telegram ($5,000)
                 </a>
               </div>
-
             </div>
           </section>
 
-          <!-- CABECERA DE CLASES -->
           <div class="page-header">
             <div>
               <div class="badge-pill" id="site-header-badge">
@@ -753,7 +731,6 @@
                 Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los esquemas quedan desbloqueados de por vida.
               </p>
             </div>
-
             <div class="next-live-card">
               <i class="fa-solid fa-clock" style="font-size: 1.5rem; color: var(--red-accent);"></i>
               <div>
@@ -766,7 +743,7 @@
           <div class="classes-grid" id="classes-container"></div>
         </div>
 
-        <!-- 2. VISTA: EN VIVO (GOOGLE MEET O YOUTUBE) -->
+        <!-- 2. VISTA: EN VIVO -->
         <div id="view-live" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
@@ -803,7 +780,7 @@
           </div>
         </div>
 
-        <!-- 3. VISTA: HERRAMIENTAS & JOURNAL DINÁMICOS -->
+        <!-- 3. VISTA: HERRAMIENTAS -->
         <div id="view-tools" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
@@ -848,7 +825,7 @@
           </div>
         </div>
 
-        <!-- 5. VISTA: REGLAS DE MENTORÍA -->
+        <!-- 5. VISTA: REGLAS -->
         <div id="view-rules" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
@@ -866,13 +843,13 @@
           </div>
         </div>
 
-        <!-- 6. VISTA: MATERIAL DE CLASES (OFICIAL) -->
+        <!-- 6. VISTA: MATERIAL DE CLASES -->
         <div id="view-materials" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
               <div class="badge-pill"><i class="fa-solid fa-lock"></i> Canal Oficial (Solo Mentor)</div>
               <h1 class="page-title">Materiales & Gráficos Institucionales</h1>
-              <p class="page-desc">Visualiza y descarga capturas de setups en alta resolución, esquemas de entrada SMC/ICT y plantillas en PDF oficiales.</p>
+              <p class="page-desc">Visualiza y descarga capturas de setups en alta resolución, esquemas de entrada SMC/ICT y plantillas oficiales.</p>
             </div>
             <div id="admin-official-mat-action">
               <button class="btn-action-primary" onclick="openUploadModal('materials')"><i class="fa-solid fa-plus"></i> SUBIR MATERIAL OFICIAL</button>
@@ -882,7 +859,7 @@
           <div class="materials-custom-grid" id="materials-container"></div>
         </div>
 
-        <!-- 7. VISTA: INDICADORES & SCRIPTS -->
+        <!-- 7. VISTA: SCRIPTS -->
         <div id="view-scripts" class="workspace-view" style="display: none;">
           <div class="page-header">
             <div>
@@ -898,7 +875,7 @@
           <div class="content-panel-card" id="scripts-container"></div>
         </div>
 
-        <!-- CONTENEDOR DE CANALES DINÁMICOS (POWER OF 3, ETC.) -->
+        <!-- CANALES DINÁMICOS -->
         <div id="custom-views-container"></div>
 
       </main>
@@ -910,7 +887,7 @@
     </footer>
 
     <!-- WIDGET EN LÍNEA -->
-    <div class="online-badge-corner" id="online-counter-badge" title="Usuarios reales activos ahora mismo">
+    <div class="online-badge-corner" id="online-counter-badge" title="Usuarios activos ahora mismo">
       <div class="online-dot"></div>
       <div class="online-count-text">
         <span id="user-count-num">1</span>
@@ -919,7 +896,7 @@
     </div>
   </div>
 
-  <!-- MODAL: VISOR DE IMAGEN LIGHTBOX -->
+  <!-- MODALES DEL SISTEMA -->
   <div id="image-lightbox-modal" onclick="closeImageLightbox()">
     <div class="lightbox-img-wrap" onclick="event.stopPropagation()">
       <img id="lightbox-target-img" src="" class="lightbox-full-img" alt="Esquema Institucional">
@@ -930,7 +907,6 @@
     <div class="lightbox-title" id="lightbox-target-title"></div>
   </div>
 
-  <!-- MODAL DE DIÁLOGO / CONFIRMACIÓN PERSONALIZADO -->
   <div id="custom-confirm-modal">
     <div class="custom-dialog-card" onclick="event.stopPropagation()">
       <div class="custom-dialog-icon dialog-icon-danger" id="dialog-icon-container">
@@ -945,7 +921,7 @@
     </div>
   </div>
 
-  <!-- MODAL: CONFIGURAR CANAL -->
+  <!-- MODAL: CANAL -->
   <div class="modal-backdrop" id="channel-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -971,9 +947,8 @@
         </div>
         <div class="form-group">
           <label>DESCRIPCIÓN DEL CANAL:</label>
-          <textarea id="cfg-channel-desc" class="form-control" rows="2" placeholder="Explica qué tipo de gráficos o setups se encontrarán aquí..."></textarea>
+          <textarea id="cfg-channel-desc" class="form-control" rows="2" placeholder="Explica qué tipo de gráficos se compartirán aquí..."></textarea>
         </div>
-
         <div class="form-group" style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:16px; border-radius:10px;">
           <label style="color:#38bdf8; font-weight:700;"><i class="fa-solid fa-shield-halved"></i> PERMISOS DE SUBIDA PARA ALUMNOS:</label>
           <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
@@ -983,16 +958,15 @@
             </label>
           </div>
           <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:6px;">
-            * Si está desmarcado, el canal será de <strong>Solo Lectura</strong> para los alumnos y únicamente tú (Admin) podrás subir material.
+            * Si está desmarcado, el canal será de <strong>Solo Lectura</strong> para los alumnos.
           </span>
         </div>
-
         <button class="btn-submit" onclick="saveChannelConfig()"><i class="fa-solid fa-check"></i> GUARDAR CANAL</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: SUBIR IMAGEN / ANÁLISIS -->
+  <!-- MODAL: SUBIR IMAGEN -->
   <div class="modal-backdrop" id="upload-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1001,34 +975,28 @@
       </div>
       <div style="padding:20px;">
         <input type="hidden" id="upload-target-channel">
-        <input type="hidden" id="upload-edit-id">
-
         <div class="form-group">
           <label>TÍTULO DEL ANÁLISIS / GRÁFICO:</label>
           <input type="text" id="upload-title" class="form-control" placeholder="Ej: Setup Power Of 3: Manipulación en Londres">
         </div>
         <div class="form-group">
           <label>DESCRIPCIÓN / DETALLES DE LA OPERACIÓN:</label>
-          <textarea id="upload-desc" class="form-control" rows="2" placeholder="Detalles de entrada, FVG, temporalidad, confluencias..."></textarea>
+          <textarea id="upload-desc" class="form-control" rows="2" placeholder="Detalles de entrada, FVG, confluencias..."></textarea>
         </div>
-
         <div class="form-group" style="background:rgba(255,255,255,0.03); border:1px dashed var(--card-border); padding:16px; border-radius:12px;">
           <label style="color:#38bdf8; font-weight:700; margin-bottom:8px;">
             <i class="fa-solid fa-cloud-arrow-up"></i> SELECCIONA LA CAPTURA DESDE TU PC:
           </label>
           <input type="file" id="upload-file" accept="image/*" class="form-control" style="font-size:0.85rem;" onchange="handleImageOptimization(event)">
-          
           <div style="margin-top:10px;">
             <label style="font-size:0.75rem;">O escribe una URL directa de imagen:</label>
             <input type="text" id="upload-url" class="form-control" placeholder="https://..." oninput="document.getElementById('upload-preview-img').src=this.value; document.getElementById('upload-preview-wrap').style.display='block';">
           </div>
-
           <div id="upload-preview-wrap" style="display:none; margin-top:14px; text-align:center;">
             <span style="font-size:0.72rem; color:var(--green-accent); font-family:var(--font-mono); display:block; margin-bottom:4px;">✓ Vista previa optimizada:</span>
             <img id="upload-preview-img" src="" style="max-height:180px; max-width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.15);" alt="Preview">
           </div>
         </div>
-
         <button class="btn-submit" onclick="submitContentUpload()"><i class="fa-solid fa-cloud-check"></i> PUBLICAR ANÁLISIS</button>
       </div>
     </div>
@@ -1050,7 +1018,6 @@
       <div style="padding: 20px;">
         <h4 style="font-size:0.9rem; margin-bottom:8px; color:var(--text-muted); text-transform:uppercase; font-family:var(--font-mono);">Resumen de la Sesión</h4>
         <p id="modal-class-desc" style="font-size:0.9rem; line-height:1.6; color:#d1d5db; margin-bottom:16px;"></p>
-        
         <div id="modal-class-diagrams-wrap" style="display:none; border-top:1px solid var(--card-border); padding-top:16px;">
           <h5 style="font-size:0.82rem; color:var(--cyan-accent); font-family:var(--font-mono); margin-bottom:10px;">
             <i class="fa-solid fa-diagram-project"></i> ESQUEMA GRÁFICO DEL SETUP (Clic para ampliar)
@@ -1063,7 +1030,7 @@
     </div>
   </div>
 
-  <!-- MODAL: EDITAR / CREAR CLASE -->
+  <!-- MODAL: EDITAR CLASE -->
   <div class="modal-backdrop" id="class-editor-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1113,7 +1080,7 @@
           <input type="checkbox" id="edit-unlocked" style="width:18px; height:18px; accent-color:var(--red-accent);">
           <label for="edit-unlocked" style="margin:0; cursor:pointer;">¿Clase Desbloqueada?</label>
         </div>
-        <button class="btn-submit" onclick="saveClassData()"><i class="fa-solid fa-check"></i> GUARDAR CLASE</button>
+        <button class="btn-submit" onclick="saveClassData()"><i class="fa-solid fa-check"></i> GUARDAR Y SINCRONIZAR CLASE</button>
       </div>
     </div>
   </div>
@@ -1154,11 +1121,11 @@
         </div>
         <div class="form-group">
           <label>DESCRIPCIÓN:</label>
-          <textarea id="edit-tool-desc" class="form-control" rows="3" placeholder="Explica brevemente para qué sirve la herramienta..."></textarea>
+          <textarea id="edit-tool-desc" class="form-control" rows="3" placeholder="Explica brevemente para qué sirve..."></textarea>
         </div>
         <div class="form-group">
           <label>CARACTERÍSTICAS / VIÑETAS (Una por línea):</label>
-          <textarea id="edit-tool-features" class="form-control" rows="3" placeholder="Winrate y Expectativa&#10;Gestión automática&#10;Modelos de Entrada"></textarea>
+          <textarea id="edit-tool-features" class="form-control" rows="3"></textarea>
         </div>
         <div class="form-group" style="display:flex; gap:10px; align-items:center;">
           <input type="checkbox" id="edit-tool-embed" style="width:18px; height:18px; accent-color:var(--red-accent);">
@@ -1177,14 +1144,13 @@
         <button class="close-btn" onclick="closeRuleModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div style="padding: 20px;">
-        <input type="hidden" id="edit-rule-id">
         <div class="form-group">
           <label>NÚMERO O CÓDIGO (Ej: 01, 02):</label>
           <input type="text" id="edit-rule-num" class="form-control" placeholder="01" maxlength="4">
         </div>
         <div class="form-group">
           <label>TÍTULO DE LA NORMA:</label>
-          <input type="text" id="edit-rule-title" class="form-control" placeholder="Ej: Gestión de Riesgo No Negociable">
+          <input type="text" id="edit-rule-title" class="form-control">
         </div>
         <div class="form-group">
           <label>DESCRIPCIÓN / DETALLE:</label>
@@ -1203,14 +1169,9 @@
         <button class="close-btn" onclick="closeScriptModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div style="padding: 20px;">
-        <input type="hidden" id="edit-script-id">
         <div class="form-group">
           <label>NOMBRE DEL INDICADOR:</label>
           <input type="text" id="edit-script-title" class="form-control" placeholder="0RED STRUCTURE - Liquidity & Range">
-        </div>
-        <div class="form-group">
-          <label>ETIQUETA (Ej: PINE SCRIPT V5):</label>
-          <input type="text" id="edit-script-badge" class="form-control" placeholder="PINE SCRIPT V5">
         </div>
         <div class="form-group">
           <label>CÓDIGO PINE SCRIPT COMPLETO:</label>
@@ -1236,7 +1197,6 @@
             <option value="youtube">YouTube Live / Embed (Transmisión Streaming)</option>
           </select>
         </div>
-
         <div class="form-group" id="wrap-meet-url">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <label style="margin:0;">ENLACE DE GOOGLE MEET:</label>
@@ -1246,12 +1206,10 @@
           </div>
           <input type="text" id="cfg-meet-url" class="form-control" placeholder="https://meet.google.com/xxx-xxxx-xxx">
         </div>
-
         <div class="form-group" id="wrap-youtube-url" style="display:none;">
           <label>URL DEL STREAM (YouTube Embed):</label>
           <input type="text" id="cfg-live-url" class="form-control" placeholder="https://www.youtube.com/embed/live_stream?channel=...">
         </div>
-
         <div class="form-group">
           <label>ESTADO DE LA SALA:</label>
           <select id="cfg-live-status" class="form-control">
@@ -1259,7 +1217,6 @@
             <option value="scheduled">○ PROGRAMADA (Próximamente)</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>TÍTULO DEL EN VIVO:</label>
           <input type="text" id="cfg-live-title" class="form-control">
@@ -1272,7 +1229,7 @@
           <label>DESCRIPCIÓN DE LA SESIÓN:</label>
           <textarea id="cfg-live-desc" class="form-control" rows="3"></textarea>
         </div>
-        <button class="btn-submit" onclick="saveLiveConfig()"><i class="fa-solid fa-check"></i> ACTUALIZAR EN VIVO</button>
+        <button class="btn-submit" onclick="saveLiveConfig()"><i class="fa-solid fa-check"></i> ACTUALIZAR EN VIVO GLOBAL</button>
       </div>
     </div>
   </div>
@@ -1305,56 +1262,67 @@
           <label>CONTRASEÑA ADMIN:</label>
           <input type="text" id="cfg-admin-pass" class="form-control">
         </div>
-        
         <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
-          <button class="btn-submit" onclick="saveGlobalSiteConfig()"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS</button>
+          <button class="btn-submit" onclick="saveGlobalSiteConfig()"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS GLOBALES</button>
           <button class="btn-view" style="justify-content:center; padding:10px; background:rgba(255,255,255,0.05);" onclick="restoreDeletedNativeSections()">
-            <i class="fa-solid fa-rotate-left"></i> Restaurar Apartados Nativos Iniciales
+            <i class="fa-solid fa-rotate-left"></i> Restaurar Apartados Iniciales
           </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- CONEXIÓN GLOBAL FIREBASE REALTIME / CLOUD  -->
+  <!-- ========================================== -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <script>
-    // ==========================================
-    // 1. CONFIGURACIÓN Y BASES DE DATOS
-    // ==========================================
+    // 1. TUS CREDENCIALES CONFIGURADAS
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJr0f4tWl2553AdpCJVgxar8a3x22P7LU",
+      authDomain: "red-plataforma-fb0a8.firebaseapp.com",
+      databaseURL: "https://red-plataforma-fb0a8-default-rtdb.firebaseio.com",
+      projectId: "red-plataforma-fb0a8",
+      storageBucket: "red-plataforma-fb0a8.firebasestorage.app",
+      messagingSenderId: "1015568012471",
+      appId: "1:1015568012471:web:4848fe490ac299b9d2e932",
+      measurementId: "G-HX78EQX8PB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 2. CONFIGURACIÓN Y ESTADO INICIAL
     const DEFAULT_SITE_CONFIG = {
       brandTitle: "0REDSTRUCTURE",
       brandSub: "INSTITUTIONAL MENTORSHIP",
       brandIcon: "0R",
       badgeText: '<i class="fa-solid fa-shield-halved"></i> Programa Institucional • SMC / ICT / 0RED',
       headerTitle: "Módulos & Clases Magistrales",
-      headerDesc: "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los materiales quedan desbloqueados de por vida.",
+      headerDesc: "Cada clase en vivo se abre puntualmente los <strong>viernes a las 12:00 (Ciudad de México • UTC-6)</strong>. Al terminar la transmisión, el replay en alta definición y los esquemas quedan desbloqueados de por vida.",
       adminUser: "balanzarivan885",
       adminPass: "Espartan117"
     };
-    let siteConfig = JSON.parse(localStorage.getItem('0red_site_config')) || DEFAULT_SITE_CONFIG;
+    let siteConfig = DEFAULT_SITE_CONFIG;
 
-    // BASE DE DATOS DE USUARIOS (INCLUYE ADMIN Y ALUMNO INGRID_KARI)
     const DEFAULT_USERS_DB = [
-      { username: siteConfig.adminUser, password: siteConfig.adminPass, role: "admin", name: "Ivan Balanzar" },
+      { username: "balanzarivan885", password: "Espartan117", role: "admin", name: "Ivan Balanzar" },
       { username: "Ingrid_kari", password: "Tezha07", role: "student", name: "Ingrid Kari" }
     ];
-    let usersDB = JSON.parse(localStorage.getItem('0red_users_db')) || DEFAULT_USERS_DB;
-
-    // Asegurar que Ingrid_kari siempre esté registrada en storage existente
-    if (!usersDB.some(u => u.username.toLowerCase() === 'ingrid_kari')) {
-      usersDB.push({ username: "Ingrid_kari", password: "Tezha07", role: "student", name: "Ingrid Kari" });
-      localStorage.setItem('0red_users_db', JSON.stringify(usersDB));
-    }
+    let usersDB = DEFAULT_USERS_DB;
 
     const DEFAULT_SECTIONS_VISIBILITY = { chat: true, rules: true, materials: true, scripts: true, tools: true };
-    let sectionsVisibility = JSON.parse(localStorage.getItem('0red_sections_visibility')) || DEFAULT_SECTIONS_VISIBILITY;
-    let deletedSections = JSON.parse(localStorage.getItem('0red_deleted_sections')) || [];
+    let sectionsVisibility = DEFAULT_SECTIONS_VISIBILITY;
+    let deletedSections = [];
 
-    let channels = JSON.parse(localStorage.getItem('0red_channels_list_v2')) || [
+    let channels = [
       { id: "power_of_3", name: "Power Of 3", icon: "fa-brain", desc: "Esquemas oficiales de acumulación, manipulación y distribución (AMD).", allowStudents: false },
       { id: "setups_alumnos", name: "Setups de Alumnos", icon: "fa-chart-line", desc: "Espacio abierto para que la comunidad comparta sus operaciones y análisis.", allowStudents: true }
     ];
 
-    const DEFAULT_CLASSES = [
+    let classesData = [
       {
         id: "class-1",
         week: "SEMANA 01",
@@ -1367,26 +1335,12 @@
         duration: "1h 45m",
         tags: ["Estructura", "BOS", "CHoCH"],
         unlocked: true,
-        visibleToStudents: true
-      },
-      {
-        id: "class-2",
-        week: "SEMANA 02",
-        date: "Oct 9, 2026 • 12:00 UTC-6",
-        title: "Fair Value Gaps (FVG) y Desequilibrios de Liquidez",
-        desc: "Localización de ineficiencias en el gráfico, BPR (Balanced Price Ranges) y entradas de alta probabilidad.",
-        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
-        thumbUrl: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80",
-        chartImg: "",
-        duration: "2h 10m",
-        tags: ["FVG", "Ineficiencias", "Entry Drills"],
-        unlocked: true,
-        visibleToStudents: true
+        visibleToStudents: true,
+        order: 1
       }
     ];
-    let classesData = JSON.parse(localStorage.getItem('0red_classes')) || DEFAULT_CLASSES;
 
-    const DEFAULT_TOOLS = [
+    let toolsData = [
       {
         id: "tool-1",
         title: "Crea tu Journal",
@@ -1394,38 +1348,20 @@
         btnText: "CREAR TU JOURNAL",
         url: "https://0red-journal.github.io/0red-journal/",
         icon: "fa-book-open",
-        desc: "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo, ratio beneficio y emociones antes de cada entrada.",
+        desc: "Bitácora de trading institucional para registrar tus setups, capturas de pantalla, porcentaje de riesgo y ratio beneficio.",
         features: ["Registro de Winrate y Expectativa", "Cálculo automático de Ratio Riesgo:Beneficio", "Seguimiento de sesiones Londres y Nueva York"],
         allowEmbed: true,
         visibleToStudents: true
       }
     ];
-    let toolsData = JSON.parse(localStorage.getItem('0red_tools')) || DEFAULT_TOOLS;
 
-    const DEFAULT_RULES = [
+    let rulesData = [
       { id: "rule-1", num: "01", title: "Gestión de Riesgo No Negociable", desc: "Ningún alumno debe arriesgar más del 0.5% al 1% de su capital por operación bajo ninguna circunstancia.", visibleToStudents: true },
       { id: "rule-2", num: "02", title: "Respeto y Feedback Constructivo", desc: "Las críticas a los setups compartidos deben estar fundamentadas en conceptos objetivos (FVG, Order Blocks, Liquidez).", visibleToStudents: true }
     ];
-    let rulesData = JSON.parse(localStorage.getItem('0red_rules')) || DEFAULT_RULES;
 
-    // BANCO DE IMÁGENES Y MATERIALES CON AUTORÍA ESTRICTA
-    const DEFAULT_MATERIALS = [
-      { 
-        id: "mat-1", 
-        targetChannel: "materials",
-        title: "Esquema Institucional: Mapeo de Estructura BOS y CHoCH", 
-        desc: "Captura oficial de setup en GBP/USD con confirmación de quiebre institucional.", 
-        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
-        author: "Ivan Balanzar (0RED)",
-        authorUser: "balanzarivan885",
-        authorRole: "admin",
-        date: "2026-10-20",
-        visibleToStudents: true 
-      }
-    ];
-    let materialsData = JSON.parse(localStorage.getItem('0red_materials_v3')) || DEFAULT_MATERIALS;
-
-    const DEFAULT_SCRIPTS = [
+    let materialsData = [];
+    let scriptsData = [
       {
         id: "script-1",
         title: "0RED STRUCTURE - Sessions & Liquidity Engine v5",
@@ -1434,9 +1370,8 @@
         visibleToStudents: true
       }
     ];
-    let scriptsData = JSON.parse(localStorage.getItem('0red_scripts')) || DEFAULT_SCRIPTS;
 
-    const DEFAULT_LIVE = {
+    let liveConfig = {
       platformType: "meet",
       status: "scheduled",
       meetUrl: "https://meet.google.com/new",
@@ -1445,32 +1380,21 @@
       date: "Viernes, 12:00 PM UTC-6",
       desc: "Conexión directa en tiempo real con análisis de liquidez institucional, modelos de entrada y operativa en vivo."
     };
-    let liveConfig = JSON.parse(localStorage.getItem('0red_live')) || DEFAULT_LIVE;
 
-    let globalChatMessages = JSON.parse(localStorage.getItem('0red_global_chat')) || [
-      { author: "Ivan Balanzar (0RED)", role: "admin", text: "Bienvenidos al hub institucional de 0REDSTRUCTURE. Tienes acceso completo al material e indicadores en el menú lateral.", time: "10:00 AM" }
-    ];
-
-    let currentUserSession = JSON.parse(localStorage.getItem('0red_current_session')) || null;
+    let globalChatMessages = [];
+    let currentUserSession = JSON.parse(sessionStorage.getItem('0red_current_session')) || null;
     let isUserAdmin = currentUserSession && currentUserSession.role === 'admin';
-    let adminVisualMode = localStorage.getItem('0red_admin_visual_mode') || 'admin';
+    let adminVisualMode = 'admin';
     let currentActiveTab = 'classes';
 
-    // ==========================================
-    // SISTEMA DE DIÁLOGOS Y MODALES PERSONALIZADOS
-    // ==========================================
+    // 3. DIÁLOGOS
     let dialogCallback = null;
-
     function showCustomDialog({ title, desc, icon = "danger", onConfirm }) {
       const modal = document.getElementById('custom-confirm-modal');
-      const titleEl = document.getElementById('dialog-title');
-      const descEl = document.getElementById('dialog-desc');
+      document.getElementById('dialog-title').innerText = title;
+      document.getElementById('dialog-desc').innerText = desc;
       const iconWrap = document.getElementById('dialog-icon-container');
       const iconGlyph = document.getElementById('dialog-icon-glyph');
-
-      titleEl.innerText = title;
-      descEl.innerText = desc;
-
       if (icon === 'danger') {
         iconWrap.className = 'custom-dialog-icon dialog-icon-danger';
         iconGlyph.className = 'fa-solid fa-trash-can';
@@ -1478,76 +1402,52 @@
         iconWrap.className = 'custom-dialog-icon dialog-icon-info';
         iconGlyph.className = 'fa-solid fa-circle-info';
       }
-
       dialogCallback = onConfirm;
       modal.classList.add('open');
     }
 
     function closeCustomDialog(confirmed) {
-      const modal = document.getElementById('custom-confirm-modal');
-      modal.classList.remove('open');
-      if (confirmed && typeof dialogCallback === 'function') {
-        dialogCallback();
-      }
+      document.getElementById('custom-confirm-modal').classList.remove('open');
+      if (confirmed && typeof dialogCallback === 'function') dialogCallback();
       dialogCallback = null;
     }
 
-    // ==========================================
-    // CONTROL ESTRICTO DE BORRADO DE ARCHIVOS
-    // ==========================================
+    // 4. AUTORÍA Y BORRADO DE ARCHIVOS
     function canCurrentUserDelete(item) {
       if (!currentUserSession) return false;
-      
-      // 1. Admin siempre puede borrar cualquier archivo
       if (currentUserSession.role === 'admin') return true;
-
-      // 2. Alumno solo puede borrar su propio archivo
       const currentU = (currentUserSession.username || '').toLowerCase().trim();
       const authorU = (item.authorUser || item.author || '').toLowerCase().trim();
-
       return currentU === authorU;
     }
 
     function deleteMaterialItem(id) {
       const item = materialsData.find(m => m.id === id);
       if (!item) return;
-
       if (!canCurrentUserDelete(item)) {
-        showCustomDialog({
-          title: "Acceso Denegado",
-          desc: "No tienes permiso para eliminar esta publicación. Solo el creador o el administrador pueden borrarla.",
-          icon: "info",
-          onConfirm: () => {}
-        });
+        showCustomDialog({ title: "Acceso Denegado", desc: "No tienes permiso para borrar esta publicación.", icon: "info", onConfirm: () => {} });
         return;
       }
-
       showCustomDialog({
         title: "¿Eliminar publicación?",
-        desc: `Se borrará permanentemente "${item.title}". Esta acción no se puede deshacer.`,
+        desc: `Se borrará "${item.title}" para todos los usuarios.`,
         icon: "danger",
         onConfirm: () => {
-          materialsData = materialsData.filter(m => m.id !== id);
-          localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
-          renderMaterials();
-          renderCustomChannels();
+          db.collection("materials").doc(id).delete();
         }
       });
     }
 
-    // ==========================================
-    // MOTOR DE COMPRESIÓN EN CANVAS (OPTIMIZACIÓN)
-    // ==========================================
+    // 5. OPTIMIZACIÓN DE IMÁGENES
     function handleImageOptimization(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const maxDim = 1600;
+          const maxDim = 1200;
           let w = img.width, h = img.height;
           if (w > maxDim || h > maxDim) {
             if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
@@ -1555,7 +1455,7 @@
           }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          const base64 = canvas.toDataURL('image/jpeg', 0.8);
+          const base64 = canvas.toDataURL('image/jpeg', 0.7);
           document.getElementById('upload-url').value = base64;
           document.getElementById('upload-preview-img').src = base64;
           document.getElementById('upload-preview-wrap').style.display = 'block';
@@ -1574,35 +1474,120 @@
         img.onload = function() {
           const canvas = document.createElement('canvas');
           let w = img.width, h = img.height;
-          if (w > 1600 || h > 1600) {
-            if (w > h) { h = Math.round((h * 1600) / w); w = 1600; }
-            else { w = Math.round((w * 1600) / h); h = 1600; }
+          if (w > 1200 || h > 1200) {
+            if (w > h) { h = Math.round((h * 1200) / w); w = 1200; }
+            else { w = Math.round((w * 1200) / h); h = 1200; }
           }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          document.getElementById('edit-class-chart').value = canvas.toDataURL('image/jpeg', 0.8);
+          document.getElementById('edit-class-chart').value = canvas.toDataURL('image/jpeg', 0.7);
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // ==========================================
-    // INICIALIZACIÓN
-    // ==========================================
+    // 6. SINCRONIZACIÓN EN TIEMPO REAL CON FIREBASE
+    function setupFirebaseListeners() {
+      // Configuración de Sitio Global
+      db.collection("settings").doc("global").onSnapshot(doc => {
+        if (doc.exists) {
+          siteConfig = { ...DEFAULT_SITE_CONFIG, ...doc.data() };
+        } else {
+          db.collection("settings").doc("global").set(DEFAULT_SITE_CONFIG);
+        }
+        applySiteConfig();
+      });
+
+      // Sesión en Vivo
+      db.collection("settings").doc("live").onSnapshot(doc => {
+        if (doc.exists) {
+          liveConfig = doc.data();
+          applyLiveConfig();
+        } else {
+          db.collection("settings").doc("live").set(liveConfig);
+        }
+      });
+
+      // Clases
+      db.collection("classes").onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          classesData = [];
+          snapshot.forEach(doc => classesData.push(doc.data()));
+          classesData.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+        } else {
+          // Si está vacío, sube la clase inicial a Firebase
+          DEFAULT_CLASSES.forEach(c => db.collection("classes").doc(c.id).set(c));
+        }
+        renderClasses();
+      });
+
+      // Canales
+      db.collection("channels").onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          channels = [];
+          snapshot.forEach(doc => channels.push(doc.data()));
+        } else {
+          channels.forEach(ch => db.collection("channels").doc(ch.id).set(ch));
+        }
+        renderCustomChannels();
+      });
+
+      // Materiales y Esquemas
+      db.collection("materials").onSnapshot(snapshot => {
+        materialsData = [];
+        snapshot.forEach(doc => materialsData.push(doc.data()));
+        renderMaterials();
+        renderCustomChannels();
+      });
+
+      // Herramientas
+      db.collection("tools").onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          toolsData = [];
+          snapshot.forEach(doc => toolsData.push(doc.data()));
+        } else {
+          toolsData.forEach(t => db.collection("tools").doc(t.id).set(t));
+        }
+        renderTools();
+      });
+
+      // Reglas
+      db.collection("rules").onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          rulesData = [];
+          snapshot.forEach(doc => rulesData.push(doc.data()));
+          rulesData.sort((a, b) => (a.num || "").localeCompare(b.num || ""));
+        } else {
+          rulesData.forEach(r => db.collection("rules").doc(r.id).set(r));
+        }
+        renderRules();
+      });
+
+      // Scripts Pine
+      db.collection("scripts").onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          scriptsData = [];
+          snapshot.forEach(doc => scriptsData.push(doc.data()));
+        } else {
+          scriptsData.forEach(s => db.collection("scripts").doc(s.id).set(s));
+        }
+        renderScripts();
+      });
+
+      // Chat General en Vivo
+      db.collection("chat_messages").orderBy("timestamp", "asc").limitToLast(60).onSnapshot(snapshot => {
+        globalChatMessages = [];
+        snapshot.forEach(doc => globalChatMessages.push(doc.data()));
+        renderGlobalChat();
+      });
+    }
+
+    // 7. INICIALIZACIÓN
     document.addEventListener("DOMContentLoaded", () => {
-      applySiteConfig();
       checkAuthSession();
-      renderClasses();
-      renderTools();
-      renderRules();
-      renderMaterials();
-      renderScripts();
-      renderCustomChannels();
-      applySectionsVisibilityUI();
-      applyLiveConfig();
+      setupFirebaseListeners();
       initRealUserCounter();
-      renderGlobalChat();
     });
 
     function scrollToMentorships() {
@@ -1611,7 +1596,6 @@
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // LIGHTBOX
     function openImageLightbox(src, title) {
       if (!src) return;
       document.getElementById('lightbox-target-img').src = src;
@@ -1624,9 +1608,7 @@
       document.getElementById('lightbox-target-img').src = "";
     }
 
-    // ==========================================
-    // AUTENTICACIÓN
-    // ==========================================
+    // 8. AUTENTICACIÓN
     function checkAuthSession() {
       const loginGate = document.getElementById('login-view-wrapper');
       const platformApp = document.getElementById('platform-app-wrapper');
@@ -1657,11 +1639,9 @@
 
       if (isMasterAdmin) {
         errorEl.style.display = 'none';
-        currentUserSession = { username: siteConfig.adminUser || rawUser, password: p, role: 'admin', name: "Ivan Balanzar" };
-        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
+        currentUserSession = { username: siteConfig.adminUser || rawUser, role: 'admin', name: "Ivan Balanzar" };
+        sessionStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
         checkAuthSession();
-        renderMaterials();
-        renderCustomChannels();
         return;
       }
 
@@ -1669,10 +1649,8 @@
       if (matchedUser) {
         errorEl.style.display = 'none';
         currentUserSession = matchedUser;
-        localStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
+        sessionStorage.setItem('0red_current_session', JSON.stringify(currentUserSession));
         checkAuthSession();
-        renderMaterials();
-        renderCustomChannels();
       } else {
         errorEl.style.display = 'block';
       }
@@ -1680,7 +1658,7 @@
 
     function logoutSession() {
       currentUserSession = null;
-      localStorage.removeItem('0red_current_session');
+      sessionStorage.removeItem('0red_current_session');
       isUserAdmin = false;
       checkAuthSession();
     }
@@ -1688,7 +1666,6 @@
     function toggleAdminVisualMode() {
       if (!isUserAdmin) return;
       adminVisualMode = adminVisualMode === 'admin' ? 'student' : 'admin';
-      localStorage.setItem('0red_admin_visual_mode', adminVisualMode);
       syncAdminUI();
       renderClasses();
       renderTools();
@@ -1733,11 +1710,10 @@
       if (adminMatBtn) {
         adminMatBtn.style.display = (isUserAdmin && adminVisualMode === 'admin') ? 'block' : 'none';
       }
-
       applySectionsVisibilityUI();
     }
 
-    // AJUSTES GLOBALES
+    // 9. AJUSTES GLOBALES (EN NUBE)
     function openGlobalSiteModal() {
       document.getElementById('cfg-site-title').value = siteConfig.brandTitle;
       document.getElementById('cfg-site-sub').value = siteConfig.brandSub;
@@ -1747,22 +1723,22 @@
       document.getElementById('global-site-modal').classList.add('open');
     }
     function closeGlobalSiteModal() { document.getElementById('global-site-modal').classList.remove('open'); }
+    
     function saveGlobalSiteConfig() {
-      siteConfig.brandTitle = document.getElementById('cfg-site-title').value.trim() || siteConfig.brandTitle;
-      siteConfig.brandSub = document.getElementById('cfg-site-sub').value.trim() || siteConfig.brandSub;
-      siteConfig.brandIcon = document.getElementById('cfg-site-icon').value.trim() || siteConfig.brandIcon;
-      siteConfig.adminUser = document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser;
-      siteConfig.adminPass = document.getElementById('cfg-admin-pass').value.trim() || siteConfig.adminPass;
-      localStorage.setItem('0red_site_config', JSON.stringify(siteConfig));
-      applySiteConfig();
-      closeGlobalSiteModal();
-      showCustomDialog({
-        title: "Ajustes Actualizados",
-        desc: "La configuración global del sistema fue guardada exitosamente.",
-        icon: "info",
-        onConfirm: () => {}
+      const updated = {
+        brandTitle: document.getElementById('cfg-site-title').value.trim() || siteConfig.brandTitle,
+        brandSub: document.getElementById('cfg-site-sub').value.trim() || siteConfig.brandSub,
+        brandIcon: document.getElementById('cfg-site-icon').value.trim() || siteConfig.brandIcon,
+        adminUser: document.getElementById('cfg-admin-user').value.trim() || siteConfig.adminUser,
+        adminPass: document.getElementById('cfg-admin-pass').value.trim() || siteConfig.adminPass
+      };
+
+      db.collection("settings").doc("global").update(updated).then(() => {
+        closeGlobalSiteModal();
+        showCustomDialog({ title: "Ajustes Guardados", desc: "Configuración global actualizada para todos.", icon: "info", onConfirm: () => {} });
       });
     }
+
     function applySiteConfig() {
       document.getElementById('site-logo-icon').innerText = siteConfig.brandIcon;
       document.getElementById('site-brand-title').innerText = siteConfig.brandTitle;
@@ -1780,10 +1756,7 @@
         desc: "El apartado dejará de mostrarse en la barra de navegación lateral.",
         icon: "danger",
         onConfirm: () => {
-          if (!deletedSections.includes(sectionKey)) {
-            deletedSections.push(sectionKey);
-            localStorage.setItem('0red_deleted_sections', JSON.stringify(deletedSections));
-          }
+          if (!deletedSections.includes(sectionKey)) deletedSections.push(sectionKey);
           applySectionsVisibilityUI();
           if (currentActiveTab === sectionKey) switchSidebarTab('classes');
         }
@@ -1792,22 +1765,14 @@
 
     function restoreDeletedNativeSections() {
       deletedSections = [];
-      localStorage.removeItem('0red_deleted_sections');
       sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
-      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
       applySectionsVisibilityUI();
-      showCustomDialog({
-        title: "Apartados Restaurados",
-        desc: "Los apartados nativos han sido restaurados exitosamente.",
-        icon: "info",
-        onConfirm: () => {}
-      });
+      showCustomDialog({ title: "Restaurado", desc: "Apartados visibles nuevamente.", icon: "info", onConfirm: () => {} });
     }
 
     function toggleSectionVisibility(sectionKey) {
       if (!isUserAdmin) return;
       sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
-      localStorage.setItem('0red_sections_visibility', JSON.stringify(sectionsVisibility));
       applySectionsVisibilityUI();
     }
 
@@ -1855,9 +1820,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ==========================================
-    // CANALES PERSONALIZADOS Y GESTIÓN DE PERMISOS
-    // ==========================================
+    // 10. CANALES DINÁMICOS
     function openChannelConfigModal(id) {
       const isNew = id === 'new';
       document.getElementById('channel-modal-title').innerHTML = isNew ? `<i class="fa-solid fa-plus-circle" style="color:var(--red-accent);"></i> Crear Nuevo Canal` : `<i class="fa-solid fa-sliders" style="color:var(--red-accent);"></i> Configuración del Canal`;
@@ -1888,40 +1851,23 @@
       const desc = document.getElementById('cfg-channel-desc').value.trim();
       const allowStudents = document.getElementById('cfg-channel-allow-students').checked;
 
-      if (!name) {
-        showCustomDialog({
-          title: "Campo Requerido",
-          desc: "Por favor ingresa un nombre para el canal.",
-          icon: "info",
-          onConfirm: () => {}
-        });
-        return;
-      }
+      if (!name) return;
 
-      if (id) {
-        const idx = channels.findIndex(c => c.id === id);
-        if (idx !== -1) channels[idx] = { ...channels[idx], name, icon, desc, allowStudents };
-      } else {
-        const newId = 'chan_' + Date.now();
-        channels.push({ id: newId, name, icon, desc, allowStudents });
-      }
+      const channelId = id || ('chan_' + Date.now());
+      const payload = { id: channelId, name, icon, desc, allowStudents };
 
-      localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
-      closeChannelConfigModal();
-      renderCustomChannels();
+      db.collection("channels").doc(channelId).set(payload).then(() => {
+        closeChannelConfigModal();
+      });
     }
 
     function deleteChannel(id) {
       showCustomDialog({
         title: "¿Eliminar canal completo?",
-        desc: "Se eliminarán el canal y todas las publicaciones o imágenes alojadas en él.",
+        desc: "Se eliminará el canal y su contenido para todos los alumnos.",
         icon: "danger",
         onConfirm: () => {
-          channels = channels.filter(c => c.id !== id);
-          materialsData = materialsData.filter(m => m.targetChannel !== id);
-          localStorage.setItem('0red_channels_list_v2', JSON.stringify(channels));
-          localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
-          renderCustomChannels();
+          db.collection("channels").doc(id).delete();
           switchSidebarTab('classes');
         }
       });
@@ -1930,7 +1876,7 @@
     function renderCustomChannels() {
       const listContainer = document.getElementById('sidebar-channels-list');
       const viewsContainer = document.getElementById('custom-views-container');
-      const isStudentView = !isUserAdmin || adminVisualMode === 'student';
+      if (!listContainer || !viewsContainer) return;
 
       listContainer.innerHTML = '';
       viewsContainer.innerHTML = '';
@@ -1947,8 +1893,8 @@
               </span>
             </span>
             <span class="sidebar-controls-wrap">
-              <button class="btn-toggle-eye" title="Configurar Permisos de Subida" onclick="event.stopPropagation(); openChannelConfigModal('${ch.id}')"><i class="fa-solid fa-gear"></i></button>
-              <button class="btn-delete-section" title="Eliminar Canal" onclick="event.stopPropagation(); deleteChannel('${ch.id}')"><i class="fa-solid fa-trash"></i></button>
+              <button class="btn-toggle-eye" title="Configurar" onclick="event.stopPropagation(); openChannelConfigModal('${ch.id}')"><i class="fa-solid fa-gear"></i></button>
+              <button class="btn-delete-section" title="Eliminar" onclick="event.stopPropagation(); deleteChannel('${ch.id}')"><i class="fa-solid fa-trash"></i></button>
             </span>
           </a>
         `;
@@ -1969,13 +1915,9 @@
               <i class="fa-solid fa-images" style="font-size:2.4rem; color:#4b5563; margin-bottom:12px;"></i>
               <h3 style="color:#fff; font-size:1.15rem; font-weight:700;">Aún no hay análisis publicados en ${ch.name}</h3>
               <p style="color:var(--text-muted); font-size:0.85rem; max-width:500px; margin:6px auto 18px;">
-                ${canUpload ? 'Sé el primero en compartir un setup o esquema gráfico en este canal.' : 'Canal oficial de solo lectura. El profesor publicará el material técnico aquí.'}
+                ${canUpload ? 'Sé el primero en compartir un setup o esquema gráfico.' : 'Canal oficial de solo lectura.'}
               </p>
-              ${canUpload ? `
-                <button class="btn-view" onclick="openUploadModal('${ch.id}')">
-                  <i class="fa-solid fa-plus"></i> SUBIR PRIMER ANÁLISIS
-                </button>
-              ` : ''}
+              ${canUpload ? `<button class="btn-view" onclick="openUploadModal('${ch.id}')"><i class="fa-solid fa-plus"></i> SUBIR PRIMER ANÁLISIS</button>` : ''}
             </div>
           `;
         } else {
@@ -2010,7 +1952,7 @@
             <div>
               <div class="badge-pill">
                 <i class="fa-solid ${ch.allowStudents ? 'fa-door-open' : 'fa-lock'}"></i> 
-                ${ch.allowStudents ? 'Canal Colaborativo (Alumnos & Mentor)' : 'Canal Exclusivo (Solo Publica el Mentor)'}
+                ${ch.allowStudents ? 'Canal Colaborativo' : 'Canal Exclusivo del Mentor'}
               </div>
               <h1 class="page-title">${ch.name}</h1>
               <p class="page-desc">${ch.desc || 'Galería de análisis técnico y esquemas institucionales.'}</p>
@@ -2033,7 +1975,7 @@
       });
     }
 
-    // SUBIDA DE ANÁLISIS / IMÁGENES
+    // 11. SUBIDA DE ARCHIVOS A FIRESTORE
     function openUploadModal(targetChannelId) {
       document.getElementById('upload-target-channel').value = targetChannelId;
       document.getElementById('upload-title').value = '';
@@ -2041,7 +1983,6 @@
       document.getElementById('upload-url').value = '';
       document.getElementById('upload-file').value = '';
       document.getElementById('upload-preview-wrap').style.display = 'none';
-      document.getElementById('upload-preview-img').src = '';
       document.getElementById('upload-modal').classList.add('open');
     }
     function closeUploadModal() { document.getElementById('upload-modal').classList.remove('open'); }
@@ -2052,20 +1993,17 @@
       const desc = document.getElementById('upload-desc').value.trim();
       const image = document.getElementById('upload-url').value.trim();
 
-      if (!title) {
-        showCustomDialog({ title: "Campo requerido", desc: "Por favor ingresa un título para el gráfico.", icon: "info", onConfirm: () => {} });
-        return;
-      }
-      if (!image) {
-        showCustomDialog({ title: "Imagen requerida", desc: "Por favor selecciona una captura desde tu PC o escribe una URL válida.", icon: "info", onConfirm: () => {} });
+      if (!title || !image) {
+        showCustomDialog({ title: "Datos incompletos", desc: "Por favor agrega un título y una imagen.", icon: "info", onConfirm: () => {} });
         return;
       }
 
       const activeUser = currentUserSession ? currentUserSession.username : 'Alumno';
       const activeRole = currentUserSession ? currentUserSession.role : 'student';
+      const docId = 'mat_' + Date.now();
 
       const newItem = {
-        id: 'mat_' + Date.now(),
+        id: docId,
         targetChannel,
         title,
         desc,
@@ -2073,26 +2011,15 @@
         author: activeUser,
         authorUser: activeUser.toLowerCase(),
         authorRole: activeRole,
-        date: new Date().toLocaleDateString()
+        date: new Date().toLocaleDateString(),
+        timestamp: Date.now()
       };
 
-      materialsData.unshift(newItem);
-
-      try {
-        localStorage.setItem('0red_materials_v3', JSON.stringify(materialsData));
-      } catch (err) {
-        showCustomDialog({
-          title: "Espacio insuficiente",
-          desc: "La imagen es demasiado pesada para el almacenamiento local. Usa una imagen más liviana o un enlace directo.",
-          icon: "info",
-          onConfirm: () => {}
-        });
-        return;
-      }
-
-      closeUploadModal();
-      renderMaterials();
-      renderCustomChannels();
+      db.collection("materials").doc(docId).set(newItem).then(() => {
+        closeUploadModal();
+      }).catch(err => {
+        showCustomDialog({ title: "Error", desc: "La imagen excede el límite permitido. Usa una imagen más liviana.", icon: "info", onConfirm: () => {} });
+      });
     }
 
     function renderMaterials() {
@@ -2129,9 +2056,7 @@
       }).join('');
     }
 
-    // ==========================================
-    // CLASES
-    // ==========================================
+    // 12. CLASES (FIREBASE)
     function renderClasses() {
       const container = document.getElementById('classes-container');
       if (!container) return;
@@ -2206,7 +2131,6 @@
         diagramsWrap.style.display = 'none';
         diagramImg.src = "";
       }
-
       document.getElementById('player-modal').classList.add('open');
     }
 
@@ -2262,39 +2186,34 @@
       const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
       const unlocked = document.getElementById('edit-unlocked').checked;
 
-      if (!title) {
-        showCustomDialog({ title: "Campo requerido", desc: "Por favor ingresa un título para la clase.", icon: "info", onConfirm: () => {} });
-        return;
-      }
+      if (!title) return;
 
-      if (id) {
-        const idx = classesData.findIndex(c => c.id === id);
-        if (idx !== -1) classesData[idx] = { ...classesData[idx], week, title, date, videoUrl, thumbUrl, chartImg, duration, desc, tags, unlocked };
-      } else {
-        classesData.push({ id: 'class-' + Date.now(), week, title, date, videoUrl, thumbUrl, chartImg, duration, desc, tags, unlocked, visibleToStudents: true });
-      }
+      const classId = id || ('class-' + Date.now());
+      const classPayload = {
+        id: classId,
+        week, title, date, videoUrl, thumbUrl, chartImg, duration, desc, tags, unlocked,
+        visibleToStudents: true,
+        createdAt: Date.now()
+      };
 
-      localStorage.setItem('0red_classes', JSON.stringify(classesData));
-      renderClasses();
-      closeEditorModal();
+      db.collection("classes").doc(classId).set(classPayload).then(() => {
+        closeEditorModal();
+        showCustomDialog({ title: "Sincronizado", desc: "Clase publicada para todos los alumnos.", icon: "info", onConfirm: () => {} });
+      });
     }
 
     function deleteClass(id) {
       showCustomDialog({
-        title: "¿Eliminar esta clase?",
-        desc: "La clase seleccionada será retirada del temario de la plataforma.",
+        title: "¿Eliminar clase?",
+        desc: "Se eliminará para todos los alumnos del mundo en tiempo real.",
         icon: "danger",
         onConfirm: () => {
-          classesData = classesData.filter(c => c.id !== id);
-          localStorage.setItem('0red_classes', JSON.stringify(classesData));
-          renderClasses();
+          db.collection("classes").doc(id).delete();
         }
       });
     }
 
-    // ==========================================
-    // HERRAMIENTAS, REGLAS Y SCRIPTS
-    // ==========================================
+    // 13. HERRAMIENTAS, REGLAS Y SCRIPTS
     function renderTools() {
       const container = document.getElementById('tools-container');
       if (!container) return;
@@ -2343,27 +2262,16 @@
       const url = document.getElementById('edit-tool-url').value.trim();
       const desc = document.getElementById('edit-tool-desc').value.trim();
       const features = document.getElementById('edit-tool-features').value.split('\n').filter(Boolean);
-      if (!title || !url) {
-        showCustomDialog({ title: "Datos Incompletos", desc: "Por favor completa el título y el enlace de la herramienta.", icon: "info", onConfirm: () => {} });
-        return;
-      }
-      toolsData.push({ id: 'tool-' + Date.now(), title, url, desc, features, visibleToStudents: true, allowEmbed: true });
-      localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-      renderTools();
-      closeToolModal();
+      if (!title || !url) return;
+
+      const id = 'tool-' + Date.now();
+      db.collection("tools").doc(id).set({ id, title, url, desc, features, visibleToStudents: true, allowEmbed: true }).then(() => {
+        closeToolModal();
+      });
     }
 
     function deleteTool(id) {
-      showCustomDialog({
-        title: "¿Eliminar herramienta?",
-        desc: "La herramienta seleccionada será removida de la vista de los miembros.",
-        icon: "danger",
-        onConfirm: () => {
-          toolsData = toolsData.filter(t => t.id !== id);
-          localStorage.setItem('0red_tools', JSON.stringify(toolsData));
-          renderTools();
-        }
-      });
+      db.collection("tools").doc(id).delete();
     }
 
     function openEmbeddedViewer(url, title) {
@@ -2398,14 +2306,11 @@
     function saveRuleData() {
       const title = document.getElementById('edit-rule-title').value.trim();
       const desc = document.getElementById('edit-rule-desc').value.trim();
-      if (!title) {
-        showCustomDialog({ title: "Título Requerido", desc: "Por favor ingresa un título para la regla.", icon: "info", onConfirm: () => {} });
-        return;
-      }
-      rulesData.push({ id: 'rule-' + Date.now(), num: String(rulesData.length+1).padStart(2,'0'), title, desc, visibleToStudents: true });
-      localStorage.setItem('0red_rules', JSON.stringify(rulesData));
-      renderRules();
-      closeRuleModal();
+      if (!title) return;
+      const id = 'rule-' + Date.now();
+      db.collection("rules").doc(id).set({ id, num: String(rulesData.length+1).padStart(2,'0'), title, desc, visibleToStudents: true }).then(() => {
+        closeRuleModal();
+      });
     }
 
     function renderScripts() {
@@ -2432,14 +2337,11 @@
     function saveScriptData() {
       const title = document.getElementById('edit-script-title').value.trim();
       const code = document.getElementById('edit-script-code').value;
-      if (!title || !code) {
-        showCustomDialog({ title: "Datos Incompletos", desc: "Completa el título y el código del script Pine.", icon: "info", onConfirm: () => {} });
-        return;
-      }
-      scriptsData.push({ id: 'script-' + Date.now(), title, badge: 'PINE SCRIPT V5', code, visibleToStudents: true });
-      localStorage.setItem('0red_scripts', JSON.stringify(scriptsData));
-      renderScripts();
-      closeScriptModal();
+      if (!title || !code) return;
+      const id = 'script-' + Date.now();
+      db.collection("scripts").doc(id).set({ id, title, badge: 'PINE SCRIPT V5', code, visibleToStudents: true }).then(() => {
+        closeScriptModal();
+      });
     }
 
     function copyPineScript(id) {
@@ -2451,11 +2353,11 @@
         temp.select();
         document.execCommand('copy');
         document.body.removeChild(temp);
-        showCustomDialog({ title: "Copiado", desc: "Código Pine Script copiado exitosamente al portapapeles.", icon: "info", onConfirm: () => {} });
+        showCustomDialog({ title: "Copiado", desc: "Código copiado al portapapeles.", icon: "info", onConfirm: () => {} });
       }
     }
 
-    // LIVE & CHAT
+    // 14. TRANSMISIÓN EN VIVO
     function togglePlatformLiveFields() {
       const type = document.getElementById('cfg-live-platform').value;
       document.getElementById('wrap-meet-url').style.display = type === 'meet' ? 'block' : 'none';
@@ -2477,17 +2379,20 @@
     function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
 
     function saveLiveConfig() {
-      liveConfig.platformType = document.getElementById('cfg-live-platform').value;
-      liveConfig.status = document.getElementById('cfg-live-status').value;
-      liveConfig.meetUrl = document.getElementById('cfg-meet-url').value.trim() || 'https://meet.google.com/new';
-      liveConfig.url = document.getElementById('cfg-live-url').value.trim();
-      liveConfig.title = document.getElementById('cfg-live-title').value.trim();
-      liveConfig.date = document.getElementById('cfg-live-date').value.trim();
-      liveConfig.desc = document.getElementById('cfg-live-desc').value.trim();
-      localStorage.setItem('0red_live', JSON.stringify(liveConfig));
-      applyLiveConfig();
-      closeLiveModal();
-      showCustomDialog({ title: "Transmisión Actualizada", desc: "La configuración de la sala en vivo ha sido guardada.", icon: "info", onConfirm: () => {} });
+      const updated = {
+        platformType: document.getElementById('cfg-live-platform').value,
+        status: document.getElementById('cfg-live-status').value,
+        meetUrl: document.getElementById('cfg-meet-url').value.trim() || 'https://meet.google.com/new',
+        url: document.getElementById('cfg-live-url').value.trim(),
+        title: document.getElementById('cfg-live-title').value.trim(),
+        date: document.getElementById('cfg-live-date').value.trim(),
+        desc: document.getElementById('cfg-live-desc').value.trim()
+      };
+
+      db.collection("settings").doc("live").update(updated).then(() => {
+        closeLiveModal();
+        showCustomDialog({ title: "Live Actualizado", desc: "La sala ha sido sincronizada globalmente.", icon: "info", onConfirm: () => {} });
+      });
     }
 
     function applyLiveConfig() {
@@ -2519,6 +2424,7 @@
       }
     }
 
+    // 15. CHAT GLOBAL EN VIVO
     function renderGlobalChat() {
       const container = document.getElementById('global-chat-container');
       if (!container) return;
@@ -2539,14 +2445,15 @@
       const input = document.getElementById('global-chat-input');
       const text = input.value.trim();
       if (!text) return;
-      globalChatMessages.push({
+
+      db.collection("chat_messages").add({
         author: currentUserSession ? currentUserSession.username : 'Alumno',
         role: isUserAdmin ? 'admin' : 'student',
-        text,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        text: text,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: Date.now()
       });
-      localStorage.setItem('0red_global_chat', JSON.stringify(globalChatMessages));
-      renderGlobalChat();
+
       input.value = '';
     }
 
