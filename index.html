@@ -197,6 +197,10 @@
     }
     .admin-banner.visible { display: flex; }
 
+    /* CONTROLES DE EDICIÓN EXCLUSIVOS DE ADMIN */
+    .admin-only-action { display: none !important; }
+    body.admin-edit-active .admin-only-action { display: inline-flex !important; }
+
     .btn-view {
       background: rgba(239, 68, 68, 0.12); color: #fff; border: 1px solid rgba(239, 68, 68, 0.4);
       padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
@@ -296,7 +300,7 @@
     .rule-content h4 { font-size: 1rem; margin-bottom: 4px; color: #fff; }
     .rule-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
 
-    /* GRILLA MULTIMEDIA DINÁMICA (IMAGEN, VIDEO, TEXTO) */
+    /* GRILLA MULTIMEDIA DINÁMICA */
     .materials-custom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 22px; margin-top: 16px; }
     .mat-card {
       background: rgba(10, 14, 22, 0.95); border: 1px solid var(--card-border); border-radius: 14px;
@@ -761,7 +765,7 @@
               <p class="page-desc" id="live-stream-desc">Conexión directa en tiempo real con análisis de liquidez institucional y operativa en vivo.</p>
             </div>
             <div>
-              <button class="btn-action-primary" onclick="openLiveConfigModal()"><i class="fa-solid fa-gear"></i> CONFIGURAR SALA</button>
+              <button class="btn-action-primary admin-only-action" onclick="openLiveConfigModal()"><i class="fa-solid fa-gear"></i> CONFIGURAR SALA</button>
             </div>
           </div>
 
@@ -796,7 +800,7 @@
               <p class="page-desc">Utilidades, bitácoras y aplicaciones desarrolladas para profesionalizar tu proceso analítico y gestión matemática.</p>
             </div>
             <div>
-              <button class="btn-action-primary" onclick="openToolModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR HERRAMIENTA</button>
+              <button class="btn-action-primary admin-only-action" onclick="openToolModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR HERRAMIENTA</button>
             </div>
           </div>
 
@@ -841,7 +845,7 @@
               <p class="page-desc">Normas esenciales para mantener el estándar profesional, la gestión estricta de riesgo y el respeto en la comunidad.</p>
             </div>
             <div>
-              <button class="btn-action-primary" onclick="openRuleModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR REGLA</button>
+              <button class="btn-action-primary admin-only-action" onclick="openRuleModal('new')"><i class="fa-solid fa-plus"></i> AGREGAR REGLA</button>
             </div>
           </div>
 
@@ -859,7 +863,7 @@
               <p class="page-desc">Visualiza y descarga análisis, videos explicativos y esquemas oficiales de la academia.</p>
             </div>
             <div id="admin-official-mat-action">
-              <button class="btn-action-primary" onclick="openUploadModal('materials')"><i class="fa-solid fa-plus"></i> PUBLICAR CONTENIDO</button>
+              <button class="btn-action-primary admin-only-action" onclick="openUploadModal('materials')"><i class="fa-solid fa-plus"></i> PUBLICAR CONTENIDO</button>
             </div>
           </div>
 
@@ -875,7 +879,7 @@
               <p class="page-desc">Algoritmos oficiales desarrollados para TradingView. Copia el código fuente e instálalo en tu editor Pine.</p>
             </div>
             <div>
-              <button class="btn-action-primary" onclick="openScriptModal('new')"><i class="fa-solid fa-plus"></i> PUBLICAR SCRIPT</button>
+              <button class="btn-action-primary admin-only-action" onclick="openScriptModal('new')"><i class="fa-solid fa-plus"></i> PUBLICAR SCRIPT</button>
             </div>
           </div>
 
@@ -1028,7 +1032,7 @@
           </div>
         </div>
 
-        <button class="btn-submit" onclick="submitContentUpload()"><i class="fa-solid fa-cloud-check"></i> PUBLICAR PARA TODOS</button>
+        <button class="btn-submit" onclick="submitContentUpload()"><i class="fa-solid fa-cloud-check"></i> PUBLICAR</button>
       </div>
     </div>
   </div>
@@ -1403,22 +1407,20 @@
       dialogCallback = null;
     }
 
-    // 4. AUTORÍA Y BORRADO DE ARCHIVOS
+    // 4. CONTROL DE BORRADO: ESTRICTAMENTE SOLO ADMINISTRADOR
     function canCurrentUserDelete(item) {
       if (!currentUserSession) return false;
-      if (currentUserSession.role === 'admin') return true;
-      const currentU = (currentUserSession.username || '').toLowerCase().trim();
-      const authorU = (item.authorUser || item.author || '').toLowerCase().trim();
-      return currentU === authorU;
+      return currentUserSession.role === 'admin';
     }
 
     function deleteMaterialItem(id) {
-      const item = materialsData.find(m => m.id === id);
-      if (!item) return;
-      if (!canCurrentUserDelete(item)) {
-        showCustomDialog({ title: "Acceso Denegado", desc: "No tienes permiso para borrar esta publicación.", icon: "info", onConfirm: () => {} });
+      if (!isUserAdmin) {
+        showCustomDialog({ title: "Acceso Denegado", desc: "Solo el administrador puede borrar publicaciones.", icon: "info", onConfirm: () => {} });
         return;
       }
+      const item = materialsData.find(m => m.id === id);
+      if (!item) return;
+
       showCustomDialog({
         title: "¿Eliminar publicación?",
         desc: `Se borrará "${item.title}" para todos los usuarios.`,
@@ -1502,6 +1504,21 @@
           db.collection("settings").doc("global").set(DEFAULT_SITE_CONFIG);
         }
         applySiteConfig();
+      });
+
+      // Configuración Global de Secciones Nativas
+      db.collection("settings").doc("sections").onSnapshot(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY, ...(data.visibility || {}) };
+          deletedSections = Array.isArray(data.deleted) ? data.deleted : [];
+        } else {
+          db.collection("settings").doc("sections").set({
+            visibility: DEFAULT_SECTIONS_VISIBILITY,
+            deleted: []
+          });
+        }
+        applySectionsVisibilityUI();
       });
 
       // Sesión en Vivo
@@ -1711,6 +1728,7 @@
 
     // 10. AJUSTES GLOBALES
     function openGlobalSiteModal() {
+      if (!isUserAdmin) return;
       document.getElementById('cfg-site-title').value = siteConfig.brandTitle;
       document.getElementById('cfg-site-sub').value = siteConfig.brandSub;
       document.getElementById('cfg-site-icon').value = siteConfig.brandIcon;
@@ -1721,6 +1739,7 @@
     function closeGlobalSiteModal() { document.getElementById('global-site-modal').classList.remove('open'); }
     
     function saveGlobalSiteConfig() {
+      if (!isUserAdmin) return;
       const updated = {
         brandTitle: document.getElementById('cfg-site-title').value.trim() || siteConfig.brandTitle,
         brandSub: document.getElementById('cfg-site-sub').value.trim() || siteConfig.brandSub,
@@ -1749,27 +1768,43 @@
       if (!isUserAdmin) return;
       showCustomDialog({
         title: `¿Eliminar "${sectionName}"?`,
-        desc: "El apartado dejará de mostrarse en la barra de navegación lateral.",
+        desc: "El apartado se eliminará de forma global para todos los usuarios y alumnos.",
         icon: "danger",
         onConfirm: () => {
-          if (!deletedSections.includes(sectionKey)) deletedSections.push(sectionKey);
-          applySectionsVisibilityUI();
-          if (currentActiveTab === sectionKey) switchSidebarTab('classes');
+          let updatedDeleted = [...deletedSections];
+          if (!updatedDeleted.includes(sectionKey)) {
+            updatedDeleted.push(sectionKey);
+          }
+          db.collection("settings").doc("sections").set({
+            visibility: sectionsVisibility,
+            deleted: updatedDeleted
+          }, { merge: true }).then(() => {
+            if (currentActiveTab === sectionKey) switchSidebarTab('classes');
+          });
         }
       });
     }
 
     function restoreDeletedNativeSections() {
-      deletedSections = [];
-      sectionsVisibility = { ...DEFAULT_SECTIONS_VISIBILITY };
-      applySectionsVisibilityUI();
-      showCustomDialog({ title: "Restaurado", desc: "Apartados visibles nuevamente.", icon: "info", onConfirm: () => {} });
+      if (!isUserAdmin) return;
+      db.collection("settings").doc("sections").set({
+        visibility: DEFAULT_SECTIONS_VISIBILITY,
+        deleted: []
+      }).then(() => {
+        showCustomDialog({ title: "Restaurado", desc: "Apartados iniciales restaurados globalmente para todos.", icon: "info", onConfirm: () => {} });
+      });
     }
 
     function toggleSectionVisibility(sectionKey) {
       if (!isUserAdmin) return;
-      sectionsVisibility[sectionKey] = !sectionsVisibility[sectionKey];
-      applySectionsVisibilityUI();
+      const newVisibility = {
+        ...sectionsVisibility,
+        [sectionKey]: sectionsVisibility[sectionKey] === false ? true : false
+      };
+      db.collection("settings").doc("sections").set({
+        visibility: newVisibility,
+        deleted: deletedSections
+      }, { merge: true });
     }
 
     function applySectionsVisibilityUI() {
@@ -1818,6 +1853,7 @@
 
     // 11. CANALES DINÁMICOS
     function openChannelConfigModal(id) {
+      if (!isUserAdmin) return;
       const isNew = id === 'new';
       document.getElementById('channel-modal-title').innerHTML = isNew ? `<i class="fa-solid fa-plus-circle" style="color:var(--red-accent);"></i> Crear Nuevo Canal` : `<i class="fa-solid fa-sliders" style="color:var(--red-accent);"></i> Configuración del Canal`;
       document.getElementById('cfg-channel-id').value = isNew ? '' : id;
@@ -1841,6 +1877,7 @@
     function closeChannelConfigModal() { document.getElementById('channel-modal').classList.remove('open'); }
 
     function saveChannelConfig() {
+      if (!isUserAdmin) return;
       const id = document.getElementById('cfg-channel-id').value;
       const name = document.getElementById('cfg-channel-name').value.trim();
       const icon = document.getElementById('cfg-channel-icon').value;
@@ -1858,6 +1895,7 @@
     }
 
     function deleteChannel(id) {
+      if (!isUserAdmin) return;
       showCustomDialog({
         title: "¿Eliminar canal completo?",
         desc: "Se eliminará el canal y todo su contenido para todos los alumnos.",
@@ -1869,7 +1907,7 @@
       });
     }
 
-    // RENDERIZADO DINÁMICO DE TARJETAS MULTIMEDIA (IMAGEN, VIDEO O TEXTO)
+    // RENDERIZADO DINÁMICO DE TARJETAS MULTIMEDIA
     function buildMediaCardHtml(it) {
       const userCanDelete = canCurrentUserDelete(it);
       const isVideo = it.mediaType === 'video' && it.videoUrl;
@@ -1958,7 +1996,8 @@
         view.className = 'workspace-view';
         view.style.display = 'none';
 
-        const canUpload = (isUserAdmin && adminVisualMode === 'admin') || ch.allowStudents;
+        // Solo admin o si el canal está ABIERTO a los estudiantes
+        const canUpload = isUserAdmin || ch.allowStudents;
         const channelItems = materialsData.filter(m => m.targetChannel === ch.id);
 
         let gridHtml = '';
@@ -1968,7 +2007,7 @@
               <i class="fa-solid fa-layer-group" style="font-size:2.4rem; color:#4b5563; margin-bottom:12px;"></i>
               <h3 style="color:#fff; font-size:1.15rem; font-weight:700;">Aún no hay publicaciones en ${ch.name}</h3>
               <p style="color:var(--text-muted); font-size:0.85rem; max-width:500px; margin:6px auto 18px;">
-                ${canUpload ? 'Sé el primero en compartir un video, texto o esquema gráfico en este canal.' : 'Canal oficial de solo lectura.'}
+                ${canUpload ? 'Sé el primero en compartir un video, texto o captura en este canal.' : 'Canal oficial de solo lectura.'}
               </p>
               ${canUpload ? `<button class="btn-view" onclick="openUploadModal('${ch.id}')"><i class="fa-solid fa-plus"></i> AGREGAR PUBLICACIÓN</button>` : ''}
             </div>
@@ -2024,6 +2063,19 @@
     }
 
     function openUploadModal(targetChannelId) {
+      // Si el usuario es un alumno, validar si el canal permite subidas
+      if (!isUserAdmin) {
+        if (targetChannelId === 'materials') {
+          showCustomDialog({ title: "Solo Lectura", desc: "Material de Clases es un canal oficial de solo lectura.", icon: "info", onConfirm: () => {} });
+          return;
+        }
+        const targetCh = channels.find(c => c.id === targetChannelId);
+        if (!targetCh || !targetCh.allowStudents) {
+          showCustomDialog({ title: "Canal Restringido", desc: "Este canal está bloqueado para publicaciones de alumnos.", icon: "info", onConfirm: () => {} });
+          return;
+        }
+      }
+
       document.getElementById('upload-target-channel').value = targetChannelId;
       document.getElementById('upload-type-select').value = 'image';
       document.getElementById('upload-title').value = '';
@@ -2039,6 +2091,20 @@
 
     function submitContentUpload() {
       const targetChannel = document.getElementById('upload-target-channel').value;
+      
+      // Doble validación en frontend
+      if (!isUserAdmin) {
+        if (targetChannel === 'materials') {
+          showCustomDialog({ title: "Acceso Denegado", desc: "No tienes permiso para publicar en Material de Clases.", icon: "info", onConfirm: () => {} });
+          return;
+        }
+        const ch = channels.find(c => c.id === targetChannel);
+        if (!ch || !ch.allowStudents) {
+          showCustomDialog({ title: "Acceso Denegado", desc: "Este canal no acepta publicaciones de alumnos.", icon: "info", onConfirm: () => {} });
+          return;
+        }
+      }
+
       const mediaType = document.getElementById('upload-type-select').value;
       const title = document.getElementById('upload-title').value.trim();
       const desc = document.getElementById('upload-desc').value.trim();
@@ -2182,6 +2248,7 @@
     }
 
     function openClassModal(id) {
+      if (!isUserAdmin) return;
       const isNew = id === 'new';
       document.getElementById('editor-title').innerText = isNew ? "Agregar Nueva Clase" : "Editar Clase";
       document.getElementById('edit-class-id').value = isNew ? "" : id;
@@ -2216,6 +2283,7 @@
     function closeEditorModal() { document.getElementById('class-editor-modal').classList.remove('open'); }
 
     function saveClassData() {
+      if (!isUserAdmin) return;
       const id = document.getElementById('edit-class-id').value;
       const week = document.getElementById('edit-week').value.trim();
       const title = document.getElementById('edit-title').value.trim();
@@ -2247,6 +2315,7 @@
     }
 
     function deleteClass(id) {
+      if (!isUserAdmin) return;
       showCustomDialog({
         title: "¿Eliminar clase?",
         desc: "Se eliminará para todos los alumnos del mundo en tiempo real.",
@@ -2298,10 +2367,14 @@
       });
     }
 
-    function openToolModal() { document.getElementById('tool-editor-modal').classList.add('open'); }
+    function openToolModal() { 
+      if (!isUserAdmin) return;
+      document.getElementById('tool-editor-modal').classList.add('open'); 
+    }
     function closeToolModal() { document.getElementById('tool-editor-modal').classList.remove('open'); }
 
     function saveToolData() {
+      if (!isUserAdmin) return;
       const title = document.getElementById('edit-tool-title').value.trim();
       const url = document.getElementById('edit-tool-url').value.trim();
       const desc = document.getElementById('edit-tool-desc').value.trim();
@@ -2315,6 +2388,7 @@
     }
 
     function deleteTool(id) {
+      if (!isUserAdmin) return;
       db.collection("tools").doc(id).delete();
     }
 
@@ -2344,10 +2418,14 @@
       });
     }
 
-    function openRuleModal() { document.getElementById('rule-modal').classList.add('open'); }
+    function openRuleModal() { 
+      if (!isUserAdmin) return;
+      document.getElementById('rule-modal').classList.add('open'); 
+    }
     function closeRuleModal() { document.getElementById('rule-modal').classList.remove('open'); }
 
     function saveRuleData() {
+      if (!isUserAdmin) return;
       const title = document.getElementById('edit-rule-title').value.trim();
       const desc = document.getElementById('edit-rule-desc').value.trim();
       if (!title) return;
@@ -2375,10 +2453,14 @@
       });
     }
 
-    function openScriptModal() { document.getElementById('script-modal').classList.add('open'); }
+    function openScriptModal() { 
+      if (!isUserAdmin) return;
+      document.getElementById('script-modal').classList.add('open'); 
+    }
     function closeScriptModal() { document.getElementById('script-modal').classList.remove('open'); }
 
     function saveScriptData() {
+      if (!isUserAdmin) return;
       const title = document.getElementById('edit-script-title').value.trim();
       const code = document.getElementById('edit-script-code').value;
       if (!title || !code) return;
@@ -2409,6 +2491,7 @@
     }
 
     function openLiveConfigModal() {
+      if (!isUserAdmin) return;
       document.getElementById('cfg-live-platform').value = liveConfig.platformType || 'meet';
       document.getElementById('cfg-live-status').value = liveConfig.status || 'scheduled';
       document.getElementById('cfg-meet-url').value = liveConfig.meetUrl || '';
@@ -2423,6 +2506,7 @@
     function closeLiveModal() { document.getElementById('live-config-modal').classList.remove('open'); }
 
     function saveLiveConfig() {
+      if (!isUserAdmin) return;
       const updated = {
         platformType: document.getElementById('cfg-live-platform').value,
         status: document.getElementById('cfg-live-status').value,
